@@ -1,9 +1,7 @@
-<% title = "Ошибка"%>
-
-<% include ../partials/head %>
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
-<% include ../partials/foot %>
-
-
+<% if (message) { %>
+    <h1><%= message %></h1>
+<% } %>
+<% if (error) { %>
+    <h2><%= error.status %></h2>
+    <pre><%= error.stack %></pre>
+<% } %>
