@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="/javascripts/angular.min.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+</head>
+<body ng-app="words">
+
+<% if (message) {%>
+<%= message %>
+<% } %>
+
+
+
+<div ng-controller="TextController as txt">
+    <textarea cols="40" rows="20" ng-model="text"></textarea>
+</div>
+
+
+</body>
+</html>
