@@ -1,24 +1,41 @@
 <section data-ng-controller="HomeController">
-	<div class="jumbotron text-center">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-				<h1>500 слов</h1>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<p class="lead">
-				Сервис анонимного и безопасного ведения личного дневника и записей
-			</p>
-		</div>
-		<div class="row">
-			<p>
-				<a class="btn btn-default btn-lg" href="/about">Узнайте подробности</a> или <a class="btn btn-success btn-lg" href="#!/signin">Войдите в систему</a>
-			</p>
-		</div>
-	</div>
-	<div>
-		<h2>Поздравляем!</h2>
-		<p>Вы нашли то, что давно искали</p>
-	</div>
+    <div class="jumbotron text-center" data-ng-hide="authentication.user">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                <h1>500 слов</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <p class="lead">
+                Сервис анонимного и безопасного ведения личного дневника и записей
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                <a class="btn btn-default btn-lg" href="/about">Узнайте подробности</a> или <a class="btn btn-success btn-lg" href="#!/signin">Войдите в систему</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div data-ng-show="authentication.user">
+        <div class="page-header">
+            <h1>Автор, жги!</h1>
+        </div>
+        <div class="col-md-12">
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
+            <form name="articleForm" class="form-horizontal" data-ng-submit="create()" novalidate>
+                <fieldset>
+                    <div class="form-group">
+                        <div class="controls">
+                            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </section>

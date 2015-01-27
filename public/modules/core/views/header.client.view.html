@@ -1,7 +1,7 @@
 <div class="container" data-ng-controller="HeaderController">
 	<div class="navbar-header">
 		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
-			<span class="sr-only">Toggle navigation</span>
+			<span class="sr-only">Вкл./Выкл. меню</span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -39,17 +39,17 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li>
-						<a href="/#!/settings/profile">Edit Profile</a>
+						<a href="/#!/settings/profile">Редактировать профиль</a>
 					</li>
 					<li>
-						<a href="/#!/settings/accounts">Manage Social Accounts</a>
+						<a href="/#!/settings/accounts">Управление социальными аккаунтамиs</a>
 					</li>
 					<li data-ng-show="authentication.user.provider === 'local'">
-						<a href="/#!/settings/password">Change Password</a>
+						<a href="/#!/settings/password">Изменить пароль</a>
 					</li>
 					<li class="divider"></li>
 					<li>
-						<a href="/auth/signout">Signout</a>
+						<a href="/auth/signout">Выйти</a>
 					</li>
 				</ul>
 			</li>
