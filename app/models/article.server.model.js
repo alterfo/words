@@ -10,21 +10,19 @@ var mongoose = require('mongoose'),
  * Article Schema
  */
 var ArticleSchema = new Schema({
-	created: {
+	date: {
 		type: Date,
-		default: Date.now
+		default: new Date()
 	},
-	title: {
-		type: String,
-		default: '',
-		trim: true,
-		required: 'Title cannot be blank'
-	},
-	content: {
+	text: {
 		type: String,
 		default: '',
 		trim: true
 	},
+    counter: {
+        type: Number,
+        default: 0
+    },
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'

@@ -12,7 +12,24 @@ var mongoose = require('mongoose'),
  * Create a article
  */
 exports.create = function(req, res) {
-	var article = new Article(req.body);
+    
+    var today_start = new Date();
+    today_start.setHours(0, 0, 0, 0);
+    var today_end = new Date();
+    today_end.setHours(23, 59, 59, 999);
+
+    var article = Article.find({
+        'date': {
+            '$gte': today_start,
+            '$lt': today_end
+        },
+        "user": req.user
+    }, function (err, article) {
+            if (!article) {
+                article = new Article(req.body);
+            }
+    });
+
 	article.user = req.user;
 
 	article.save(function(err) {
@@ -31,42 +48,6 @@ exports.create = function(req, res) {
  */
 exports.read = function(req, res) {
 	res.json(req.article);
-};
-
-/**
- * Update a article
- */
-exports.update = function(req, res) {
-	var article = req.article;
-
-	article = _.extend(article, req.body);
-
-	article.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.json(article);
-		}
-	});
-};
-
-/**
- * Delete an article
- */
-exports.delete = function(req, res) {
-	var article = req.article;
-
-	article.remove(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.json(article);
-		}
-	});
 };
 
 /**

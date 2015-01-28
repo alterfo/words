@@ -6,28 +6,27 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
-    var counter = 0;
+    $scope.counter = 0;
 
     $scope.$watch('text', function (newVal, oldVal) {
 
-            counter++;
+            $scope.counter++;
+            
 
-            if (counter > 30) {
-                console.log('saveData');
+            if (!($scope.counter%30)) {
+                console.log('saveData', article);
                 var article = new Articles({
-                    text: this.text,
-                    date: Date.now
+                    text: $scope.text,
+                    date: new Date(),
+                    counter: $scope.counter
                 });
                 article.$save(function (response) {
-                    // TODO: show message
+                    console.log(response)
 
                 }, function (errorResponse) {
                     $scope.error = errorResponse.data.message;
                 });
-                counter = 0;
             }
-
-        
     });
 
         $scope.find = function () {
@@ -39,10 +38,5 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
             articleId: $stateParams.articleId
         });
             
-        $scope.findToday = function () {
-            $scope.article = Articles.get({
-                _id: 
-            })
-        }
         };
 }]);
