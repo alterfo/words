@@ -2,59 +2,47 @@
 
 
 angular.module('core').controller('HomeController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
-	function($scope, $stateParams, $location, Authentication, Articles) {
-		// This provides Authentication context.
-		$scope.authentication = Authentication;
-        window.scope = $scope;
-        $scope.create = function() {
-			var article = new Articles({
-				title: this.title,
-				content: this.content
-			});
-			article.$save(function(response) {
-				$location.path('articles/' + response._id);
+ function ($scope, $stateParams, $location, Authentication, Articles) {
+    // This provides Authentication context.
+    $scope.authentication = Authentication;
 
-				$scope.title = '';
-				$scope.content = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+    var counter = 0;
 
-		$scope.remove = function(article) {
-			if (article) {
-				article.$remove();
+    $scope.$watch('text', function (newVal, oldVal) {
 
-				for (var i in $scope.articles) {
-					if ($scope.articles[i] === article) {
-						$scope.articles.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.article.$remove(function() {
-					$location.path('articles');
-				});
-			}
-		};
+            counter++;
 
-		$scope.update = function() {
-			var article = $scope.article;
+            if (counter > 30) {
+                console.log('saveData');
+                var article = new Articles({
+                    text: this.text,
+                    date: Date.now
+                });
+                article.$save(function (response) {
+                    // TODO: show message
 
-			article.$update(function() {
-				$location.path('articles/' + article._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+                }, function (errorResponse) {
+                    $scope.error = errorResponse.data.message;
+                });
+                counter = 0;
+            }
 
-		$scope.find = function() {
-			$scope.articles = Articles.query();
-		};
+        
+    });
 
-		$scope.findOne = function() {
-			$scope.article = Articles.get({
-				articleId: $stateParams.articleId
-			});
-		};
-	}
-]);
+        $scope.find = function () {
+            $scope.articles = Articles.query();
+        };
+
+        $scope.findOne = function () {
+            $scope.article = Articles.get({
+            articleId: $stateParams.articleId
+        });
+            
+        $scope.findToday = function () {
+            $scope.article = Articles.get({
+                _id: 
+            })
+        }
+        };
+}]);

@@ -27,15 +27,8 @@
             <div data-ng-show="error" class="text-danger">
                 <strong data-ng-bind="error"></strong>
             </div>
-            <form name="articleForm" class="form-horizontal" data-ng-submit="create()" novalidate>
-                <fieldset>
-                    <div class="form-group">
-                        <div class="controls">
-                            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40"></textarea>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+                <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40"></textarea>
+
         </div>
     </div>
 </section>

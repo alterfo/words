@@ -9,7 +9,6 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	// Article Routes
 	app.route('/articles')
-		.get(users.requiresLogin, articles.hasAuthorization, articles.list)
 		.post(users.requiresLogin, articles.hasAuthorization, articles.create);
 
 	app.route('/articles/:articleId')
