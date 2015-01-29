@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  * Create a article
  */
 exports.update = function (req, res) {
-
+    console.log(req.body);
     var today_start = new Date();
     today_start.setHours(0, 0, 0, 0);
     var today_end = new Date();
@@ -26,7 +26,8 @@ exports.update = function (req, res) {
         'user': req.user
     }, {
         $set: {
-            text: req.body.text
+            text: req.body.text,
+            date: today_start
         }
     }, {
         upsert: true
@@ -38,13 +39,13 @@ exports.update = function (req, res) {
             '$lt': today_end
         },
         'user': req.user
-    }, function (err, article) {
+    }, function (err, articles) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.json(article);
+            res.json(articles[0]);
         }
     });
 
@@ -66,32 +67,17 @@ exports.read = function (req, res) {
             '$lt': today_end
         },
         user: req.user._id
-    }, function (err, article) {
+    }, function (err, articles) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            console.log(article);
-            res.json(article);
+            console.log(articles);
+            res.json(articles[0]);
         }
     });
 
-};
-
-/**
- * List of Articles
- */
-exports.list = function (req, res) {
-    Article.find().sort('-created').populate('user', 'displayName').exec(function (err, articles) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.json(articles);
-        }
-    });
 };
 
 /**
