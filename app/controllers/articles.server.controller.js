@@ -56,6 +56,14 @@ exports.update = function (req, res) {
  */
 exports.read = function (req, res) {
 
+
+    // 
+//    db.articles.find()({
+//        _id: {
+//            $lt: new ObjectId(Math.floor((new Date()).getTime() / 1000).toString(16) + '0000000000000000')
+//        }
+//    })
+
     var today_start = new Date();
     today_start.setHours(0, 0, 0, 0);
     var today_end = new Date();
