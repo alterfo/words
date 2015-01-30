@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  * Create a article
  */
 exports.update = function (req, res) {
-    console.log(req.body);
+
     var today_start = new Date();
     today_start.setHours(0, 0, 0, 0);
     var today_end = new Date();
@@ -63,6 +63,9 @@ exports.read = function (req, res) {
 //            $lt: new ObjectId(Math.floor((new Date()).getTime() / 1000).toString(16) + '0000000000000000')
 //        }
 //    })
+    
+//    db.posts.find({ '$where': 'this.created_on.toJSON().slice(0, 10) == "2012-07-14"' })
+
 
     var today_start = new Date();
     today_start.setHours(0, 0, 0, 0);
