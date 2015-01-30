@@ -1,4 +1,19 @@
-<section data-ng-controller="HomeController">
+<section data-ng-controller="TimelineController" data-ng-show="authentication.user">
+
+    <pagination direction-links="false" boundary-links="true" total-items="totalItems" ng-model="currentPage"></pagination>
+</section>
+
+<section data-ng-controller="TextController">
+
+    <!-- Alerts -->
+    <div class="alerts">
+        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}} animation">
+            <button type="button" class="close" ng-click="alert.close()" aria-hidden="true">×</button>
+            <h4>{{ alert.title }}</h4> {{ alert.msg }}
+        </div>
+    </div>
+
+    <!--   Встречалка -->
     <div class="jumbotron text-center" data-ng-hide="authentication.user">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
@@ -18,19 +33,24 @@
         </div>
     </div>
 
-<!--            Teeeext             -->
+    <!--            Teeeext             -->
     <div data-ng-show="authentication.user">
         <div class="page-header">
             <h1>Автор, жги!</h1>
-            <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saving'" width="20px" height="20px"/>
-            <img id="saved" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saved'" width="20px" height="20px"/>
-            <img id="notsaved" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'notsaved'" width="20px" height="20px"/>
             <div style="text-align:right">
-                Слов: {{getWordCounter()}} 
+                Слов: {{getWordCounter()}}
             </div>
         </div>
+
         <div class="col-md-12">
-                <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40" ></textarea>
+            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="30"></textarea>
+        </div>
+        <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saving'" width="20px" height="20px" />
+        <div class="saved" ng-show="state === 'saved'">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Сохранено
+        </div>
+        <div class="notsaved" ng-show="state === 'notsaved'">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Изменено, но пока не сохранено
         </div>
     </div>
 </section>

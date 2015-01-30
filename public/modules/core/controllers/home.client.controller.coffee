@@ -1,35 +1,35 @@
 'use strict'
 
-angular.module('core').controller 'HomeController', [
+angular.module('core').controller 'TextController', [
     '$scope'
     '$http'
     '$stateParams'
     '$location'
     'Authentication'
     '$document'
-    ($scope, $http, $stateParams, $location, Authentication, $document) ->
+    "alertService"
+    ($scope, $http, $stateParams, $location, Authentication, $document, alertService) ->
         $scope.authentication = Authentication
        
         $scope.text = ''
         $scope.changed = 0
         $scope.state = 'saved' # saved, notsaved, saving
         
+        
+        
         $scope.getWordCounter = ->
             return $scope.text.trim().split(/\s+/).length if $scope.text
         
         $document.bind "keydown", (event) ->
           if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
-            $scope.autosave()
+            $scope.autosave('ctrls')
+            
             event.stopPropagation()
             event.preventDefault()
             return false
           true
     
         $scope.autosave = (e) -> 
-            if e
-                e.preventDefault()
-                e.stopPropagation()
-            
             if $scope.changed
                 $scope.state = 'saving'
                 $http(
@@ -38,19 +38,18 @@ angular.module('core').controller 'HomeController', [
                     data: 
                         text: $scope.text
                         date: new Date()
-                        counter: $scope.counter
+                        counter: $scope.getWordCounter()
                 )
                 .success( (data, status, headers) ->
-                    console.log data
-                    $scope.state = 'saved'
+                    alertService.add "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
+                    $scope.state = 'saved' 
                     return
                 )
                 .error( (data, status, headers) ->
-                    $scope.error = data;
+                    alertService.add "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
                     return
                 )
                 .finally((data, status, headers) ->
-                    $scope.loading = false
                     return
                 )
            
@@ -59,20 +58,22 @@ angular.module('core').controller 'HomeController', [
         $scope.autosave()
         
         s = setTimeout $scope.autosave, 10000 # 10 seconds to autosave
-    
-        $http
-            method: 'GET'
-            url: '/articles'
-        .success (data, status, headers) ->
-            $scope.text = data.text
-            return
-        .error (data, status, headers) ->
-            return
+        
+        alertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
         
         $scope.$watch "text", (newVal, oldVal) ->
-           
-            $scope.changed = newVal isnt oldVal
+            $scope.changed = newVal isnt oldVal and oldVal isnt ''
             if $scope.changed 
                 $scope.state = 'notsaved'
+            return
+
+        $http
+            method: 'GET'
+            url: '/today'
+        .success (data, status, headers) ->
+            $scope.text = data.text
+            $scope.state = 'saved' 
+            return
+        .error (data, status, headers) ->
             return
 ]
