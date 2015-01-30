@@ -12,6 +12,7 @@ angular.module('core').controller 'HomeController', [
        
         $scope.text = ''
         $scope.changed = 0
+        $scope.state = 'saved' # saved, notsaved, saving
         
         $scope.getWordCounter = ->
             return $scope.text.trim().split(/\s+/).length if $scope.text
@@ -24,12 +25,13 @@ angular.module('core').controller 'HomeController', [
             return false
           true
     
-        $scope.autosave = (e) ->
+        $scope.autosave = (e) -> 
             if e
                 e.preventDefault()
                 e.stopPropagation()
-                
+            
             if $scope.changed
+                $scope.state = 'saving'
                 $http(
                     method: 'POST'
                     url: '/articles'
@@ -40,10 +42,15 @@ angular.module('core').controller 'HomeController', [
                 )
                 .success( (data, status, headers) ->
                     console.log data
+                    $scope.state = 'saved'
                     return
                 )
                 .error( (data, status, headers) ->
                     $scope.error = data;
+                    return
+                )
+                .finally((data, status, headers) ->
+                    $scope.loading = false
                     return
                 )
            
@@ -61,9 +68,11 @@ angular.module('core').controller 'HomeController', [
             return
         .error (data, status, headers) ->
             return
-
+        
         $scope.$watch "text", (newVal, oldVal) ->
            
-            $scope.changed =  newVal isnt oldVal
+            $scope.changed = newVal isnt oldVal
+            if $scope.changed 
+                $scope.state = 'notsaved'
             return
 ]

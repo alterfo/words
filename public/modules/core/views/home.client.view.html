@@ -22,14 +22,15 @@
     <div data-ng-show="authentication.user">
         <div class="page-header">
             <h1>Автор, жги!</h1>
-            <div>Слов: {{getWordCounter()}}</div>
+            <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saving'" width="20px" height="20px"/>
+            <img id="saved" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saved'" width="20px" height="20px"/>
+            <img id="notsaved" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'notsaved'" width="20px" height="20px"/>
+            <div style="text-align:right">
+                Слов: {{getWordCounter()}} 
+            </div>
         </div>
         <div class="col-md-12">
-            <div data-ng-show="error" class="text-danger">
-                <strong data-ng-bind="error"></strong>
-            </div>
-                <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40"  ui-keydown="{'ctrl-s enter':'autosave($event)'}"></textarea>
-
+                <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="40" ></textarea>
         </div>
     </div>
 </section>
