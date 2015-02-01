@@ -110,7 +110,7 @@ exports.articlesByMonth = function(req, res, next, id) {
       $lt: last_day
     },
     user: req.user
-  }, 'date', function(err, articles) {
+  }, 'date counter', function(err, articles) {
     if (err) {
       return next(err);
     }

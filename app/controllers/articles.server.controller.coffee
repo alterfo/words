@@ -102,7 +102,7 @@ exports.articlesByMonth = (req, res, next, id) ->
       $gte: first_day
       $lt: last_day
     user: req.user,
-    'date'
+    'date counter'
   , (err, articles) ->
     return next(err)  if err
     return next(new Error("Failed to load article " + id))  unless articles

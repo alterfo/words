@@ -24,9 +24,30 @@
     z-index: 10000;
 }
 
+
 /*
 
-                Animation
+                Timeline
+
+*/
+
+ul.timeline {
+  padding-left: 0;
+}
+
+li.item {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0.4em 0.1em;
+}
+
+
+
+
+
+/*
+
+                Alerts Animation
 
 */
 

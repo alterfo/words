@@ -1,9 +1,18 @@
 <section data-ng-controller="TimelineController" data-ng-show="authentication.user">
-    <div class="timeline">
-        <ul>
-            <li data-ng-repeat="(day, data) in days">{{day}}, данные {{data}}</li>
+    <div class="timeline-wrapper">
+        <ul class="timeline">
+            <li class="item"> 
+                <button class="btn btn-primary" data-ng-click="prevMonth()"> << </button>
+            </li>
+            <li class="item" data-ng-repeat="(day, counter) in days track by $index">
+                <button type="button" class="btn" ng-class="{'btn-success': counter, 'btn-default': counter === ''}">{{counter}}</button>
+            </li>
+            <li class="item"> 
+                <button class="btn btn-primary" data-ng-click="nextMonth()" data-ng-hide="isCurrentMonth"> >> </button>
+            </li>
         </ul>
     </div>
+    <div>{{ current_date }}</div>
 </section>
 
 <section data-ng-controller="TextController">
