@@ -1,6 +1,9 @@
 <section data-ng-controller="TimelineController" data-ng-show="authentication.user">
-
-    <pagination direction-links="false" boundary-links="true" total-items="totalItems" ng-model="currentPage"></pagination>
+    <div class="timeline">
+        <ul>
+            <li data-ng-repeat="(day, data) in days">{{day}}, данные {{data}}</li>
+        </ul>
+    </div>
 </section>
 
 <section data-ng-controller="TextController">

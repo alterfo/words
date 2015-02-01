@@ -1,32 +1,32 @@
 'use strict'
 
-angular.module('core').factory "alertService", [
+angular.module('core').factory "AlertService", [
   "$timeout"
   "$rootScope"
   ($timeout, $rootScope) ->
-    alertService = {}
+    AlertService = {}
     $rootScope.alerts = []
-    alertService.add = (type, title, msg, timeout) ->
+    AlertService.add = (type, title, msg, timeout) ->
       $rootScope.alerts.push
         type: type
         title: title
         msg: msg
         close: ->
-          alertService.closeAlert this
+          AlertService.closeAlert this
 
       timeout = 7000  if typeof timeout is "undefined"
       if timeout
-        $timeout (->
-          alertService.closeAlert this
+        $timeout ->
+          AlertService.closeAlert this
           return
-        ), timeout
+        , timeout
       return
 
-    alertService.closeAlert = (alert) ->
+    AlertService.closeAlert = (alert) ->
       @closeAlertIdx $rootScope.alerts.indexOf(alert)
 
-    alertService.closeAlertIdx = (index) ->
+    AlertService.closeAlertIdx = (index) ->
       $rootScope.alerts.splice index, 1
 
-    return alertService
+    return AlertService
 ]

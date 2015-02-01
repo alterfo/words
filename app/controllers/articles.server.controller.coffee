@@ -96,12 +96,13 @@ exports.articlesByMonth = (req, res, next, id) ->
   last_day = new Date(y, m + 1, 0)
   first_day.setHours 0, 0, 0, 0
   last_day.setHours 23, 59, 59, 999
-  console.log(first_day, last_day)
+
   Article.find
     date:
       $gte: first_day
       $lt: last_day
-    user: req.user
+    user: req.user,
+    'date'
   , (err, articles) ->
     return next(err)  if err
     return next(new Error("Failed to load article " + id))  unless articles

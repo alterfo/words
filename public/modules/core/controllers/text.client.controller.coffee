@@ -7,8 +7,8 @@ angular.module('core').controller 'TextController', [
     '$location'
     'Authentication'
     '$document'
-    "alertService"
-    ($scope, $http, $stateParams, $location, Authentication, $document, alertService) ->
+    "AlertService"
+    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService) ->
         $scope.authentication = Authentication
        
         $scope.text = ''
@@ -41,12 +41,12 @@ angular.module('core').controller 'TextController', [
                         counter: $scope.getWordCounter()
                 )
                 .success( (data, status, headers) ->
-                    alertService.add "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
+                    AlertService.add "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
                     $scope.state = 'saved' 
                     return
                 )
                 .error( (data, status, headers) ->
-                    alertService.add "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
+                    AlertService.add "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
                     return
                 )
                 .finally((data, status, headers) ->
@@ -59,7 +59,7 @@ angular.module('core').controller 'TextController', [
         
         s = setTimeout $scope.autosave, 10000 # 10 seconds to autosave
         
-        alertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
+        AlertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
         
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
