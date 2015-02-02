@@ -6,6 +6,23 @@ angular.module("core").controller "TimelineController", [
     ($scope, Authentication, $http) ->
         $scope.authentication = Authentication
         
+        Date.prototype.yyyymm = ->
+           yyyy = this.getFullYear().toString()
+           mm = (this.getMonth()+1).toString()
+           yyyy + (mm[1]?mm:"0"+mm[0])
+
+        Date.prototype.yyyymmdd = ->
+           yyyy = this.getFullYear().toString()
+           mm = (this.getMonth()+1).toString()
+           dd  = this.getDate().toString();
+           yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0])
+
+        Date.prototype.nextMonth = ->
+           this.setMonth(this.getMonth() + 1)
+
+        Date.prototype.prevMonth = ->
+           this.setMonth(this.getMonth() + 1)
+
         DEBUG = 1
 
         $scope.current_date = new Date()
@@ -14,17 +31,17 @@ angular.module("core").controller "TimelineController", [
         cd = $scope.current_date.getDate()
 
         $scope.date_to_show = new Date $scope.current_date
+        $scope.month_to_show = $scope.date_to_show.getFullYear() + '' + $scope.date_to_show.getMonth()
 
         $scope.nextMonth = ->
-            $scope.date_to_show.setMonth(+1)
+            curMonth = $scope.date_to_show.nextMonth().yyyymm()
             return
 
         $scope.prevMonth = ->
-            $scope.date_to_show.setMonth(-1)
-            console.log($scope.date_to_show)
+            curMonth = $scope.date_to_show.prevMonth().yyyymm()
             return
 
-        $scope.$watch 'date_to_show', ->
+        $scope.$watch 'month_to_show', ->
             console.log(arguments) if DEBUG
 
             sm = $scope.date_to_show.getMonth()
@@ -64,8 +81,5 @@ angular.module("core").controller "TimelineController", [
             return new Date(year, month, 0).getDate()
 
         return
-
-
-
 
 ]
