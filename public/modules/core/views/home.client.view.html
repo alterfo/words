@@ -1,68 +1,41 @@
-<section data-ng-controller="TimelineController" data-ng-show="authentication.user">
-    <div class="timeline-wrapper">
-        <ul class="timeline">
-            <li class="item"> 
-                <button class="btn btn-primary" data-ng-click="prevMonth()"> << </button>
-            </li>
-            <li class="item" data-ng-repeat="(day, counter) in days track by $index">
-                <button type="button" class="btn" ng-class="{'btn-success': counter, 'btn-default': counter === ''}">{{counter}}</button>
-            </li>
-            <li class="item"> 
-                <button class="btn btn-primary" data-ng-click="nextMonth()" data-ng-hide="isCurrentMonth"> >> </button>
-            </li>
-        </ul>
-    </div>
-    <div>{{ current_date }}</div>
-</section>
+<div class="wrapper" data-ng-controller="TextController">
+    <timeline>
+        
+    </timeline>
 
-<section data-ng-controller="TextController">
+    <section>
 
-    <!-- Alerts -->
-    <div class="alerts">
-        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}} animation">
-            <button type="button" class="close" ng-click="alert.close()" aria-hidden="true">×</button>
-            <h4>{{ alert.title }}</h4> {{ alert.msg }}
-        </div>
-    </div>
-
-    <!--   Встречалка -->
-    <div class="jumbotron text-center" data-ng-hide="authentication.user">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-                <h1>500 слов</h1>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <p class="lead">
-                Сервис анонимного и безопасного ведения личного дневника и записей
-            </p>
-        </div>
-        <div class="row">
-            <p>
-                <a class="btn btn-default btn-lg" href="/about">Узнайте подробности</a> или <a class="btn btn-success btn-lg" href="#!/signin">Войдите в систему</a>
-            </p>
-        </div>
-    </div>
-
-    <!--            Teeeext             -->
-    <div data-ng-show="authentication.user">
-        <div class="page-header">
-            <h1>Автор, жги!</h1>
-            <div style="text-align:right">
-                Слов: {{getWordCounter()}}
+        <!-- Alerts -->
+        <div class="alerts">
+            <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}} animation">
+                <button type="button" class="close" ng-click="alert.close()" aria-hidden="true">×</button>
+                <h4>{{ alert.title }}</h4> {{ alert.msg }}
             </div>
         </div>
 
-        <div class="col-md-12">
-            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="30"></textarea>
+        <!--   Встречалка -->
+        <div class="jumbotron text-center" data-ng-hide="authentication.user">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                    <h1>500 слов</h1>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <p class="lead">
+                    Сервис анонимного и безопасного ведения личного дневника и записей
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    <a class="btn btn-default btn-lg" href="/about">Узнайте подробности</a> или <a class="btn btn-success btn-lg" href="#!/signin">Войдите в систему</a>
+                </p>
+            </div>
         </div>
-        <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saving'" width="20px" height="20px" />
-        <div class="saved" ng-show="state === 'saved'">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Сохранено
-        </div>
-        <div class="notsaved" ng-show="state === 'notsaved'">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Изменено, но пока не сохранено
-        </div>
-    </div>
-</section>
+
+        <!--            Teeeext             -->
+        <text date="{{}}">
+
+        </text>
+    </section>
+</div>
