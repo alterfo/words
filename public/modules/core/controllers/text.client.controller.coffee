@@ -42,7 +42,7 @@ angular.module('core').controller 'TextController', [
         $scope.authentication = Authentication
        
         $scope.text = ''
-        $scope.changed = 0
+        $scope.changed = false
         $scope.state = 'saved' # saved, notsaved, saving
         
         $scope.nextMonth = ->
@@ -81,7 +81,8 @@ angular.module('core').controller 'TextController', [
                 )
                 .success( (data, status, headers) ->
                     AlertService.add "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
-                    $scope.state = 'saved' 
+                    $scope.state = 'saved'
+                    $scope.changed = false
                     return
                 )
                 .error( (data, status, headers) ->
