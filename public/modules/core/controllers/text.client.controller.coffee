@@ -58,7 +58,7 @@ angular.module('core').controller 'TextController', [
         
         $scope.getWordCounter = ->
             return $scope.text.trim().split(/\s+/).length if $scope.text
-        
+
         $document.bind "keydown", (event) ->
           if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
             $scope.save('ctrls')
@@ -104,6 +104,8 @@ angular.module('core').controller 'TextController', [
                 $scope.state = 'notsaved'
             return
 
+
+
         $scope.$watch 'curMonth', ->
             console.log(arguments) if DEBUG
 
@@ -121,26 +123,28 @@ angular.module('core').controller 'TextController', [
 
                 
                 # make empty days in month array with 0-s
-                result = Array.apply(null, new Array(daysInMonth(sm, sy))).map(Number.prototype.valueOf,0)
+                $scope.days = Array.apply(null, new Array(daysInMonth(sm, sy))).map(Number.prototype.valueOf,0)
 
                 # set last index
                 limit = cd if $scope.isCurrentMonth
 
 
                 data.forEach (e, i) ->
-                    result[(new Date(e.date)).getDate() - 1] = e.counter
+                    $scope.days[(new Date(e.date)).getDate() - 1] = e.counter
                     return
 
                 if limit
-                    result[limit..32] = Array.apply(null, new Array(result.length - limit)).map(String.prototype.valueOf, "--")
+                    $scope.days[limit..32] = Array.apply(null, new Array($scope.days.length - limit)).map(String.prototype.valueOf, "--")
 
-                $scope.days = result
-                console.log(result) if DEBUG
+                $scope.days = $scope.days
+                console.log($scope.days) if DEBUG
                 return
             )
             return
 
-
+        $scope.$watch 'counter', ->
+            $scope.days[cd].counter = $scope.counter if $scope.days
+            return
 
         $http
             method: 'GET'

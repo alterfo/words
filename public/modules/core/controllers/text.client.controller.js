@@ -38,7 +38,7 @@ angular.module('core').controller('TextController', [
     $scope.curDate = $scope.date_to_show.yyyymmdd;
     $scope.authentication = Authentication;
     $scope.text = '';
-    $scope.changed = 0;
+    $scope.changed = false;
     $scope.state = 'saved';
     $scope.nextMonth = function() {
       $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm();
@@ -79,6 +79,7 @@ angular.module('core').controller('TextController', [
             AlertService.add("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
           }
           $scope.state = 'saved';
+          $scope.changed = false;
         }).error(function(data, status, headers) {
           if (e === 'ctrls') {
             AlertService.add("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
@@ -109,25 +110,30 @@ angular.module('core').controller('TextController', [
       console.log(request_string);
       $scope.isCurrentMonth = sm === cm && sy === cy;
       $http.get('/articles/' + request_string).success(function(data, status, headers) {
-        var limit, result, _ref;
+        var limit, _ref;
         if (DEBUG) {
           console.log("data:", data);
         }
-        result = Array.apply(null, new Array(daysInMonth(sm, sy))).map(Number.prototype.valueOf, 0);
+        $scope.days = Array.apply(null, new Array(daysInMonth(sm, sy))).map(Number.prototype.valueOf, 0);
         if ($scope.isCurrentMonth) {
           limit = cd;
         }
         data.forEach(function(e, i) {
-          result[(new Date(e.date)).getDate() - 1] = e.counter;
+          $scope.days[(new Date(e.date)).getDate() - 1] = e.counter;
         });
         if (limit) {
-          [].splice.apply(result, [limit, 32 - limit + 1].concat(_ref = Array.apply(null, new Array(result.length - limit)).map(String.prototype.valueOf, "--"))), _ref;
+          [].splice.apply($scope.days, [limit, 32 - limit + 1].concat(_ref = Array.apply(null, new Array($scope.days.length - limit)).map(String.prototype.valueOf, "--"))), _ref;
         }
-        $scope.days = result;
+        $scope.days = $scope.days;
         if (DEBUG) {
-          console.log(result);
+          console.log($scope.days);
         }
       });
+    });
+    $scope.$watch('counter', function() {
+      if ($scope.days) {
+        $scope.days[cd].counter = $scope.counter;
+      }
     });
     $http({
       method: 'GET',
