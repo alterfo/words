@@ -6,7 +6,7 @@
                     << </button>
             </li>
             <li class="item" data-ng-repeat="(day, counter) in days track by $index">
-                <button type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}">{{counter}}</button>
+                <button type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}">{{days[$index]}}</button>
             </li>
             <li class="item">
                 <button class="btn  btn-xs btn-primary" data-ng-click="nextMonth()" data-ng-hide="isCurrentMonth"> >> </button>

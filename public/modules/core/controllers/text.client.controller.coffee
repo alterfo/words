@@ -36,8 +36,8 @@ angular.module('core').controller 'TextController', [
 
         $scope.date_to_show = new Date $scope.current_date
         $scope.month_to_show = $scope.date_to_show.getFullYear() + '' + $scope.date_to_show.getMonth()
-        $scope.curMonth = $scope.date_to_show.yyyymm
-        $scope.curDate = $scope.date_to_show.yyyymmdd
+        $scope.curMonth = $scope.date_to_show.yyyymm()
+        $scope.curDate = $scope.date_to_show.yyyymmdd()
 
         $scope.authentication = Authentication
        
@@ -57,7 +57,7 @@ angular.module('core').controller 'TextController', [
             return
         
         $scope.getWordCounter = ->
-            return $scope.text.trim().split(/\s+/).length if $scope.text
+            $scope.text.trim().split(/\s+/).length if $scope.text
 
         $document.bind "keydown", (event) ->
           if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
@@ -97,11 +97,12 @@ angular.module('core').controller 'TextController', [
             return
         
         AlertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
-        
+
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
             if $scope.changed 
                 $scope.state = 'notsaved'
+                $scope.days[cd].counter = $scope.getWordCounter()
             return
 
 
@@ -140,10 +141,6 @@ angular.module('core').controller 'TextController', [
                 console.log($scope.days) if DEBUG
                 return
             )
-            return
-
-        $scope.$watch 'counter', ->
-            $scope.days[cd].counter = $scope.counter if $scope.days
             return
 
         $http
