@@ -1,4 +1,4 @@
-    <div data-ng-show="authentication.user">
+    <div data-ng-show="authentication.user" ng-hide="hideToday">
         <div class="page-header">
             <h1>Автор, жги!</h1>
             <div style="text-align:right">
@@ -13,6 +13,6 @@
         </div>
 
         <div class="col-md-12">
-            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="30"></textarea>
+            <textarea name="text" data-ng-model="text" id="text" class="form-control" cols="30" rows="30" ></textarea>
         </div>
     </div>

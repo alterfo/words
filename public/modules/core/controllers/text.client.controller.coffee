@@ -77,6 +77,22 @@ angular.module('core').controller 'TextController', [
                 AlertService.add "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
             return
         
+        $scope.showText = (date) ->
+            if cd > date
+                date = date + ''
+                date = if date.length is 2 then date else '0' + date
+                $scope.hideToday = true
+                $http.get( '/articles/' + $scope.curMonth + date).success((data, status, headers) ->
+                        $scope.historyText = data.hText
+
+                    )
+            else if cd is date
+                $scope.hideToday = false
+            else
+                AlertService.add "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
+                return
+            return
+
         AlertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
 
         $scope.$watch "text", (newVal, oldVal) ->
