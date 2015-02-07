@@ -1,5 +1,8 @@
 <section data-ng-show="authentication.user">
     <div class="timeline-wrapper">
+        <header>
+            <h3>Текущая дата: {{curDate}}</h3>
+        </header>
         <ul class="timeline">
             <li class="item">
                 <button class="btn btn-xs btn-primary" data-ng-click="prevMonth()">
