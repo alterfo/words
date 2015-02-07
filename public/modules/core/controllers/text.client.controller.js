@@ -2,7 +2,7 @@
 'use strict';
 angular.module('core').controller('TextController', [
   '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", function($scope, $http, $stateParams, $location, Authentication, $document, AlertService) {
-    var DEBUG, cd, cm, cy;
+    var DEBUG, cd, cm, cy, daysInMonth;
     DEBUG = 1;
     $scope.current_date = new Date();
     cm = $scope.current_date.getMonth();
@@ -13,9 +13,13 @@ angular.module('core').controller('TextController', [
     $scope.curMonth = $scope.date_to_show.yyyymm();
     $scope.curDate = $scope.date_to_show.yyyymmdd();
     $scope.authentication = Authentication;
+    $scope.historyText = '';
     $scope.text = '';
     $scope.changed = false;
     $scope.state = 'saved';
+    daysInMonth = function(month, year) {
+      return new Date(year, month, 0).getDate();
+    };
     $scope.nextMonth = function() {
       $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm();
     };
@@ -41,7 +45,7 @@ angular.module('core').controller('TextController', [
         $scope.state = 'saving';
         $http({
           method: 'POST',
-          url: '/articles',
+          url: '/texts',
           data: {
             text: $scope.text,
             date: new Date(),
@@ -49,18 +53,18 @@ angular.module('core').controller('TextController', [
           }
         }).success(function(data, status, headers) {
           if (e === 'ctrls') {
-            AlertService.add("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
+            AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
           }
           $scope.state = 'saved';
           $scope.changed = false;
         }).error(function(data, status, headers) {
           if (e === 'ctrls') {
-            AlertService.add("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
+            AlertService.send("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
           }
         })["finally"](function(data, status, headers) {});
       } else {
         if (e === 'ctrls') {
-          AlertService.add("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
+          AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
         }
       }
     };
@@ -69,17 +73,18 @@ angular.module('core').controller('TextController', [
         date = date + '';
         date = date.length === 2 ? date : '0' + date;
         $scope.hideToday = true;
-        $http.get('/articles/' + $scope.curMonth + date).success(function(data, status, headers) {
-          return $scope.historyText = data.hText;
+        $scope.curDate = new Date($scope.curMonth + '-' + date);
+        $http.get('/text/' + $scope.curMonth + '-' + date).success(function(data, status, headers) {
+          $scope.historyText = data.text;
         });
       } else if (cd === date) {
         $scope.hideToday = false;
       } else {
-        AlertService.add("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
+        AlertService.send("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
         return;
       }
     };
-    AlertService.add("info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000);
+    AlertService.send("info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000);
     $scope.$watch("text", function(newVal, oldVal) {
       $scope.changed = newVal !== oldVal && oldVal !== '';
       if ($scope.changed) {
@@ -98,7 +103,7 @@ angular.module('core').controller('TextController', [
       request_string = sy + "-" + ("0" + (sm + 1)).slice(-2);
       console.log(request_string);
       $scope.isCurrentMonth = sm === cm && sy === cy;
-      $http.get('/articles/' + request_string).success(function(data, status, headers) {
+      $http.get('/texts/' + request_string).success(function(data, status, headers) {
         var limit, _ref;
         if (DEBUG) {
           console.log("data:", data);

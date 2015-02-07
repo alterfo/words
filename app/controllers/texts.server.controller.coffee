@@ -5,18 +5,19 @@ Module dependencies.
 ###
 mongoose = require("mongoose")
 errorHandler = require("./errors.server.controller")
-Article = mongoose.model("Article")
+Text = mongoose.model("Text")
 _ = require("lodash")
 
 ###*
-Create a article
+Upsert
 ###
-exports.update = (req, res) ->
+exports.upsert = (req, res) ->
   today_start = new Date()
   today_start.setHours 0, 0, 0, 0
   today_end = new Date()
   today_end.setHours 23, 59, 59, 999
-  Article.update
+
+  Text.update
     date:
       $gte: today_start
       $lt: today_end
@@ -31,17 +32,17 @@ exports.update = (req, res) ->
     upsert: true
   , ->
 
-  Article.find
+  Text.find
     date:
       $gte: today_start
       $lt: today_end
 
     user: req.user
-  , (err, articles) ->
+  , (err, texts) ->
     if err
       res.status(400).send message: errorHandler.getErrorMessage(err)
     else
-      res.json articles[0]
+      res.json texts[0]
     return
 
   return
@@ -50,10 +51,10 @@ exports.update = (req, res) ->
 ###*
 Show the current article
 ###
-exports.read = (req, res) ->
+exports.today = (req, res) ->
   
   # 
-  #    db.articles.find()({
+  #    db.texts.find()({
   #        _id: {
   #            $lt: new ObjectId(Math.floor((new Date()).getTime() / 1000).toString(16) + '0000000000000000')
   #        }
@@ -64,31 +65,30 @@ exports.read = (req, res) ->
   today_start.setHours 0, 0, 0, 0
   today_end = new Date()
   today_end.setHours 23, 59, 59, 999
-  Article.find
+  Text.find
     date:
       $gte: today_start
       $lt: today_end
 
     user: req.user
-  , (err, articles) ->
+  , (err, texts) ->
     if err
       res.status(400).send message: errorHandler.getErrorMessage(err)
     else
-      console.log articles
-      res.json articles[0]
+      res.json texts[0]
     return
 
   return
 
 exports.list = (req, res) ->
-  res.jsonp req.articles
+  res.jsonp req.texts
   return
 
 
 ###*
-Article middleware
+Text middleware
 ###
-exports.articlesByMonth = (req, res, next, id) ->
+exports.textsByMonth = (req, res, next, id) ->
   today = new Date(id) # 2014-01
   y = today.getFullYear()
   m = today.getMonth()
@@ -97,16 +97,16 @@ exports.articlesByMonth = (req, res, next, id) ->
   first_day.setHours 0, 0, 0, 0
   last_day.setHours 23, 59, 59, 999
 
-  Article.find
+  Text.find
     date:
       $gte: first_day
       $lt: last_day
     user: req.user,
     'date counter'
-  , (err, articles) ->
+  , (err, texts) ->
     return next(err)  if err
-    return next(new Error("Failed to load article " + id))  unless articles
-    req.articles = articles
+    return next(new Error("Failed to load article " + id))  unless texts
+    req.texts = texts
     next()
     return
 
@@ -114,21 +114,39 @@ exports.articlesByMonth = (req, res, next, id) ->
 
 
 ###*
-Article middleware
+Text middleware
 ###
-exports.articleByID = (req, res, next, id) ->
-  Article.findById(id).populate("user", "displayName").exec (err, article) ->
-    return next(err)  if err
-    return next(new Error("Failed to load article " + id))  unless article
-    req.article = article
-    next()
+exports.textByDate = (req, res, next, id) ->
+
+  day_start = new Date(id) # 20150201
+  day_end = new Date(id)
+  
+  day_start.setHours 0, 0, 0, 0
+  day_end.setHours 23, 59, 59, 999
+  
+  Text.find
+    date:
+      $gte: day_start
+      $lt: day_end
+
+    user: req.user
+  , (err, texts) ->
+    console.log texts
+    if err
+      res.status(400).send message: errorHandler.getErrorMessage(err)
+    else
+      req.text = texts[0]
+      next()
     return
 
   return
 
+exports.readOne = (req, res) ->
+  res.jsonp req.text
+  return
 
 ###*
-Article authorization middleware
+Text authorization middleware
 ###
 exports.hasAuthorization = (req, res, next) ->
   return res.status(403).send(message: "User is not authorized")  if req.article.user.id isnt req.user.id

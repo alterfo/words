@@ -24,11 +24,12 @@ angular.module('core').controller 'TextController', [
         $scope.curDate = $scope.date_to_show.yyyymmdd()
 
         $scope.authentication = Authentication
-       
+        $scope.historyText = ''
         $scope.text = ''
         $scope.changed = false
         $scope.state = 'saved' # saved, notsaved, saving
-        
+        daysInMonth = (month,year) ->
+            new Date(year, month, 0).getDate()
         $scope.nextMonth = ->
             $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm()
             return
@@ -54,27 +55,27 @@ angular.module('core').controller 'TextController', [
                 $scope.state = 'saving'
                 $http(
                     method: 'POST'
-                    url: '/articles'
+                    url: '/texts'
                     data: 
                         text: $scope.text
                         date: new Date()
                         counter: $scope.getWordCounter()
                 )
                 .success( (data, status, headers) ->
-                    AlertService.add "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
+                    AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
                     $scope.state = 'saved'
                     $scope.changed = false
                     return
                 )
                 .error( (data, status, headers) ->
-                    AlertService.add "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
+                    AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
                     return
                 )
                 .finally((data, status, headers) ->
                     return
                 )
             else
-                AlertService.add "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
+                AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
             return
         
         $scope.showText = (date) ->
@@ -82,18 +83,20 @@ angular.module('core').controller 'TextController', [
                 date = date + ''
                 date = if date.length is 2 then date else '0' + date
                 $scope.hideToday = true
-                $http.get( '/articles/' + $scope.curMonth + date).success((data, status, headers) ->
-                        $scope.historyText = data.hText
-
+                $scope.curDate = new Date($scope.curMonth + '-' + date)
+                $http.get( '/text/' + $scope.curMonth + '-' + date).success((data, status, headers) ->
+                        $scope.historyText = data.text
+                        return
                     )
             else if cd is date
                 $scope.hideToday = false
+
             else
-                AlertService.add "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
+                AlertService.send "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
                 return
             return
 
-        AlertService.add "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
+        AlertService.send "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
 
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
@@ -116,7 +119,7 @@ angular.module('core').controller 'TextController', [
             console.log request_string
             $scope.isCurrentMonth = (sm == cm && sy == cy)        
  
-            $http.get('/articles/' + request_string).success((data, status, headers)->
+            $http.get('/texts/' + request_string).success((data, status, headers)->
                 console.log("data:", data) if DEBUG
 
                 

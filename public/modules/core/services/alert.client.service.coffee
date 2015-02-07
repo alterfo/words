@@ -6,7 +6,7 @@ angular.module('core').factory "AlertService", [
   ($timeout, $rootScope) ->
     AlertService = {}
     $rootScope.alerts = []
-    AlertService.add = (type, title, msg, timeout) ->
+    AlertService.send = (type, title, msg, timeout) ->
       $rootScope.alerts.push
         type: type
         title: title
