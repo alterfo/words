@@ -9,27 +9,11 @@ angular.module('core').controller 'TextController', [
     '$document'
     "AlertService"
     ($scope, $http, $stateParams, $location, Authentication, $document, AlertService) ->
-        Date.prototype.yyyymm = ->
-           yyyy = this.getFullYear().toString()
-           mm = (this.getMonth()+1).toString()
-           yyyy + (if mm.length == 2 then mm else "0" + mm)
-
-        Date.prototype.yyyymmdd = ->
-           yyyy = this.getFullYear().toString()
-           mm = (this.getMonth()+1).toString()
-           dd  = this.getDate().toString();
-           console.log yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0])
-           yyyy + (if mm.length == 2 then mm else "0" + mm) + (if dd.length == 2 then dd else "0" + dd)
-
-        Date.prototype.nextMonth = ->
-           new Date(this.setMonth(this.getMonth() + 1))
-
-        Date.prototype.prevMonth = ->
-           new Date(this.setMonth(this.getMonth() - 1))
 
         DEBUG = 1
 
         $scope.current_date = new Date()
+
         cm = $scope.current_date.getMonth()
         cy = $scope.current_date.getFullYear()
         cd = $scope.current_date.getDate()
@@ -48,9 +32,6 @@ angular.module('core').controller 'TextController', [
         $scope.nextMonth = ->
             $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm()
             return
-
-        daysInMonth = (month,year) ->
-            return new Date(year, month, 0).getDate()
 
         $scope.prevMonth = ->
             $scope.curMonth = $scope.date_to_show.prevMonth().yyyymm()
@@ -102,7 +83,7 @@ angular.module('core').controller 'TextController', [
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
             if $scope.changed 
                 $scope.state = 'notsaved'
-                $scope.days[cd].counter = $scope.getWordCounter()
+                $scope.days[cd - 1] = $scope.getWordCounter()
             return
 
 
