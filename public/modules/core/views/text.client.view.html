@@ -2,7 +2,7 @@
             {{historyText}}
         </div>
 
-    <div data-ng-show="authentication.user" ng-hide="hideToday">
+    <div data-ng-show="authentication.user && !hideToday">
         <div class="page-header">
             <h1>Автор, жги!</h1>
             <div style="text-align:right">

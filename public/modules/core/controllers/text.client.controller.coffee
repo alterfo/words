@@ -79,7 +79,8 @@ angular.module('core').controller 'TextController', [
             return
         
         $scope.showText = (date) ->
-            if cd > date
+            console.log $scope.current_date.getDate() , (new Date($scope.curMonth + '-' + date)).getDate()
+            if $scope.current_date.getDate() > (new Date($scope.curMonth + '-' + date)).getDate()
                 date = date + ''
                 date = if date.length is 2 then date else '0' + date
                 $scope.hideToday = true
@@ -96,7 +97,8 @@ angular.module('core').controller 'TextController', [
                 return
             return
 
-        AlertService.send "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000
+
+        AlertService.send "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000 if $scope.authentication.user
 
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
