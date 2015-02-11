@@ -79,8 +79,8 @@ angular.module('core').controller 'TextController', [
             return
         
         $scope.showText = (date) ->
-            console.log $scope.current_date.getDate() , (new Date($scope.curMonth + '-' + date)).getDate()
-            if $scope.current_date.getDate() > (new Date($scope.curMonth + '-' + date)).getDate()
+            console.log $scope.current_date, (new Date($scope.curMonth + '-' + date))
+            if $scope.current_date.setHours(0,0,0,0) > (new Date($scope.curMonth + '-' + date)).setHours(0,0,0,0)
                 date = date + ''
                 date = if date.length is 2 then date else '0' + date
                 $scope.hideToday = true
@@ -89,9 +89,9 @@ angular.module('core').controller 'TextController', [
                         $scope.historyText = data.text
                         return
                     )
-            else if cd is date
+            else if $scope.current_date.setHours(0,0,0,0) is (new Date($scope.curMonth + '-' + date)).setHours(0,0,0,0)
                 $scope.hideToday = false
-
+                $scope.historyText = ''
             else
                 AlertService.send "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
                 return
