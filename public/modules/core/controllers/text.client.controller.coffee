@@ -83,7 +83,7 @@ angular.module('core').controller 'TextController', [
                 date = date + ''
                 date = if date.length is 2 then date else '0' + date
                 $scope.hideToday = true
-                $scope.curDate = (new Date($scope.curMonth + '-' + date)).yyyymmdd()
+                $scope.curDate = (new Date($scope.curMonth + '-' + date))
                 $http.get( '/text/' + $scope.curMonth + '-' + date).success((data, status, headers) ->
                         $scope.historyText = data.text
                         return

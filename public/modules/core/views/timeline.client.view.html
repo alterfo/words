@@ -1,7 +1,7 @@
 <section data-ng-show="authentication.user">
     <div class="timeline-wrapper">
         <header>
-            <h3>Текущая дата: {{curDate}}</h3>
+            <h3>Текущая дата: {{curDate | date: 'fullDate'}}</h3>
         </header>
         <ul class="timeline">
             <li class="item">

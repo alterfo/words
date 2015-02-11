@@ -1,0 +1,27 @@
+<form class="form dropdown-form" role="form">
+  <h3>Письмо разработчикам</h3>
+  <div class="form-group">
+    <label for="inputName3" class="control-label">Как к вам обращаться?</label>
+    <div class="col-sm-12">
+      <input class="form-control" id="inputName3" placeholder="Как к вам обращаться?" ng-model="formInfo.Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="control-label">Email</label>
+    <div class="col-sm-12">
+      <input class="form-control" id="inputEmail3" placeholder="Email" ng-model="formInfo.Email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputText3" class="control-label">Как сделать лучше?</label>
+    <div class="col-sm-12">
+      <textarea class="form-control" id="inputEmail3" ng-model="formInfo.Text"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-success control-label">Отправить</button>
+    </div>
+  </div>
+  <span>{{formInfo}}</span>
+</form>

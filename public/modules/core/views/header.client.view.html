@@ -35,6 +35,16 @@
 		<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					Написать разработчикам <strong class="caret"></strong>
+				</a>
+				<div class="dropdown-menu">
+					<callbackform></callbackform>
+				</div>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					<span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">

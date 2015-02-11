@@ -73,7 +73,7 @@ angular.module('core').controller('TextController', [
         date = date + '';
         date = date.length === 2 ? date : '0' + date;
         $scope.hideToday = true;
-        $scope.curDate = (new Date($scope.curMonth + '-' + date)).yyyymmdd();
+        $scope.curDate = new Date($scope.curMonth + '-' + date);
         $http.get('/text/' + $scope.curMonth + '-' + date).success(function(data, status, headers) {
           $scope.historyText = data.text;
         });
