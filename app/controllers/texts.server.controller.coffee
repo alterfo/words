@@ -12,39 +12,42 @@ _ = require("lodash")
 Upsert
 ###
 exports.upsert = (req, res) ->
-  today_start = new Date()
-  today_start.setHours 0, 0, 0, 0
-  today_end = new Date()
-  today_end.setHours 23, 59, 59, 999
+  if ((new Date(req.body.date).setHours 0, 0, 0, 0) > (new Date()).setHours 0,0,0,0) {
+    today_start = new Date(req.body.date)
+    today_start.setHours 0, 0, 0, 0
+    today_end = new Date(req.body.date)
+    today_end.setHours 23, 59, 59, 999
+    console.log req.body
+    Text.update
+      date:
+        $gte: today_start
+        $lt: today_end
 
-  Text.update
-    date:
-      $gte: today_start
-      $lt: today_end
+      user: req.user
+    ,
+      $set:
+        text: req.body.text
+        counter: req.body.counter
+        date: today_start
+    ,
+      upsert: true
+    , ->
 
-    user: req.user
-  ,
-    $set:
-      text: req.body.text
-      counter: req.body.counter
-      date: today_start
-  ,
-    upsert: true
-  , ->
+    Text.find
+      date:
+        $gte: today_start
+        $lt: today_end
 
-  Text.find
-    date:
-      $gte: today_start
-      $lt: today_end
-
-    user: req.user
-  , (err, texts) ->
-    if err
-      res.status(400).send message: errorHandler.getErrorMessage(err)
+      user: req.user
+    , (err, texts) ->
+      if err
+        res.status(400).send message: errorHandler.getErrorMessage(err)
+      else
+        res.json texts[0]
+      
     else
-      res.json texts[0]
+      res.send message: 'День прошел, перезагрузите, пожалуйста, страницу'
     return
-
   return
 
 
