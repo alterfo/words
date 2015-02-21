@@ -29,7 +29,7 @@ angular.module('core').controller 'TextController', [
         $scope.changed = false
         $scope.state = 'saved' # saved, notsaved, saving
         daysInMonth = (month,year) ->
-            new Date(year, month, 0).getDate()
+            new Date(year, month+1, 0).getDate()
         $scope.nextMonth = ->
             $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm()
             return
@@ -112,7 +112,6 @@ angular.module('core').controller 'TextController', [
 
 
         $scope.$watch 'curMonth', ->
-            console.log(arguments) if DEBUG
 
             sm = $scope.date_to_show.getMonth()
             sy = $scope.date_to_show.getFullYear()
@@ -120,15 +119,13 @@ angular.module('core').controller 'TextController', [
 
             # /2015-01 январь
             request_string = sy + "-" + ("0" + (sm + 1)).slice(-2)
-            console.log request_string
             $scope.isCurrentMonth = (sm == cm && sy == cy)        
  
             $http.get('/texts/' + request_string).success((data, status, headers)->
-                console.log("data:", data) if DEBUG
+                daysN = daysInMonth sm, sy
 
-                
                 # make empty days in month array with 0-s
-                $scope.days = Array.apply(null, new Array(daysInMonth(sm, sy))).map(Number.prototype.valueOf,0)
+                $scope.days = Array.apply(null, new Array(daysN)).map(Number.prototype.valueOf,0)
 
                 # set last index
                 limit = cd if $scope.isCurrentMonth
@@ -139,10 +136,8 @@ angular.module('core').controller 'TextController', [
                     return
 
                 if limit
-                    $scope.days[limit..32] = Array.apply(null, new Array($scope.days.length - limit)).map(String.prototype.valueOf, "--")
+                    $scope.days[limit..daysN] = Array.apply(null, new Array(daysN - limit)).map(String.prototype.valueOf, "--")
 
-                $scope.days = $scope.days
-                console.log($scope.days) if DEBUG
                 return
             )
             return

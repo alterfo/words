@@ -21,41 +21,46 @@ Upsert
 
 exports.upsert = function(req, res) {
   var today_end, today_start;
-  today_start = new Date();
-  today_start.setHours(0, 0, 0, 0);
-  today_end = new Date();
-  today_end.setHours(23, 59, 59, 999);
-  console.log(req);
-  Text.update({
-    date: {
-      $gte: today_start,
-      $lt: today_end
-    },
-    user: req.user
-  }, {
-    $set: {
-      text: req.body.text,
-      counter: req.body.counter,
-      date: today_start
-    }
-  }, {
-    upsert: true
-  }, function() {});
-  Text.find({
-    date: {
-      $gte: today_start,
-      $lt: today_end
-    },
-    user: req.user
-  }, function(err, texts) {
-    if (err) {
-      res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(texts[0]);
-    }
-  });
+  if ((new Date(req.body.date).setHours(0, 0, 0, 0)) > (new Date()).setHours(0, 0, 0, 0)) {
+    today_start = new Date(req.body.date);
+    today_start.setHours(0, 0, 0, 0);
+    today_end = new Date(req.body.date);
+    today_end.setHours(23, 59, 59, 999);
+    Text.update({
+      date: {
+        $gte: today_start,
+        $lt: today_end
+      },
+      user: req.user
+    }, {
+      $set: {
+        text: req.body.text,
+        counter: req.body.counter,
+        date: today_start
+      }
+    }, {
+      upsert: true
+    }, function() {});
+    Text.find({
+      date: {
+        $gte: today_start,
+        $lt: today_end
+      },
+      user: req.user
+    }, function(err, texts) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        return res.json(texts[0]);
+      }
+    });
+  } else {
+    res.send({
+      message: 'День прошел, перезагрузите, пожалуйста, страницу'
+    });
+  }
 };
 
 
@@ -100,6 +105,7 @@ exports.textsByMonth = function(req, res, next, id) {
   today = new Date(id);
   y = today.getFullYear();
   m = today.getMonth();
+  console.log(y, m);
   first_day = new Date(y, m, 1);
   last_day = new Date(y, m + 1, 0);
   first_day.setHours(0, 0, 0, 0);
@@ -140,7 +146,6 @@ exports.textByDate = function(req, res, next, id) {
     },
     user: req.user
   }, function(err, texts) {
-    console.log(texts);
     if (err) {
       res.status(400).send({
         message: errorHandler.getErrorMessage(err)

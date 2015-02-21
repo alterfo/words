@@ -12,12 +12,12 @@ _ = require("lodash")
 Upsert
 ###
 exports.upsert = (req, res) ->
-  if ((new Date(req.body.date).setHours 0, 0, 0, 0) > (new Date()).setHours 0,0,0,0) {
+  if ((new Date(req.body.date).setHours 0, 0, 0, 0) > (new Date()).setHours 0,0,0,0)
     today_start = new Date(req.body.date)
     today_start.setHours 0, 0, 0, 0
     today_end = new Date(req.body.date)
     today_end.setHours 23, 59, 59, 999
-    console.log req.body
+
     Text.update
       date:
         $gte: today_start
@@ -45,9 +45,8 @@ exports.upsert = (req, res) ->
       else
         res.json texts[0]
       
-    else
-      res.send message: 'День прошел, перезагрузите, пожалуйста, страницу'
-    return
+  else
+    res.send message: 'День прошел, перезагрузите, пожалуйста, страницу'
   return
 
 
@@ -95,6 +94,7 @@ exports.textsByMonth = (req, res, next, id) ->
   today = new Date(id) # 2014-01
   y = today.getFullYear()
   m = today.getMonth()
+  console.log y, m
   first_day = new Date(y, m, 1)
   last_day = new Date(y, m + 1, 0)
   first_day.setHours 0, 0, 0, 0
@@ -134,7 +134,6 @@ exports.textByDate = (req, res, next, id) ->
 
     user: req.user
   , (err, texts) ->
-    console.log texts
     if err
       res.status(400).send message: errorHandler.getErrorMessage(err)
     else
