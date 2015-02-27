@@ -12,7 +12,9 @@ _ = require("lodash")
 Upsert
 ###
 exports.upsert = (req, res) ->
-  if ((new Date(req.body.date).setHours 0, 0, 0, 0) > (new Date()).setHours 0,0,0,0)
+  text_date = (new Date(req.body.date)).setHours 0, 0, 0, 0
+  today = (new Date()).setHours 0,0,0,0
+  if text_date is today
     today_start = new Date(req.body.date)
     today_start.setHours 0, 0, 0, 0
     today_end = new Date(req.body.date)

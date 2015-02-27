@@ -63,7 +63,7 @@ angular.module('core').controller 'TextController', [
                 )
                 .success( (data, status, headers) ->
                     if (data.message)
-                        AlertService.send "danger", message, 3000
+                        AlertService.send "danger", data.message, 3000
                         return
                     AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
                     $scope.state = 'saved'
