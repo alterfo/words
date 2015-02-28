@@ -84,6 +84,7 @@ angular.module('core').controller('TextController', [
       } else if ($scope.current_date.setHours(0, 0, 0, 0) === (new Date($scope.curMonth + '-' + date)).setHours(0, 0, 0, 0)) {
         $scope.hideToday = false;
         $scope.historyText = '';
+        $scope.curDate = $scope.current_date;
       } else {
         AlertService.send("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
         return;

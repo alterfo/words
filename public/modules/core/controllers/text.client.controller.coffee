@@ -13,6 +13,8 @@ angular.module('core').controller 'TextController', [
         DEBUG = 1
 
         $scope.current_date = new Date()
+#        DateService.getTodayISO(); # 
+
 
         cm = $scope.current_date.getMonth()
         cy = $scope.current_date.getFullYear()
@@ -30,6 +32,7 @@ angular.module('core').controller 'TextController', [
         $scope.state = 'saved' # saved, notsaved, saving
         daysInMonth = (month,year) ->
             new Date(year, month+1, 0).getDate()
+
         $scope.nextMonth = ->
             $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm()
             return
@@ -94,6 +97,7 @@ angular.module('core').controller 'TextController', [
             else if $scope.current_date.setHours(0,0,0,0) is (new Date($scope.curMonth + '-' + date)).setHours(0,0,0,0)
                 $scope.hideToday = false
                 $scope.historyText = ''
+                $scope.curDate = $scope.current_date
             else
                 AlertService.send "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
                 return
