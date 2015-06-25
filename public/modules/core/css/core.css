@@ -94,3 +94,8 @@ li.item {
 .control-label {
     margin: 15px 5px;
 }
+
+textarea[name="text"] {
+  font-family: Verdana, sans-serif;
+  font-size: 20px;
+}

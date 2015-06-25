@@ -16,8 +16,5 @@
     "angular-ui-router": "~0.2.11",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
     "angular-moment": "~0.9.0"
-  },
-  "resolutions": {
-    "angular-hotkeys": "~1.4.5"
   }
 }
