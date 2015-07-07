@@ -13,8 +13,6 @@ angular.module('core').controller 'TextController', [
         DEBUG = 1
 
         $scope.current_date = new Date()
-#        DateService.getTodayISO(); # 
-
 
         cm = $scope.current_date.getMonth()
         cy = $scope.current_date.getFullYear()

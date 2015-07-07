@@ -3,6 +3,7 @@
 module.exports = function(grunt) {
 	// Unified Watch Object
 	var watchFiles = {
+		serverAll: ['app/views/**/*.*', 'gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
 		serverViews: ['app/views/**/*.*'],
 		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
 		clientViews: ['public/modules/**/views/**/*.html'],
@@ -88,7 +89,8 @@ module.exports = function(grunt) {
 				options: {
 					nodeArgs: ['--debug'],
 					ext: 'js,html',
-					watch: watchFiles.serverViews.concat(watchFiles.serverJS)
+					ignore: ['node_modules/**'],
+					watch: watchFiles.serverAll
 				}
 			}
 		},

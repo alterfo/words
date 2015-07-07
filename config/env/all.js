@@ -2,13 +2,13 @@
 
 module.exports = {
 	app: {
-		title: '500 слов',
-		description: 'Сервис шифрованных личных записей',
-		keywords: 'слова, дневник, личные записи, шифрованный'
+		title: '500 слов, утренние страницы online',
+		description: 'Сервис утренних страниц online',
+		keywords: 'утренние страницы, слова, дневник, личные записи, шифрованный'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
-	sessionSecret: 'MEAN',
+	sessionSecret: 'MEANsecret',
 	sessionCollection: 'sessions',
 	assets: {
 		lib: {
