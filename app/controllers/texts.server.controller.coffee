@@ -12,12 +12,16 @@ _ = require("lodash")
 Upsert
 ###
 exports.upsert = (req, res) ->
-  text_date = (new Date(req.body.date)).setHours 0, 0, 0, 0
   today = (new Date()).setHours 0,0,0,0
+  if req.body.date is undefined 
+    text_date = today 
+  else 
+    text_date = (new Date(req.body.date)).setHours 0, 0, 0, 0
+
   if text_date is today
-    today_start = new Date(req.body.date)
+    today_start = new Date(text_date)
     today_start.setHours 0, 0, 0, 0
-    today_end = new Date(req.body.date)
+    today_end = new Date(text_date)
     today_end.setHours 23, 59, 59, 999
 
     Text.update
@@ -152,7 +156,9 @@ exports.readOne = (req, res) ->
 ###*
 Text authorization middleware
 ###
+#todo: fix for get
 exports.hasAuthorization = (req, res, next) ->
-  return res.status(403).send(message: "User is not authorized")  if req.article.user.id isnt req.user.id
+  if req.texts and req.texts.user
+    return res.status(403).send(message: "User is not authorized")  if req.texts.user.id isnt req.user.id
   next()
   return

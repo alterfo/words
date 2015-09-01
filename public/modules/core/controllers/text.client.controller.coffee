@@ -54,15 +54,14 @@ angular.module('core').controller 'TextController', [
         $scope.save = (e) -> 
             if $scope.changed
                 $scope.state = 'saving'
-                $http(
+                $http
                     method: 'POST'
                     url: '/texts'
                     data: 
                         text: $scope.text
                         date: $scope.current_date
                         counter: $scope.getWordCounter()
-                )
-                .success( (data, status, headers) ->
+                .success (data, status, headers) ->
                     if (data.message)
                         AlertService.send "danger", data.message, 3000
                         return
@@ -70,14 +69,10 @@ angular.module('core').controller 'TextController', [
                     $scope.state = 'saved'
                     $scope.changed = false
                     return
-                )
-                .error( (data, status, headers) ->
+                .error (data, status, headers) ->
                     AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
                     return
-                )
-                .finally((data, status, headers) ->
-                    return
-                )
+                
             else
                 AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
             return

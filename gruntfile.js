@@ -89,7 +89,10 @@ module.exports = function(grunt) {
 				options: {
 					nodeArgs: ['--debug'],
 					ext: 'js,html',
-					ignore: ['node_modules/**'],
+					ignore: [
+		                'node_modules/**',
+		                'bower_components/**'
+		            ],
 					watch: watchFiles.serverAll
 				}
 			}

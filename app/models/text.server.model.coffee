@@ -12,9 +12,13 @@ TextSchema = new Schema(
     type: String
     default: ''
     trim: true
+    required: "Text is required"
   counter:
     type: Number
     default: 0
+    required: "Counter is required"
+    min: 0
+    max: 10000
   user:
     type: Schema.ObjectId
     ref: 'User')

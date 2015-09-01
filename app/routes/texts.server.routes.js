@@ -8,16 +8,16 @@ var users = require('../../app/controllers/users.server.controller'),
 
 module.exports = function(app) {
 	app.route('/texts/:month')
-		.get(texts.list);
+		.get(users.requiresLogin, texts.hasAuthorization, texts.list);
 
 	app.route('/text/:textDate')
-		.get(texts.readOne);
+		.get(users.requiresLogin, texts.hasAuthorization, texts.readOne);
 
 	app.route('/texts')
-        .post(texts.upsert);
+        .post(users.requiresLogin, texts.hasAuthorization, texts.upsert);
     
     app.route('/today')
-        .get(texts.today);
+        .get(users.requiresLogin, texts.hasAuthorization, texts.today);
 
 	app.param('textDate', texts.textByDate);
     app.param('month', texts.textsByMonth);
