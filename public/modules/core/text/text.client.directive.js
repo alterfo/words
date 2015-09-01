@@ -4,7 +4,7 @@
   angular.module('core').directive('text', [
     function() {
       return {
-        templateUrl: 'modules/core/views/text.client.view.html',
+        templateUrl: 'modules/core/text/text.client.view.html',
         restrict: 'E',
         scope: {
           editable: this,

@@ -4,7 +4,7 @@
   angular.module('core').directive('timeline', [
     function() {
       return {
-        templateUrl: 'modules/core/views/timeline.client.view.html',
+        templateUrl: 'modules/core/timeline/timeline.client.view.html',
         restrict: 'E',
         link: function(scope, element, attrs) {}
       };
