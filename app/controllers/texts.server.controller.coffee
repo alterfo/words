@@ -157,7 +157,7 @@ exports.readOne = (req, res) ->
 ###*
 Text authorization middleware
 ###
-#todo: fix for get
+#todo: fix for ge
 exports.hasAuthorization = (req, res, next) ->
   if req.texts and req.texts.user
     return res.status(403).send(message: "User is not authorized")  if req.texts.user.id isnt req.user.id

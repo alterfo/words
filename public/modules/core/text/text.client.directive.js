@@ -7,12 +7,12 @@
         templateUrl: 'modules/core/text/text.client.view.html',
         restrict: 'E',
         scope: {
-          editable: this,
-          curDate: this
+          editable: '@',
+          curDate: '@'
         },
         link: function(scope, element, attrs) {
           scope.editable = attrs.editable || false;
-          scope.curDate = curDate || (new Date()).yyyymmdd();
+          scope.curDate = attrs.curDate || (new Date()).yyyymmdd();
         }
       };
     }

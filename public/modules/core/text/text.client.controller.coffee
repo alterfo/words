@@ -38,26 +38,26 @@ angular.module('core').controller 'TextController', [
         $scope.prevMonth = ->
             $scope.curMonth = $scope.date_to_show.prevMonth().yyyymm()
             return
-        
+
         $scope.getWordCounter = ->
             $scope.text.trim().split(/\s+/).length if $scope.text
 
         $document.bind "keydown", (event) ->
           if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
             $scope.save('ctrls')
-            
+
             event.stopPropagation()
             event.preventDefault()
             return false
           true
-    
-        $scope.save = (e) -> 
+
+        $scope.save = (e) ->
             if $scope.changed
                 $scope.state = 'saving'
                 $http
                     method: 'POST'
                     url: '/texts'
-                    data: 
+                    data:
                         text: $scope.text
                         date: $scope.current_date
                         counter: $scope.getWordCounter()
@@ -72,11 +72,11 @@ angular.module('core').controller 'TextController', [
                 .error (data, status, headers) ->
                     AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
                     return
-                
+
             else
                 AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
             return
-        
+
         $scope.showText = (date) ->
             if $scope.current_date.setHours(0,0,0,0) > (new Date($scope.curMonth + '-' + date)).setHours(0,0,0,0)
                 date = date + ''
@@ -101,7 +101,7 @@ angular.module('core').controller 'TextController', [
 
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
-            if $scope.changed 
+            if $scope.changed
                 $scope.state = 'notsaved'
                 $scope.days[cd - 1] = $scope.getWordCounter()
             return
@@ -116,8 +116,8 @@ angular.module('core').controller 'TextController', [
 
             # /2015-01 январь
             request_string = sy + "-" + ("0" + (sm + 1)).slice(-2)
-            $scope.isCurrentMonth = (sm == cm && sy == cy)        
- 
+            $scope.isCurrentMonth = (sm == cm && sy == cy)
+
             $http.get('/texts/' + request_string).success((data, status, headers)->
                 daysN = daysInMonth sm, sy
 
