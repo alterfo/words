@@ -34,3 +34,5 @@
   mongoose.model('Text', TextSchema);
 
 }).call(this);
+
+//# sourceMappingURL=text.server.model.js.map
