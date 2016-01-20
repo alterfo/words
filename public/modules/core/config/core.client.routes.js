@@ -9,7 +9,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		$stateProvider.
 			state('home', {
 				url: '/',
-				templateUrl: 'modules/core/home/home.client.view.html'
+				templateUrl: 'modules/core/home/home.client.view.html',
+				controller: 'TextController'
 			});
 	}
 ]);

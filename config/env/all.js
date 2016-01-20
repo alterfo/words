@@ -19,6 +19,9 @@ module.exports = {
 			js: [
 				'public/modules/core/js/common.js',
 				'public/lib/angular/angular.js',
+				'public/lib/moment/moment.js',
+
+				'public/lib/angular-moment/angular-moment.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
 				'public/lib/angular-animate/angular-animate.js', 
