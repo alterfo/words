@@ -1,18 +1,18 @@
-<section data-ng-show="authentication.user">
+<section ng-if="authentication.user">
     <div class="timeline-wrapper">
         <header>
             <h3>Дата написания текста: {{curDate | date: 'fullDate'}}</h3>
         </header>
         <ul class="timeline">
             <li class="item">
-                <button class="btn btn-xs btn-primary" data-ng-click="prevMonth()">
+                <button class="btn btn-xs btn-primary" ng-click="prevMonth()">
                     << </button>
             </li>
-            <li class="item" data-ng-repeat="(day, counter) in days track by $index">
+            <li class="item" ng-repeat="(day, counter) in days track by $index">
                 <button type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}" ng-click="showText(day + 1)">{{days[$index]}}</button>
             </li>
             <li class="item">
-                <button class="btn  btn-xs btn-primary" data-ng-click="nextMonth()" data-ng-hide="isCurrentMonth"> >> </button>
+                <button class="btn  btn-xs btn-primary" ng-click="nextMonth()" ng-if="!isCurrentMonth"> >> </button>
             </li>
         </ul>
     </div>

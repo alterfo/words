@@ -1,7 +1,5 @@
-<div class="wrapper" data-ng-controller="TextController">
-    <timeline>
-        
-    </timeline>
+<div class="wrapper" ng-controller="TextController">
+    <timeline></timeline>
 
     <section>
 
@@ -14,7 +12,7 @@
         </div>
 
         <!--   Встречалка -->
-        <div class="jumbotron text-center" data-ng-hide="authentication.user">
+        <div class="jumbotron text-center" ng-if="!authentication.user">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
                     <h1>500 слов</h1>
