@@ -20,5 +20,17 @@
 		it('should expose the authentication service', function() {
 			expect(scope.authentication).toBeTruthy();
 		});
+
+		it('should collapse menu', function () {
+			scope.isCollapsed = false;
+
+			scope.toggleCollapsibleMenu();
+
+			expect(scope.isCollapsed).toBe(true)
+		});
+
+		it('should expose the menu', function () {
+			expect(scope.menu).toBeTruthy();
+		})
 	});
 })();
