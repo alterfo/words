@@ -3,6 +3,7 @@ angular.module('core').directive 'text', [ ->
   {
     templateUrl: 'modules/core/views/text.client.view.html'
     restrict: 'E'
+    controller: 'TextController'
     scope:
     	editable: @
     	curDate: @

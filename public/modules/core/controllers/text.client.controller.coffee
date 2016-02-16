@@ -8,7 +8,8 @@ angular.module('core').controller 'TextController', [
     'Authentication'
     '$document'
     "AlertService"
-    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService) ->
+    'moment'
+    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, moment) ->
 
         DEBUG = 1
 

@@ -1,4 +1,4 @@
-<div class="container" ng-controller="HeaderController">
+<div class="container">
 
 	<div class="navbar-header">
 		<button class="navbar-toggle" type="button" ng-click="toggleCollapsibleMenu()">
@@ -24,7 +24,7 @@
 				<a ng-switch-default href="/#!/{{item.link}}" ng-bind="item.title"></a>
 			</li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" ng-if="!authentication.user">
+		<ul class="nav navbar-nav navbar-right" ng-hide="authentication.user">
 			<li ui-route="/signup" ng-class="{active: $uiRoute}">
 				<a href="/#!/signup">Зарегистрироваться</a>
 			</li>
@@ -33,7 +33,7 @@
 				<a href="/#!/signin">Войти</a>
 			</li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" ng-if="authentication.user">
+		<ul class="nav navbar-nav navbar-right" ng-show="authentication.user">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" toggle="dropdown">
 					Написать разработчикам <strong class="caret"></strong>
@@ -43,7 +43,7 @@
 				</div>
 			</li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" ng-if="authentication.user">
+		<ul class="nav navbar-nav navbar-right" ng-show="authentication.user">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" toggle="dropdown">
 					<span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
