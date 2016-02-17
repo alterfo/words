@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "timeline.client.controller.js",
+  "sourceRoot": "",
+  "sources": [
+    "timeline.client.controller.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,OACE,CAAC,MADH,CACU,MADV,CAEE,CAAC,UAFH,CAEc,oBAFd,EAEoC;IAChC,QADgC,EAEhC,gBAFgC,EAGhC,eAHgC,EAIhC,SAAC,MAAD,EAAS,cAAT,EAAyB,aAAzB;MACE,MAAM,CAAC,cAAP,GAAwB;MACxB,MAAM,CAAC,OAAP,GAAqB,IAAA,IAAA,CAAA;aACrB,MAAM,CAAC,IAAP,GAAc,aAAa,CAAC,WAAd,CAA0B,CAAK,IAAA,IAAA,CAAA,CAAL,CAAY,CAAC,WAAb,CAAA,CAA1B,EAAsD,CAAK,IAAA,IAAA,CAAA,CAAL,CAAY,CAAC,OAAb,CAAA,CAAtD;IAHhB,CAJgC;GAFpC;AAAA"
+}

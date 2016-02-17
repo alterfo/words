@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "text.client.service.js",
+  "sourceRoot": "",
+  "sources": [
+    "text.client.service.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,OACE,CAAC,MADH,CACU,MADV,CAEE,CAAC,OAFH,CAEW,aAFX,EAE0B;IAAC,OAAD,EAAW,SAAC,KAAD;AACjC,UAAA;MAAA,IAAA,GAAO;MACP,UAAA,GAAa;aAGb;QAAA,WAAA,EAAa,SAAA;iBACX,UAAU,CAAC;QADA,CAAb;QAIA,cAAA,EAAgB,SAAA;iBACd;QADc,CAJhB;;IALiC,CAAX;GAF1B;AAAA"
+}
