@@ -4,8 +4,10 @@ angular
     '$scope'
     'Authentication'
     'WebApiService'
-    ($scope, Authentication, WebApiService) ->
+    '$locale'
+    ($scope, Authentication, WebApiService, $locale) ->
       $scope.authentication = Authentication
-      $scope.curDate = new Date()
+      $scope.curDate = $locale.DATETIME_FORMATS.STANDALONEMONTH[(new Date()).getMonth()]
       $scope.days = WebApiService.getTimeline((new Date()).getFullYear(), (new Date()).getDate())
+
 ]

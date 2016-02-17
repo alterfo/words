@@ -41,6 +41,14 @@ li.item {
   margin: 0.4em 0.1em;
 }
 
+.timeline__date {
+    font-size: 8px;
+    display: block;
+    position: relative;
+    top: 0;
+    left: 3px;
+}
+
 
 
 

@@ -1,7 +1,7 @@
 <section ng-show="authentication.user">
     <div class="timeline-wrapper">
         <header>
-            <h3>Дата написания текста: {{curDate | date: 'fullDate'}}</h3>
+            <h3>{{curDate}}</h3>
         </header>
         <ul class="timeline">
             <li class="item">
@@ -9,6 +9,7 @@
                     << </button>
             </li>
             <li class="item" ng-repeat="(day, counter) in days track by $index">
+                <span class="timeline__date">{{day}}</span>
                 <button type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}" ng-click="showText(day + 1)">{{days[$index]}}</button>
             </li>
             <li class="item">
