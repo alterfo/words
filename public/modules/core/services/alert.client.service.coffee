@@ -4,29 +4,30 @@ angular.module('core').factory "AlertService", [
   "$timeout"
   "$rootScope"
   ($timeout, $rootScope) ->
-    AlertService = {}
-    $rootScope.alerts = []
-    AlertService.send = (type, title, msg, timeout) ->
-      $rootScope.alerts.push
-        type: type
-        title: title
-        msg: msg
-        close: ->
-          AlertService.closeAlert this
+    new class AlertService
+      constructor: ->
+        $rootScope.alerts = []
+        return
+      send: (type, title, msg, timeout) ->
+        $rootScope.alerts.push
+          type: type
+          title: title
+          msg: msg
+          close: =>
+            @closeAlert @
 
-      timeout = 7000  if typeof timeout is "undefined"
-      if timeout
-        $timeout ->
-          AlertService.closeAlert this
-          return
-        , timeout
-      return
+        timeout = 7000  if typeof timeout is "undefined"
+        if timeout
+          $timeout =>
+            @closeAlert this
+            return
+          , timeout
+        return
 
-    AlertService.closeAlert = (alert) ->
-      @closeAlertIdx $rootScope.alerts.indexOf(alert)
+      closeAlert: (alert) ->
+        @closeAlertIdx $rootScope.alerts.indexOf(alert)
 
-    AlertService.closeAlertIdx = (index) ->
-      $rootScope.alerts.splice index, 1
+      closeAlertIdx: (index) ->
+        $rootScope.alerts.splice index, 1
 
-    return AlertService
 ]

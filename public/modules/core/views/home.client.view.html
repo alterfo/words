@@ -2,19 +2,11 @@
 
 <timeline></timeline>
 
+<alerts></alerts>
+
 
 <div class="wrapper" ng-controller="TextController">
 
-
-    <section>
-
-        <!-- Alerts -->
-        <div class="alerts">
-            <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}} animation">
-                <button type="button" class="close" ng-click="alert.close()" aria-hidden="true">×</button>
-                <h4>{{ alert.title }}</h4> {{ alert.msg }}
-            </div>
-        </div>
 
         <!--   Встречалка -->
         <div class="jumbotron text-center" ng-if="!authentication.user">
@@ -37,8 +29,7 @@
         </div>
 
         <!--            Teeeext             -->
-        <text date="{{curDate}}" editable="{{isToday()}}">
+        <text date="{{curDate}}" editable="{{true}}">
 
         </text>
-    </section>
 </div>

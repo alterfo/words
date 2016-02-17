@@ -4,33 +4,46 @@
   angular.module('core').factory("AlertService", [
     "$timeout", "$rootScope", function($timeout, $rootScope) {
       var AlertService;
-      AlertService = {};
-      $rootScope.alerts = [];
-      AlertService.send = function(type, title, msg, timeout) {
-        $rootScope.alerts.push({
-          type: type,
-          title: title,
-          msg: msg,
-          close: function() {
-            return AlertService.closeAlert(this);
+      return new (AlertService = (function() {
+        function AlertService() {
+          $rootScope.alerts = [];
+          return;
+        }
+
+        AlertService.prototype.send = function(type, title, msg, timeout) {
+          $rootScope.alerts.push({
+            type: type,
+            title: title,
+            msg: msg,
+            close: (function(_this) {
+              return function() {
+                return _this.closeAlert(_this);
+              };
+            })(this)
+          });
+          if (typeof timeout === "undefined") {
+            timeout = 7000;
           }
-        });
-        if (typeof timeout === "undefined") {
-          timeout = 7000;
-        }
-        if (timeout) {
-          $timeout(function() {
-            AlertService.closeAlert(this);
-          }, timeout);
-        }
-      };
-      AlertService.closeAlert = function(alert) {
-        return this.closeAlertIdx($rootScope.alerts.indexOf(alert));
-      };
-      AlertService.closeAlertIdx = function(index) {
-        return $rootScope.alerts.splice(index, 1);
-      };
-      return AlertService;
+          if (timeout) {
+            $timeout((function(_this) {
+              return function() {
+                _this.closeAlert(_this);
+              };
+            })(this), timeout);
+          }
+        };
+
+        AlertService.prototype.closeAlert = function(alert) {
+          return this.closeAlertIdx($rootScope.alerts.indexOf(alert));
+        };
+
+        AlertService.prototype.closeAlertIdx = function(index) {
+          return $rootScope.alerts.splice(index, 1);
+        };
+
+        return AlertService;
+
+      })());
     }
   ]);
 
