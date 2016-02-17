@@ -8,14 +8,10 @@ angular.module('core').controller 'TextController', [
     'Authentication'
     '$document'
     "AlertService"
-    'moment'
-    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, moment) ->
-
-        DEBUG = 1
+    'WebApiService'
+    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService,WebApiService) ->
 
         $scope.current_date = new Date()
-#        DateService.getTodayISO(); # 
-
 
         cm = $scope.current_date.getMonth()
         cy = $scope.current_date.getFullYear()
@@ -31,6 +27,7 @@ angular.module('core').controller 'TextController', [
         $scope.text = ''
         $scope.changed = false
         $scope.state = 'saved' # saved, notsaved, saving
+
         daysInMonth = (month,year) ->
             new Date(year, month+1, 0).getDate()
 
@@ -57,30 +54,18 @@ angular.module('core').controller 'TextController', [
         $scope.save = (e) -> 
             if $scope.changed
                 $scope.state = 'saving'
-                $http(
-                    method: 'POST'
-                    url: '/texts'
-                    data: 
-                        text: $scope.text
-                        date: $scope.current_date
-                        counter: $scope.getWordCounter()
-                )
-                .success( (data, status, headers) ->
-                    if (data.message)
-                        AlertService.send "danger", data.message, 3000
-                        return
-                    AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
-                    $scope.state = 'saved'
-                    $scope.changed = false
-                    return
-                )
-                .error( (data, status, headers) ->
-                    AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
-                    return
-                )
-                .finally((data, status, headers) ->
-                    return
-                )
+                WebApiService.postText $scope.text
+                  .then (data) ->
+                      if (data.message)
+                          AlertService.send "danger", data.message, 3000
+                          return
+                      else
+                        AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
+                        $scope.state = 'saved'
+                        $scope.changed = false
+                  , (err) ->
+                      AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
+
             else
                 AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
             return
@@ -147,16 +132,14 @@ angular.module('core').controller 'TextController', [
             )
             return
 
-        $http
-            method: 'GET'
-            url: '/today'
-        .success (data, status, headers) ->
-            $scope.text = data.text
-            $scope.state = 'saved'
-            setInterval $scope.save, 10000 # 10 seconds to autosave
-            return
-        .error (data, status, headers) ->
-            return
+        WebApiService.getToday()
+          .then (data) ->
+              $scope.text = data.text
+              $scope.state = 'saved'
+              setInterval $scope.save, 10000
+              return
+          , (err) ->
+              return
 
         return
 ]

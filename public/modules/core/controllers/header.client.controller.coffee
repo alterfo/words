@@ -1,10 +1,10 @@
 "use strict"
-angular.module("core").controller "HeaderController", [
-  "$scope"
+angular
+  .module("core")
+  .controller "HeaderController", ['$scope'
   "Authentication"
   "Menus"
   ($scope, Authentication, Menus) ->
-    $scope.showTest = true
     $scope.authentication = Authentication
     $scope.isCollapsed = false
     $scope.menu = Menus.getMenu("topbar")
@@ -17,5 +17,4 @@ angular.module("core").controller "HeaderController", [
     $scope.$on "$stateChangeSuccess", ->
       $scope.isCollapsed = false
       return
-
 ]
