@@ -7,7 +7,7 @@
         templateUrl: 'modules/core/views/timeline.client.view.html',
         restrict: 'E',
         scope: {},
-        link: function(scope, element, attrs) {}
+        controller: 'TimelineController'
       };
     }
   ]);
