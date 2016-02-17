@@ -4,12 +4,10 @@
     'Authentication', function(Authentication) {
       return {
         restrict: 'A',
-        scope: {
-          hide: '='
-        },
         link: function(scope, element, attrs) {
-          return scope.$watch(Authentication.user, function(value, oldValue) {
-            if (Authentication.user) {
+          scope.authentication = Authentication;
+          return scope.$watch(scope.authentication, function(value, oldValue) {
+            if (scope.authentication.user) {
               return element.addClass('ng-hide');
             } else {
               return element.addClass('ng-hide');
@@ -22,12 +20,10 @@
     'Authentication', function(Authentication) {
       return {
         restrict: 'A',
-        scope: {
-          hide: '='
-        },
         link: function(scope, element, attrs) {
-          return scope.$watch(Authentication.user, function(value, oldValue) {
-            if (!Authentication.user) {
+          scope.authentication = Authentication;
+          return scope.$watch(scope.authentication, function(value, oldValue) {
+            if (!scope.authentication.user) {
               return element.addClass('ng-hide');
             } else {
               return element.addClass('ng-hide');

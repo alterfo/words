@@ -17,7 +17,7 @@ angular
         # /2015-01 январь
         request_string = sy + "-" + ("0" + (sm + 1)).slice(-2)
         daysN = new Date(year, month+1, 0).getDate()
-        days = (0 for [1..daysN])
+        days = ('--' for [1..daysN])
 
         $http.get('/texts/' + request_string)
           .then (data) ->
@@ -25,7 +25,7 @@ angular
             data.data.forEach (e) ->
               days[(new Date(e.date)).getDate() - 1] = e.counter
               return
-            days[limit..daysN] = ('--' for [limit..daysN])
+            days[0..limit] = (0 for [1..limit])
             return
         days
 

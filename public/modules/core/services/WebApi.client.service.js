@@ -24,7 +24,7 @@
             var i, ref, results;
             results = [];
             for (i = 1, ref = daysN; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-              results.push(0);
+              results.push('--');
             }
             return results;
           })();
@@ -34,11 +34,11 @@
             data.data.forEach(function(e) {
               days[(new Date(e.date)).getDate() - 1] = e.counter;
             });
-            [].splice.apply(days, [limit, daysN - limit + 1].concat(ref = (function() {
-              var i, ref1, ref2, results;
+            [].splice.apply(days, [0, limit - 0 + 1].concat(ref = (function() {
+              var i, ref1, results;
               results = [];
-              for (i = ref1 = limit, ref2 = daysN; ref1 <= ref2 ? i <= ref2 : i >= ref2; ref1 <= ref2 ? i++ : i--) {
-                results.push('--');
+              for (i = 1, ref1 = limit; 1 <= ref1 ? i <= ref1 : i >= ref1; 1 <= ref1 ? i++ : i--) {
+                results.push(0);
               }
               return results;
             })())), ref;
