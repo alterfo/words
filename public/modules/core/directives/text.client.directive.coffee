@@ -1,16 +1,6 @@
 'use strict'
-angular.module('core').directive 'text', [ ->
-  {
+angular.module('core').directive 'sooText', [ ->
     templateUrl: 'modules/core/views/text.client.view.html'
     restrict: 'E'
     controller: 'TextController'
-    scope:
-    	editable: @
-    	curDate: @
-    link: (scope, element, attrs) ->
-    	scope.editable = attrs.editable || false;
-    	scope.curDate = curDate || (new Date()).yyyymmdd()
-    	return
-
-  }
  ]
