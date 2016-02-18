@@ -136,10 +136,21 @@ module.exports = function(grunt) {
 			}
 		},
 		karma: {
-			unit: {
-				configFile: 'karma.conf.js'
-			}
-		}
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        },
+        protractor: {
+            options: {
+                configFile: "protractor-conf.js",
+                keepAlive: true,
+                noColor: false,
+                args: {
+
+                }
+            },
+            all: { }
+        }
 	});
 
 	// Load NPM tasks

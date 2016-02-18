@@ -3,82 +3,82 @@
   'use strict';
   angular.module('core').controller('TextController', [
     '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", 'WebApiService', 'TimelineService', function($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) {
-      return $scope.insertText = function(day) {
+      $scope.authentication = Authentication;
+      $scope.insertText = function(day) {
         if (!day) {
-          WebApiService.getToday().then(function(data) {
+          return WebApiService.getToday().then(function(data) {
             $scope.text = data.text;
             $scope.state = 'saved';
             setInterval($scope.save, 10000);
           }, function(err) {});
         }
-        $scope.authentication = Authentication;
-        $scope.historyText = '';
-        $scope.text = '';
-        $scope.changed = false;
-        $scope.state = 'saved';
-        $scope.getWordCounter = function() {
-          if ($scope.text) {
-            return $scope.text.trim().split(/\s+/).length;
-          }
-        };
-        $document.bind("keydown", function(event) {
-          if ((event.which === 115 || event.which === 83) && (event.ctrlKey || event.metaKey)) {
-            $scope.save('ctrls');
-            event.stopPropagation();
-            event.preventDefault();
-            return false;
-          }
-          return true;
-        });
-        $scope.save = function(e) {
-          if ($scope.changed) {
-            $scope.state = 'saving';
-            WebApiService.postText($scope.text).then(function(data) {
-              if (data.data.message) {
-                AlertService.send("danger", data.message, 3000);
-              } else {
-                if (e === 'ctrls') {
-                  AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
-                }
-                $scope.state = 'saved';
-                return $scope.changed = false;
-              }
-            }, function(err) {
+      };
+      $scope.text = '';
+      $scope.getWordCounter = function() {
+        if ($scope.text) {
+          return $scope.text.trim().split(/\s+/).length;
+        }
+      };
+      $scope.changed = false;
+      $scope.$watch("text", function(newVal, oldVal) {
+        $scope.changed = newVal !== oldVal && oldVal !== '';
+        if ($scope.changed) {
+          $scope.state = 'notsaved';
+          TimelineService.setCounterValue($scope.getWordCounter());
+        }
+      });
+      $scope.historyText = '';
+      $scope.state = 'saved';
+      $document.bind("keydown", function(event) {
+        if ((event.which === 115 || event.which === 83) && (event.ctrlKey || event.metaKey)) {
+          $scope.save('ctrls');
+          event.stopPropagation();
+          event.preventDefault();
+          return false;
+        }
+        return true;
+      });
+      $scope.save = function(e) {
+        if ($scope.changed) {
+          $scope.state = 'saving';
+          WebApiService.postText($scope.text).then(function(data) {
+            if (data.data.message) {
+              AlertService.send("danger", data.message, 3000);
+            } else {
               if (e === 'ctrls') {
-                return AlertService.send("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
+                AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
               }
-            });
-          } else {
-            if (e === 'ctrls') {
-              AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
+              $scope.state = 'saved';
+              return $scope.changed = false;
             }
+          }, function(err) {
+            if (e === 'ctrls') {
+              return AlertService.send("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
+            }
+          });
+        } else {
+          if (e === 'ctrls') {
+            AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
           }
-        };
-        $scope.showText = function(date) {
-          if ($scope.current_date.setHours(0, 0, 0, 0) > (new Date($scope.curMonth + '-' + date)).setHours(0, 0, 0, 0)) {
-            date = date + '';
-            date = date.length === 2 ? date : '0' + date;
-            $scope.hideToday = true;
-            $scope.curDate = new Date($scope.curMonth + '-' + date);
-            $http.get('/text/' + $scope.curMonth + '-' + date).success(function(data, status, headers) {
-              $scope.historyText = data.text;
-            });
-          } else if ($scope.current_date.setHours(0, 0, 0, 0) === (new Date($scope.curMonth + '-' + date)).setHours(0, 0, 0, 0)) {
-            $scope.hideToday = false;
-            $scope.historyText = '';
-            $scope.curDate = $scope.current_date;
-          } else {
-            AlertService.send("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
-            return;
-          }
-        };
-        $scope.$watch("text", function(newVal, oldVal) {
-          $scope.changed = newVal !== oldVal && oldVal !== '';
-          if ($scope.changed) {
-            $scope.state = 'notsaved';
-            TimelineService.setCounterValue($scope.getWordCounter());
-          }
-        });
+        }
+      };
+      $scope.showText = function(date) {
+        if ($scope.current_date.setHours(0, 0, 0, 0) > (new Date($scope.curMonth + '-' + date)).setHours(0, 0, 0, 0)) {
+          date = date + '';
+          date = date.length === 2 ? date : '0' + date;
+          $scope.hideToday = true;
+          $scope.curDate = new Date($scope.curMonth + '-' + date);
+          $http.get('/text/' + $scope.curMonth + '-' + date).success(function(data, status, headers) {
+            $scope.historyText = data.text;
+          });
+        } else if ($scope.current_date.setHours(0, 0, 0, 0) === (new Date($scope.curMonth + '-' + date)).setHours(0, 0, 0, 0)) {
+          $scope.hideToday = false;
+          $scope.historyText = '';
+          $scope.curDate = $scope.current_date;
+        } else {
+          AlertService.send("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
+          return;
+        }
       };
     }
   ]);

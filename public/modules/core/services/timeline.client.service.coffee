@@ -2,7 +2,7 @@ angular
   .module('core')
   .factory "TimelineService", ['WebApiService', (WebApiService) ->
       timeline = []
-      day = undefined
+      day = (new Date()).getDate()
       timelineCache = []
       getTimeline: (dateString) ->
         if  timelineCache[dateString]
@@ -21,7 +21,8 @@ angular
         else throw new Error('Day is not appropriate')
 
       setCounterValue: (value) ->
-        timeline[day].counter = value
+        if day
+          timeline[day].counter = value
 
 
   ]

@@ -38,7 +38,7 @@ module.exports = {
 			'public/config.js',
 			'public/application.js',
 			'public/modules/*/*.js',
-			'public/modules/*/*[!tests]*/*.js'
+			'public/modules/*/*[!tests|!e2e]*/*.js'
 		],
 		tests: [
 			'public/lib/angular-mocks/angular-mocks.js',
