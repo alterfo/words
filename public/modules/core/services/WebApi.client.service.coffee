@@ -8,24 +8,23 @@ angular
       getToday: ->
         $http.get '/today'
 
-      getTimeline: (year, month) ->
-        date = new Date(new Date(year, month).setHours(0, 0, 0, 0))
-        today = new Date((new Date()).setHours(0, 0, 0, 0))
-        sy = date.getFullYear()
-        sm = date.getMonth()
+      getTimeline: (dateString) ->
+
+        working_date = dateString.yyyymmToDate()
+        today = new Date()
 
         # /2015-01 январь
-        request_string = sy + "-" + ("0" + (sm + 1)).slice(-2)
-        daysN = new Date(year, month+1, 0).getDate()
+        daysN = working_date.daysInMonth()
         days = ('--' for [1..daysN])
 
-        $http.get('/texts/' + request_string)
+        $http.get('/texts/' + dateString)
           .then (data) ->
-            limit = today.getDate()
+            if working_date.isCurrentMonth() then limit = today.getDate()
+            if working_date.isLessThenCurrentMonth() then limit = daysN
             data.data.forEach (e) ->
               days[(new Date(e.date)).getDate() - 1] = e.counter
               return
-            days[0..limit] = (0 for [1..limit])
+            days[0..limit] = (0 for [1..limit]) if limit
             return
         days
 

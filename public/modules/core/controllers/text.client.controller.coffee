@@ -9,18 +9,20 @@ angular.module('core').controller 'TextController', [
     '$document'
     "AlertService"
     'WebApiService'
-    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService,WebApiService) ->
+    'TimelineService'
+    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) ->
 
-        $scope.current_date = new Date()
 
-        cm = $scope.current_date.getMonth()
-        cy = $scope.current_date.getFullYear()
-        cd = $scope.current_date.getDate()
-
-        $scope.date_to_show = new Date $scope.current_date
-        $scope.month_to_show = $scope.date_to_show.getFullYear() + '' + $scope.date_to_show.getMonth()
-        $scope.curMonth = $scope.date_to_show.yyyymm()
-        $scope.curDate = $scope.date_to_show.yyyymmdd()
+      $scope.insertText = (day)->
+        if !day
+          WebApiService.getToday()
+          .then (data) ->
+            $scope.text = data.text
+            $scope.state = 'saved'
+            setInterval $scope.save, 10000
+            return
+          , (err) ->
+            return
 
         $scope.authentication = Authentication
         $scope.historyText = ''
@@ -28,20 +30,10 @@ angular.module('core').controller 'TextController', [
         $scope.changed = false
         $scope.state = 'saved' # saved, notsaved, saving
 
-        daysInMonth = (month,year) ->
-            new Date(year, month+1, 0).getDate()
-
-        $scope.nextMonth = ->
-            $scope.curMonth = $scope.date_to_show.nextMonth().yyyymm()
-            return
-
-        $scope.prevMonth = ->
-            $scope.curMonth = $scope.date_to_show.prevMonth().yyyymm()
-            return
-        
         $scope.getWordCounter = ->
             $scope.text.trim().split(/\s+/).length if $scope.text
 
+          #todo: вынести в директиву
         $document.bind "keydown", (event) ->
           if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
             $scope.save('ctrls')
@@ -56,7 +48,7 @@ angular.module('core').controller 'TextController', [
                 $scope.state = 'saving'
                 WebApiService.postText $scope.text
                   .then (data) ->
-                      if (data.message)
+                      if (data.data.message)
                           AlertService.send "danger", data.message, 3000
                           return
                       else
@@ -89,57 +81,11 @@ angular.module('core').controller 'TextController', [
                 return
             return
 
-
-        AlertService.send "info", "С возвращением, " + $scope.authentication.user.displayName, "Давайте писать!", 3000 if $scope.authentication.user
-
         $scope.$watch "text", (newVal, oldVal) ->
             $scope.changed = newVal isnt oldVal and oldVal isnt ''
             if $scope.changed 
                 $scope.state = 'notsaved'
-                $scope.days[cd - 1] = $scope.getWordCounter()
+                TimelineService.setCounterValue( $scope.getWordCounter())
             return
-
-
-
-        $scope.$watch 'curMonth', ->
-
-            sm = $scope.date_to_show.getMonth()
-            sy = $scope.date_to_show.getFullYear()
-            sd = $scope.date_to_show.getDate()
-
-            # /2015-01 январь
-            request_string = sy + "-" + ("0" + (sm + 1)).slice(-2)
-            $scope.isCurrentMonth = (sm == cm && sy == cy)        
- 
-            $http.get('/texts/' + request_string).success((data, status, headers)->
-                daysN = daysInMonth sm, sy
-
-                # make empty days in month array with 0-s
-                $scope.days = Array.apply(null, new Array(daysN)).map(Number.prototype.valueOf,0)
-
-                # set last index
-                limit = cd if $scope.isCurrentMonth
-
-
-                data.forEach (e, i) ->
-                    $scope.days[(new Date(e.date)).getDate() - 1] = e.counter
-                    return
-
-                if limit
-                    $scope.days[limit..daysN] = Array.apply(null, new Array(daysN - limit)).map(String.prototype.valueOf, "--")
-
-                return
-            )
-            return
-
-        WebApiService.getToday()
-          .then (data) ->
-              $scope.text = data.text
-              $scope.state = 'saved'
-              setInterval $scope.save, 10000
-              return
-          , (err) ->
-              return
-
         return
 ]

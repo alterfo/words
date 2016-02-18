@@ -1,19 +1,19 @@
 <section>
     <div class="timeline-wrapper">
         <header>
-            <h3>{{curDate}}</h3>
+            <h3>{{languageMonth}}</h3>
         </header>
         <ul class="timeline">
             <li class="item">
-                <button class="btn btn-xs btn-primary" ng-click="prevMonth()">
+                <button class="btn btn-xs btn-primary" ui-sref="home({date: prevmonth})">
                     << </button>
             </li>
             <li class="item" ng-repeat="(day, counter) in days track by $index">
                 <span class="timeline__date">{{day+1}}</span>
-                <button type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}" ng-click="showText(day + 1)">{{days[$index]}}</button>
+                <a type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}" >{{days[$index]}}</a>
             </li>
             <li class="item">
-                <button class="btn  btn-xs btn-primary" ng-click="nextMonth()" ng-if="!isCurrentMonth"> >> </button>
+                <button class="btn  btn-xs btn-primary" ui-sref="home({date: nextmonth})" ng-if="nextmonth"> >> </button>
             </li>
         </ul>
     </div>

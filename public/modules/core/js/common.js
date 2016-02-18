@@ -24,6 +24,32 @@
     return new Date(this.setMonth(this.getMonth() - 1));
   };
 
+  String.prototype.yyyymmToDate = function() {
+    return new Date(this.slice(0, 4), +this.slice(5, 7) - 1);
+  };
+
+  Date.prototype.isCurrentMonth = function() {
+    var dm, dy, tm, today, ty, working_date;
+    working_date = this;
+    today = new Date();
+    ty = today.getFullYear();
+    dy = working_date.getFullYear();
+    tm = today.getMonth();
+    dm = working_date.getMonth();
+    return tm === dm && ty === dy;
+  };
+
+  Date.prototype.daysInMonth = function() {
+    return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate();
+  };
+
+  Date.prototype.isLessThenCurrentMonth = function() {
+    var today;
+    today = new Date();
+    today.setMonth(today.getMonth() - 1);
+    return Date.parse(today) > Date.parse(this);
+  };
+
 }).call(this);
 
 //# sourceMappingURL=common.js.map
