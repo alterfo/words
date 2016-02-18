@@ -1,12 +1,9 @@
 <soo-header></soo-header>
 
-<timeline></timeline>
+<timeline auth-show></timeline>
 
 <alerts></alerts>
 
+<section ng-include="'/modules/core/views/welcome.client.view.html'" auth-hide></section>
 
-<div class="wrapper">
-
-    <section ng-include="'/modules/core/views/welcome.client.view.html'" auth-show></section>
-    <text date="{{curDate}}" editable="{{true}}"></text>
-</div>
+<soo-text></soo-text>
