@@ -10,7 +10,7 @@
             if (scope.authentication.user) {
               return element.addClass('ng-hide');
             } else {
-              return element.addClass('ng-hide');
+              return element.removeClass('ng-hide');
             }
           });
         }
@@ -23,8 +23,8 @@
         link: function(scope, element, attrs) {
           scope.authentication = Authentication;
           return scope.$watch(scope.authentication, function(value, oldValue) {
-            if (!scope.authentication.user) {
-              return element.addClass('ng-hide');
+            if (scope.authentication.user) {
+              return element.removeClass('ng-hide');
             } else {
               return element.addClass('ng-hide');
             }

@@ -8,15 +8,15 @@ angular
           if (scope.authentication.user)
            element.addClass('ng-hide')
           else
-            element.addClass('ng-hide')
+            element.removeClass('ng-hide')
 ]
   .directive 'authShow', ['Authentication', (Authentication) ->
     restrict: 'A'
     link: (scope, element, attrs) ->
       scope.authentication = Authentication
       scope.$watch scope.authentication, (value, oldValue) ->
-        if (!scope.authentication.user)
-          element.addClass('ng-hide')
+        if (scope.authentication.user)
+          element.removeClass('ng-hide')
         else
           element.addClass('ng-hide')
   ]
