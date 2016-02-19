@@ -28,7 +28,7 @@
         },
         setCounterValue: function(value) {
           if (day) {
-            return timeline[day].counter = value;
+            return timeline[day] = value;
           }
         }
       };
