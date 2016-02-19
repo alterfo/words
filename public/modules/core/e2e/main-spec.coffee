@@ -18,4 +18,4 @@ describe '500 words main page from scratch', ->
 
   it 'should not have username', ->
     browser.takeScreenshot()
-    expect(by.model('HeaderController.authentication.user')).toBeFalthy()
+    expect(By.model('HeaderController.authentication.user')).toBeFalthy()
