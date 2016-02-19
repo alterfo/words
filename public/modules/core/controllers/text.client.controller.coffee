@@ -16,13 +16,13 @@ angular.module('core').controller 'TextController', [
       $scope.insertText = (day)->
         if !day
           WebApiService.getToday()
-          .then (data) ->
-            $scope.text = data.text
-            $scope.state = 'saved'
-            setInterval $scope.save, 10000
-            return
-          , (err) ->
-            return
+            .then (data) ->
+              $scope.text = data.text
+              $scope.state = 'saved'
+              setInterval $scope.save, 10000
+              return
+            , (err) ->
+              return
 
       $scope.text = ''
       $scope.getWordCounter = ->
@@ -34,7 +34,7 @@ angular.module('core').controller 'TextController', [
         $scope.changed = newVal isnt oldVal and oldVal isnt ''
         if $scope.changed
           $scope.state = 'notsaved'
-          TimelineService.setCounterValue( $scope.getWordCounter())
+          TimelineService.setCounterValue $scope.getWordCounter()
         return
 
 
@@ -45,17 +45,24 @@ angular.module('core').controller 'TextController', [
 
       $scope.state = 'saved' # saved, notsaved, saving
 
+      $scope.saveByKeys = () ->
+        if $scope.changed
+          $scope.state = 'saving'
+          WebApiService.postText $scope.text
+          .then (data) ->
+            if (data.data.message)
+              AlertService.send "danger", data.message, 3000
+              return
+            else
+              AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000
+              $scope.state = 'saved'
+              $scope.changed = false
+          , (err) ->
+            AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000
 
-
-        #todo: вынести в директиву
-      $document.bind "keydown", (event) ->
-        if (event.which is 115 or event.which is 83) and (event.ctrlKey or event.metaKey)
-          $scope.save('ctrls')
-
-          event.stopPropagation()
-          event.preventDefault()
-          return false
-        true
+        else
+          AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000
+        return
 
       $scope.save = (e) ->
           if $scope.changed

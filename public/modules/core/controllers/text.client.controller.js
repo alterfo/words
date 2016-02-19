@@ -29,15 +29,24 @@
       });
       $scope.historyText = '';
       $scope.state = 'saved';
-      $document.bind("keydown", function(event) {
-        if ((event.which === 115 || event.which === 83) && (event.ctrlKey || event.metaKey)) {
-          $scope.save('ctrls');
-          event.stopPropagation();
-          event.preventDefault();
-          return false;
+      $scope.saveByKeys = function() {
+        if ($scope.changed) {
+          $scope.state = 'saving';
+          WebApiService.postText($scope.text).then(function(data) {
+            if (data.data.message) {
+              AlertService.send("danger", data.message, 3000);
+            } else {
+              AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
+              $scope.state = 'saved';
+              return $scope.changed = false;
+            }
+          }, function(err) {
+            return AlertService.send("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
+          });
+        } else {
+          AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
         }
-        return true;
-      });
+      };
       $scope.save = function(e) {
         if ($scope.changed) {
           $scope.state = 'saving';

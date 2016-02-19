@@ -28,21 +28,15 @@ module.exports = function(grunt) {
 				}
 			},
 			clientViews: {
-				files: watchFiles.clientViews,
-				options: {
-					livereload: true
-				}
+				files: watchFiles.clientViews
 			},
 			clientJS: {
 				files: watchFiles.clientJS,
-                tasks: ['browserify']
+                tasks: ['browserify', 'uglify']
 			},
 			clientCSS: {
 				files: watchFiles.clientCSS,
-				tasks: ['csslint'],
-				options: {
-					livereload: true
-				}
+				tasks: ['csslint']
 			}
 		},
 		csslint: {
@@ -63,17 +57,28 @@ module.exports = function(grunt) {
 		nodemon: {
 			dev: {
 				script: 'server.js',
-				options: {
-					nodeArgs: ['--debug'],
-					ext: 'js,html',
-					watch: watchFiles.serverViews.concat(watchFiles.serverJS)
-				}
+				watch: watchFiles.serverViews.concat(watchFiles.serverJS)
 			}
 		},
         browserify: {
             'public/dist/application.js': '<%= applicationJavaScriptFiles %>',
             options: {
-                transform: ["browserify-ngannotate"]
+                transform: ["ngify"]
+            }
+        },
+        uglify: {
+            all: {
+                files: {
+                    'public/dist/application.min.js': ['public/dist/application.js']
+                }
+            }
+        },
+        concurrent: {
+            dev: {
+                tasks: ['nodemon','browserSync'],
+                options: {
+                    logConcurrentOutput: true
+                }
             }
         },
         browserSync: {
@@ -82,31 +87,12 @@ module.exports = function(grunt) {
                     src : [ watchFiles.clientViews, watchFiles.clientJS, watchFiles.clientCSS ]
                 },
                 options: {
-                    proxy: 'localhost:3000'
+                    logLevel: "info",
+                    logConnections: true,
+                    proxy: 'http://localhost:8000'
                 }
             }
         },
-		'node-inspector': {
-			custom: {
-				options: {
-					'web-port': 1337,
-					'web-host': 'localhost',
-					'debug-port': 5858,
-					'save-live-edit': true,
-					'no-preload': true,
-					'stack-trace-limit': 50,
-					'hidden': []
-				}
-			}
-		},
-		concurrent: {
-			default: ['nodemon', 'watch'],
-			debug: ['nodemon', 'watch', 'node-inspector'],
-			options: {
-				logConcurrentOutput: true,
-				limit: 10
-			}
-		},
 		env: {
 			test: {
 				NODE_ENV: 'test'
@@ -141,7 +127,7 @@ module.exports = function(grunt) {
 	});
 
 	// Load NPM tasks
-	require('load-grunt-tasks')(grunt);
+	require('load-grunt-tasks')(grunt, { pattern: ['grunt-*', '@*/grunt-*']});
 
 	// Making grunt default to force in order not to break the project.
 	grunt.option('force', true);
@@ -156,17 +142,14 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['nodemon', 'browserSync', 'watch']);
+	grunt.registerTask('default', [ 'concurrent' ]);
 
 	// Secure task(s).
 	grunt.registerTask('secure', ['env:secure', 'lint', 'concurrent:default']);
 
-	// Lint task(s).
-	grunt.registerTask('lint', ['jshint', 'csslint']);
-
 	// Build task(s).
-	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
+	grunt.registerTask('build', ['loadConfig', 'browserify', 'uglify', 'cssmin']);
 
 	// Test task.
-	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit', 'protractor:all']);
 };

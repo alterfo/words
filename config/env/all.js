@@ -6,7 +6,7 @@ module.exports = {
 		description: 'Сервис шифрованных личных записей',
 		keywords: 'слова, дневник, личные записи, шифрованный'
 	},
-	port: process.env.PORT || 3000,
+	port: process.env.PORT || 8000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',
 	sessionCollection: 'sessions',
@@ -23,12 +23,10 @@ module.exports = {
 				'public/lib/angular-resource/angular-resource.js',
 				'public/lib/angular-cookies/angular-cookies.js', 
 				'public/lib/angular-animate/angular-animate.js', 
-				'public/lib/angular-touch/angular-touch.js', 
 				'public/lib/angular-sanitize/angular-sanitize.js',
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                'public/lib/angular-hotkeys/build/hotkeys.js'
+				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js'
 			]
 		},
 		css: [
