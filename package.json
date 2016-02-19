@@ -44,6 +44,7 @@
     "swig": "~1.4.1"
   },
   "devDependencies": {
+    "browserify-ngannotate": "^2.0.0",
     "grunt-browser-sync": "^2.2.0",
     "grunt-concurrent": "~1.0.0",
     "grunt-contrib-csslint": "^0.3.1",

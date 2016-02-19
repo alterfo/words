@@ -23,7 +23,6 @@ module.exports = function(grunt) {
 			},
 			serverJS: {
 				files: watchFiles.serverJS,
-				tasks: ['jshint'],
 				options: {
 					livereload: true
 				}
@@ -31,15 +30,12 @@ module.exports = function(grunt) {
 			clientViews: {
 				files: watchFiles.clientViews,
 				options: {
-					livereload: true,
+					livereload: true
 				}
 			},
 			clientJS: {
 				files: watchFiles.clientJS,
-				tasks: ['jshint'],
-				options: {
-					livereload: true
-				}
+                tasks: ['browserify']
 			},
 			clientCSS: {
 				files: watchFiles.clientCSS,
@@ -49,30 +45,12 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		jshint: {
-			all: {
-				src: watchFiles.clientJS.concat(watchFiles.serverJS),
-				options: {
-					jshintrc: true
-				}
-			}
-		},
 		csslint: {
 			options: {
-				csslintrc: '.csslintrc',
+				csslintrc: '.csslintrc'
 			},
 			all: {
 				src: watchFiles.clientCSS
-			}
-		},
-		uglify: {
-			production: {
-				options: {
-					mangle: false
-				},
-				files: {
-					'public/dist/application.min.js': 'public/dist/application.js'
-				}
 			}
 		},
 		cssmin: {
@@ -92,6 +70,22 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+        browserify: {
+            'public/dist/application.js': '<%= applicationJavaScriptFiles %>',
+            options: {
+                transform: ["browserify-ngannotate"]
+            }
+        },
+        browserSync: {
+            dev: {
+                bsFiles: {
+                    src : [ watchFiles.clientViews, watchFiles.clientJS, watchFiles.clientCSS ]
+                },
+                options: {
+                    proxy: 'localhost:3000'
+                }
+            }
+        },
 		'node-inspector': {
 			custom: {
 				options: {
@@ -102,13 +96,6 @@ module.exports = function(grunt) {
 					'no-preload': true,
 					'stack-trace-limit': 50,
 					'hidden': []
-				}
-			}
-		},
-		ngAnnotate: {
-			production: {
-				files: {
-					'public/dist/application.js': '<%= applicationJavaScriptFiles %>'
 				}
 			}
 		},
@@ -169,10 +156,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['concurrent:default']);
-
-	// Debug task.
-	grunt.registerTask('debug', ['concurrent:debug']);
+	grunt.registerTask('default', ['nodemon', 'browserSync', 'watch']);
 
 	// Secure task(s).
 	grunt.registerTask('secure', ['env:secure', 'lint', 'concurrent:default']);
