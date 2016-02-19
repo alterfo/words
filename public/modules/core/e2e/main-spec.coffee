@@ -1,4 +1,4 @@
-describe '500 words main page', ->
+describe '500 words main page from scratch', ->
 
   beforeEach ->
     browser.get 'http://localhost:3000'
@@ -15,3 +15,7 @@ describe '500 words main page', ->
 
   it 'should have login link', ->
     expect($('[href="/#!/signin"]').getText()).toBe 'Войти'
+
+  it 'should not have username', ->
+    browser.takeScreenshot()
+    expect(by.model('HeaderController.authentication.user')).toBeFalthy()

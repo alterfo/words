@@ -13,8 +13,11 @@
     it('should have register link', function() {
       return expect($('[href="/#!/signup"]').getText()).toBe('Зарегистрироваться');
     });
-    return it('should have login link', function() {
+    it('should have login link', function() {
       return expect($('[href="/#!/signin"]').getText()).toBe('Войти');
+    });
+    return it('should not have username', function() {
+      return expect();
     });
   });
 
