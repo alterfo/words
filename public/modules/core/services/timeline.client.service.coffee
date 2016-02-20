@@ -22,7 +22,7 @@ angular
 
       setCounterValue: (value) ->
         if day
-          timeline[day] = value
+          timeline[day-1] = value
 
 
   ]
