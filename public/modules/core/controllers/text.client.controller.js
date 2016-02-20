@@ -29,7 +29,9 @@
       });
       $scope.historyText = '';
       $scope.state = 'saved';
-      $scope.saveByKeys = function() {
+      $scope.saveByKeys = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         if ($scope.changed) {
           $scope.state = 'saving';
           WebApiService.postText($scope.text).then(function(data) {
@@ -46,29 +48,19 @@
         } else {
           AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
         }
+        return false;
       };
-      $scope.save = function(e) {
+      $scope.save = function() {
         if ($scope.changed) {
           $scope.state = 'saving';
-          WebApiService.postText($scope.text).then(function(data) {
+          return WebApiService.postText($scope.text).then(function(data) {
             if (data.data.message) {
               AlertService.send("danger", data.message, 3000);
             } else {
-              if (e === 'ctrls') {
-                AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
-              }
               $scope.state = 'saved';
               return $scope.changed = false;
             }
-          }, function(err) {
-            if (e === 'ctrls') {
-              return AlertService.send("danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000);
-            }
           });
-        } else {
-          if (e === 'ctrls') {
-            AlertService.send("success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000);
-          }
         }
       };
       $scope.showText = function(date) {

@@ -45,7 +45,9 @@ angular.module('core').controller 'TextController', [
 
       $scope.state = 'saved' # saved, notsaved, saving
 
-      $scope.saveByKeys = () ->
+      $scope.saveByKeys = (e) ->
+        e.preventDefault()
+        e.stopPropagation()
         if $scope.changed
           $scope.state = 'saving'
           WebApiService.postText $scope.text
@@ -62,26 +64,22 @@ angular.module('core').controller 'TextController', [
 
         else
           AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000
-        return
 
-      $scope.save = (e) ->
-          if $scope.changed
-              $scope.state = 'saving'
-              WebApiService.postText $scope.text
-                .then (data) ->
-                    if (data.data.message)
-                        AlertService.send "danger", data.message, 3000
-                        return
-                    else
-                      AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000 if e is 'ctrls'
-                      $scope.state = 'saved'
-                      $scope.changed = false
-                , (err) ->
-                    AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000 if e is 'ctrls'
 
-          else
-              AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000 if e is 'ctrls'
-          return
+        return false
+
+      $scope.save = () ->
+        if $scope.changed
+            $scope.state = 'saving'
+            WebApiService.postText $scope.text
+              .then (data) ->
+                  if (data.data.message)
+                      AlertService.send "danger", data.message, 3000
+                      return
+                  else
+                    $scope.state = 'saved'
+                    $scope.changed = false
+
 
       $scope.showText = (date) ->
           if $scope.current_date.setHours(0,0,0,0) > (new Date($scope.curMonth + '-' + date)).setHours(0,0,0,0)
@@ -101,7 +99,5 @@ angular.module('core').controller 'TextController', [
               AlertService.send "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
               return
           return
-
-
       return
 ]
