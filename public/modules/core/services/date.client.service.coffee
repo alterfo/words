@@ -1,22 +1,25 @@
-angular.module('core').factory "DateService", [
-  () ->
-  	today = new Date()
-  	date_to_show = new Date()
+angular
+  .module('core')
+  .factory "DateService", [ ->
+    new class DateService
+      today: null
+      working_date: null
+      constructor: ->
+        @today = new Date()
 
-  	getTodayISO: () ->
-  		today
-  	getTodayString: () ->
-  		today.yyyymmdd() # "2015-02-28"
-  	getTodayDay: () ->
-  		today.getDate()
-  	getTodayMonthString: () ->
-  		today.yyyymm()
-  	daysInMonth: (m, y) ->
-  		new Date(year, month+1, 0).getDate()
-  	nextMonthString: (date) ->
-  		(new Date(date.setMonth(date.getMonth() + 1))).yyyymm();
-  	prevMonthString: (date) ->
-  		(new Date(date.setMonth(date.getMonth() - 1))).yyyymm();
-
+      getToday: () ->
+        @today
+      getTodayString: () ->
+        @today.yyyymmdd() # "2015-02-28"
+      getTodayDayNumber: () ->
+        @today.getDate()
+      getTodayMonthString: () ->
+        @today.yyyymm()
+      daysInMonth: (m, y) ->
+        new Date(y, m+1, 0).getDate()
+      nextMonthString: (date) ->
+        (new Date(date.setMonth(date.getMonth() + 1))).yyyymm();
+      prevMonthString: (date) ->
+        (new Date(date.setMonth(date.getMonth() - 1))).yyyymm();
 
 ]

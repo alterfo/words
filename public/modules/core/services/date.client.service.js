@@ -2,32 +2,47 @@
 (function() {
   angular.module('core').factory("DateService", [
     function() {
-      var date_to_show, today;
-      today = new Date();
-      date_to_show = new Date();
-      return {
-        getTodayISO: function() {
-          return today;
-        },
-        getTodayString: function() {
-          return today.yyyymmdd();
-        },
-        getTodayDay: function() {
-          return today.getDate();
-        },
-        getTodayMonthString: function() {
-          return today.yyyymm();
-        },
-        daysInMonth: function(m, y) {
-          return new Date(year, month + 1, 0).getDate();
-        },
-        nextMonthString: function(date) {
-          return (new Date(date.setMonth(date.getMonth() + 1))).yyyymm();
-        },
-        prevMonthString: function(date) {
-          return (new Date(date.setMonth(date.getMonth() - 1))).yyyymm();
+      var DateService;
+      return new (DateService = (function() {
+        DateService.prototype.today = null;
+
+        DateService.prototype.working_date = null;
+
+        function DateService() {
+          this.today = new Date();
         }
-      };
+
+        DateService.prototype.getToday = function() {
+          return this.today;
+        };
+
+        DateService.prototype.getTodayString = function() {
+          return this.today.yyyymmdd();
+        };
+
+        DateService.prototype.getTodayDayNumber = function() {
+          return this.today.getDate();
+        };
+
+        DateService.prototype.getTodayMonthString = function() {
+          return this.today.yyyymm();
+        };
+
+        DateService.prototype.daysInMonth = function(m, y) {
+          return new Date(y, m + 1, 0).getDate();
+        };
+
+        DateService.prototype.nextMonthString = function(date) {
+          return (new Date(date.setMonth(date.getMonth() + 1))).yyyymm();
+        };
+
+        DateService.prototype.prevMonthString = function(date) {
+          return (new Date(date.setMonth(date.getMonth() - 1))).yyyymm();
+        };
+
+        return DateService;
+
+      })());
     }
   ]);
 

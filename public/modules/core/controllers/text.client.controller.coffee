@@ -10,15 +10,12 @@ angular.module('core').controller 'TextController', [
     "AlertService"
     'WebApiService'
     'TimelineService'
-    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) ->
+    'DateService'
+    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) ->
       $scope.authentication = Authentication
 
       #todo: вынести все подобное дерьмо в сервис работы с датами
-      today = (new Date()).getDate()
       $scope.text = ''
-
-
-
 
       $scope.getWordCounter = ->
         $scope.text.trim().split(/\s+/).length if $scope.text
@@ -27,8 +24,8 @@ angular.module('core').controller 'TextController', [
 
 
       # Order is important. 1st
-      $scope.insertText = (day)->
-        if day is today
+      $scope.insertText = (todayString)->
+        if todayString is DateService.getTodayString()
           WebApiService.getToday()
           .then (response) ->
             $scope.text = response.data.text
@@ -43,7 +40,7 @@ angular.module('core').controller 'TextController', [
         $scope.changed = newVal isnt oldVal
         if $scope.changed
           $scope.state = 'notsaved'
-          TimelineService.setCounterValue $scope.getWordCounter()
+          TimelineService.setCounterValue DateService.getToday(), $scope.getWordCounter()
         return
 
       $scope.historyText = ''

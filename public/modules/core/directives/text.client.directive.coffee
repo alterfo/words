@@ -1,5 +1,5 @@
 'use strict'
-angular.module('core').directive 'sooText', [ 'TimelineService', 'AlertService', (TimelineService, AlertService) ->
+angular.module('core').directive 'sooText', [ 'TimelineService', 'AlertService', 'DateService', (TimelineService, AlertService, DateService) ->
     templateUrl: 'modules/core/views/text.client.view.html'
     restrict: 'E'
     controller: 'TextController'
@@ -7,7 +7,6 @@ angular.module('core').directive 'sooText', [ 'TimelineService', 'AlertService',
       textDate: '='
     }
     link: (s,e,a) ->
-      s.insertText(TimelineService.getDay())
-      AlertService.send "info", "С возвращением, " + s.authentication.user.displayName, "Давайте писать!", 3000 if s.authentication.user
+      s.insertText(DateService.getTodayString())
       return
  ]

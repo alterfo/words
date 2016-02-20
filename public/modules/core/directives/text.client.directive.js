@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('core').directive('sooText', [
-    'TimelineService', 'AlertService', function(TimelineService, AlertService) {
+    'TimelineService', 'AlertService', 'DateService', function(TimelineService, AlertService, DateService) {
       return {
         templateUrl: 'modules/core/views/text.client.view.html',
         restrict: 'E',
@@ -11,10 +11,7 @@
           textDate: '='
         },
         link: function(s, e, a) {
-          s.insertText(TimelineService.getDay());
-          if (s.authentication.user) {
-            AlertService.send("info", "С возвращением, " + s.authentication.user.displayName, "Давайте писать!", 3000);
-          }
+          s.insertText(DateService.getTodayString());
         }
       };
     }

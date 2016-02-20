@@ -1,23 +1,15 @@
 angular
   .module('core')
-  .factory "TimelineService", ['WebApiService', (WebApiService) ->
-
-      day: (new Date()).getDate()
+  .factory "TimelineService", ['WebApiService', 'DateService', (WebApiService, DateService) ->
+    new class TimelineService
+      currentMonth: ''
       timeline: []
-
+      constructor: ->
+        @currentMonth = DateService.getTodayMonthString()
       fetchTimeline: (dateString) ->
-          angular.copy(WebApiService.fetchTimeline(dateString), @timeline) # <- Yac, wierd
-          return @timeline
-
-      getDay: ->
-        @day
-
-      setDay: (d) ->
-        if typeof d is 'number' and d > 0 and d < 30
-          @day = d
-        else throw new Error('Day is not appropriate')
-
-      setCounterValue: (value) ->
-        if @day
-          @timeline[@day-1] = value
+        angular.copy(WebApiService.fetchTimeline(dateString), @timeline) # <- Yac, wierd
+        return @timeline
+      setCounterValue: (date, value) ->
+        if date.yyyymm() is @currentMonth
+          @timeline[date.getDate()-1] = value
   ]

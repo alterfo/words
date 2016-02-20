@@ -2,10 +2,8 @@
 (function() {
   'use strict';
   angular.module('core').controller('TextController', [
-    '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", 'WebApiService', 'TimelineService', function($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) {
-      var today;
+    '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", 'WebApiService', 'TimelineService', 'DateService', function($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) {
       $scope.authentication = Authentication;
-      today = (new Date()).getDate();
       $scope.text = '';
       $scope.getWordCounter = function() {
         if ($scope.text) {
@@ -13,8 +11,8 @@
         }
       };
       $scope.changed = false;
-      $scope.insertText = function(day) {
-        if (day === today) {
+      $scope.insertText = function(todayString) {
+        if (todayString === DateService.getTodayString()) {
           return WebApiService.getToday().then(function(response) {
             $scope.text = response.data.text;
             $scope.state = 'saved';
@@ -26,7 +24,7 @@
         $scope.changed = newVal !== oldVal;
         if ($scope.changed) {
           $scope.state = 'notsaved';
-          TimelineService.setCounterValue($scope.getWordCounter());
+          TimelineService.setCounterValue(DateService.getToday(), $scope.getWordCounter());
         }
       });
       $scope.historyText = '';
