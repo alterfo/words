@@ -4,16 +4,14 @@ angular
     '$scope'
     'TimelineService'
     '$stateParams'
-    '$locale'
-    ($scope, TimelineService, $stateParams, $locale) ->
+    ($scope, TimelineService, $stateParams) ->
 
-      dateString = $stateParams.date || (new Date()).yyyymm()
+      if $stateParams.date
+        TimelineService.setWorkingMonth $stateParams.date
 
-      working_date = if dateString then dateString.yyyymmToDate() else new Date()
+      $scope.languageMonth = TimelineService.monthLocaleString
 
-      $scope.languageMonth = $locale.DATETIME_FORMATS.STANDALONEMONTH[+working_date.getMonth()]
-
-      TimelineService.fetchTimeline(dateString)
+      TimelineService.fetchTimeline(TimelineService.workingMonth)
 
       $scope.days = TimelineService.timeline
 
@@ -24,6 +22,6 @@ angular
         if counter > 0 then return 'btn-success'
 
 
-      $scope.prevmonth = working_date.prevMonth().yyyymm()
-      $scope.nextmonth = working_date.nextMonth().yyyymm() if working_date.nextMonth().isLessThenCurrentMonth()
+      $scope.prevmonth = TimelineService.prevMonthString()
+      $scope.nextmonth = TimelineService.nextMonthString() if TimelineService.workingMonthIsLessThenCurrentMonth()
 ]
