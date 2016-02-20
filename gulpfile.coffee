@@ -1,6 +1,7 @@
 gulp = require 'gulp'
 browserSync = require('browser-sync').create()
 g = require('gulp-load-plugins')()
+reload = browserSync.reload
 
 g.env.set
   NODE_ENV: "development"
@@ -32,14 +33,14 @@ gulp.task 'client-js', ->
     .on 'error', onError
     .pipe gulp.dest 'public/dist/'
 
+
 gulp.task 'client-css', ->
-  gulp.src clientCSS
+  gulp.src watchFiles.clientCSS
     .pipe g.stylus({compress: true})
     .pipe gulp.dest 'public/dist/css'
 
 
 gulp.task 'watch-js', ['client-js'], browserSync.reload
-gulp.task 'watch-html', browserSync.reload
 gulp.task 'watch-css', ['client-css'], browserSync.reload
 
 gulp.task 'nodemon', ->
@@ -56,7 +57,7 @@ gulp.task 'browser-sync', ->
 gulp.task 'serve', ['nodemon', 'browser-sync']
 
 gulp.task 'default', ['serve'], ->
-  gulp.watch watchFiles.clientViews, ['watch-html']
+  gulp.watch(watchFiles.clientViews).on("change", reload)
   gulp.watch watchFiles.clientJS, ['watch-js']
   gulp.watch watchFiles.clientCSS, ['watch-css']
 
