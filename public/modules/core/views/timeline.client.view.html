@@ -10,7 +10,7 @@
             </li>
             <li class="item" ng-repeat="(day, counter) in days track by $index">
                 <span class="timeline__date">{{day+1}}</span>
-                <a type="button" class="btn btn-xs" ng-class="{'btn-default': counter === '--', 'btn-info': counter === 0, 'btn-success': counter > 0}" >{{days[$index]}}</a>
+                <a type="button" class="btn btn-xs" ng-class="timeline_button_class(counter)">{{counter}}</a>
             </li>
             <li class="item">
                 <button class="btn  btn-xs btn-primary" ui-sref="home({date: nextmonth})" ng-if="nextmonth"> >> </button>

@@ -13,33 +13,38 @@ angular.module('core').controller 'TextController', [
     ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) ->
       $scope.authentication = Authentication
 
-      $scope.insertText = (day)->
-        if !day
-          WebApiService.getToday()
-            .then (data) ->
-              $scope.text = data.text
-              $scope.state = 'saved'
-              setInterval $scope.save, 10000
-              return
-            , (err) ->
-              return
-
+      #todo: вынести все подобное дерьмо в сервис работы с датами
+      today = (new Date()).getDate()
       $scope.text = ''
+
+
+
+
       $scope.getWordCounter = ->
         $scope.text.trim().split(/\s+/).length if $scope.text
 
       $scope.changed = false
 
+
+      # Order is important. 1st
+      $scope.insertText = (day)->
+        if day is today
+          WebApiService.getToday()
+          .then (response) ->
+            $scope.text = response.data.text
+            $scope.state = 'saved'
+            setInterval $scope.save, 10000
+            return
+          , (err) ->
+            return
+
+      # second
       $scope.$watch "text", (newVal, oldVal) ->
-        $scope.changed = newVal isnt oldVal and oldVal isnt ''
+        $scope.changed = newVal isnt oldVal
         if $scope.changed
           $scope.state = 'notsaved'
           TimelineService.setCounterValue $scope.getWordCounter()
         return
-
-
-
-
 
       $scope.historyText = ''
 
@@ -53,7 +58,7 @@ angular.module('core').controller 'TextController', [
           WebApiService.postText $scope.text
           .then (data) ->
             if (data.data.message)
-              AlertService.send "danger", data.message, 3000
+              AlertService.send "danger", data.data.message, 3000
               return
             else
               AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000

@@ -8,7 +8,7 @@ angular
       getToday: ->
         $http.get '/today'
 
-      getTimeline: (dateString) ->
+      fetchTimeline: (dateString) ->
 
         working_date = dateString.yyyymmToDate()
         today = new Date()
@@ -18,19 +18,18 @@ angular
         days = ('--' for [1..daysN])
 
         $http.get('/texts/' + dateString)
-          .then (data) ->
+          .then (response) ->
             if working_date.isCurrentMonth() then limit = today.getDate()
             if working_date.isLessThenCurrentMonth() then limit = daysN
-            data.data.forEach (e) ->
+            response.data.forEach (e) ->
               days[(new Date(e.date)).getDate() - 1] = e.counter
               return
-            days[0..limit] = (0 for [1..limit]) if limit
+            days[0..limit-2] = (0 for [1..limit]) if limit
             return
         days
 
       postText: (textString)->
         $http.post '/texts',
-          data:
             text: textString
             date: Date.now()
             counter: textString.trim().split(/\s+/).length

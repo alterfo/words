@@ -32,16 +32,18 @@ gulp.task 'client-js', ->
     .pipe g.uglify()
     .on 'error', onError
     .pipe gulp.dest 'public/dist/'
+    .pipe(browserSync.stream());
 
 
 gulp.task 'client-css', ->
   gulp.src watchFiles.clientCSS
     .pipe g.stylus({compress: true})
     .pipe gulp.dest 'public/dist/css'
+    .pipe(browserSync.stream());
 
 
-gulp.task 'watch-js', ['client-js'], browserSync.reload
-gulp.task 'watch-css', ['client-css'], browserSync.reload
+gulp.task 'watch-js', ['client-js']
+gulp.task 'watch-css', ['client-css']
 
 gulp.task 'nodemon', ->
   g.nodemon
@@ -57,7 +59,7 @@ gulp.task 'browser-sync', ->
 gulp.task 'serve', ['nodemon', 'browser-sync']
 
 gulp.task 'default', ['serve'], ->
-  gulp.watch(watchFiles.clientViews).on("change", reload)
+  gulp.watch(watchFiles.clientViews).on("change", browserSync.stream)
   gulp.watch watchFiles.clientJS, ['watch-js']
   gulp.watch watchFiles.clientCSS, ['watch-css']
 

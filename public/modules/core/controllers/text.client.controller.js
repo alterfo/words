@@ -3,16 +3,9 @@
   'use strict';
   angular.module('core').controller('TextController', [
     '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", 'WebApiService', 'TimelineService', function($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService) {
+      var today;
       $scope.authentication = Authentication;
-      $scope.insertText = function(day) {
-        if (!day) {
-          return WebApiService.getToday().then(function(data) {
-            $scope.text = data.text;
-            $scope.state = 'saved';
-            setInterval($scope.save, 10000);
-          }, function(err) {});
-        }
-      };
+      today = (new Date()).getDate();
       $scope.text = '';
       $scope.getWordCounter = function() {
         if ($scope.text) {
@@ -20,8 +13,17 @@
         }
       };
       $scope.changed = false;
+      $scope.insertText = function(day) {
+        if (day === today) {
+          return WebApiService.getToday().then(function(response) {
+            $scope.text = response.data.text;
+            $scope.state = 'saved';
+            setInterval($scope.save, 10000);
+          }, function(err) {});
+        }
+      };
       $scope.$watch("text", function(newVal, oldVal) {
-        $scope.changed = newVal !== oldVal && oldVal !== '';
+        $scope.changed = newVal !== oldVal;
         if ($scope.changed) {
           $scope.state = 'notsaved';
           TimelineService.setCounterValue($scope.getWordCounter());
@@ -36,7 +38,7 @@
           $scope.state = 'saving';
           WebApiService.postText($scope.text).then(function(data) {
             if (data.data.message) {
-              AlertService.send("danger", data.message, 3000);
+              AlertService.send("danger", data.data.message, 3000);
             } else {
               AlertService.send("success", "Продолжайте!", "Сохранение прошло успешно!", 2000);
               $scope.state = 'saved';

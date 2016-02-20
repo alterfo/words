@@ -2,33 +2,26 @@
 (function() {
   angular.module('core').factory("TimelineService", [
     'WebApiService', function(WebApiService) {
-      var day, timeline, timelineCache;
-      timeline = [];
-      day = (new Date()).getDate();
-      timelineCache = [];
       return {
-        getTimeline: function(dateString) {
-          if (timelineCache[dateString]) {
-            return timelineCache[dateString];
-          } else {
-            timeline = WebApiService.getTimeline(dateString);
-            timelineCache[dateString] = timeline;
-            return timeline;
-          }
+        day: (new Date()).getDate(),
+        timeline: [],
+        fetchTimeline: function(dateString) {
+          angular.copy(WebApiService.fetchTimeline(dateString), this.timeline);
+          return this.timeline;
         },
         getDay: function() {
-          return day;
+          return this.day;
         },
         setDay: function(d) {
           if (typeof d === 'number' && d > 0 && d < 30) {
-            return day = d;
+            return this.day = d;
           } else {
             throw new Error('Day is not appropriate');
           }
         },
         setCounterValue: function(value) {
-          if (day) {
-            return timeline[day - 1] = value;
+          if (this.day) {
+            return this.timeline[this.day - 1] = value;
           }
         }
       };
