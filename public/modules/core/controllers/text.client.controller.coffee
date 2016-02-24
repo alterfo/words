@@ -17,7 +17,10 @@ angular.module('core').controller 'TextController', [
       $scope.text = ''
 
       $scope.getWordCounter = ->
-        $scope.text.trim().split(/\s+/).length if $scope.text
+        if $scope.text.trim()
+          $scope.text.trim().split(/\s+/).length
+        else
+          0
 
       $scope.changed = false
 
@@ -49,7 +52,7 @@ angular.module('core').controller 'TextController', [
       $scope.saveByKeys = (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if $scope.changed
+        if $scope.changed and $scope.text isnt ''
           $scope.state = 'saving'
           WebApiService.postText $scope.text
           .then (data) ->
@@ -61,7 +64,7 @@ angular.module('core').controller 'TextController', [
               $scope.state = 'saved'
               $scope.changed = false
           , (err) ->
-            AlertService.send "danger", "Упс!", "Сервер не доступен, продолжайте и попробуйте сохраниться через 5 минут!", 4000
+            AlertService.send "danger", "Упс!", err, 4000
 
         else
           AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000
@@ -70,7 +73,7 @@ angular.module('core').controller 'TextController', [
         return false
 
       $scope.save = () ->
-        if $scope.changed
+        if $scope.changed and $scope.text isnt ''
             $scope.state = 'saving'
             WebApiService.postText $scope.text
               .then (data) ->
@@ -80,6 +83,8 @@ angular.module('core').controller 'TextController', [
                   else
                     $scope.state = 'saved'
                     $scope.changed = false
+              , (err) ->
+                AlertService.send "danger", "Упс!", err, 4000
 
 
       $scope.showText = (date) ->

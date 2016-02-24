@@ -1,1 +1,168 @@
-!function e(i,t,n){function s(r,o){if(!t[r]){if(!i[r]){var m="function"==typeof require&&require;if(!o&&m)return m(r,!0);if(u)return u(r,!0);throw new Error("Cannot find module '"+r+"'")}var h=t[r]={exports:{}};i[r][0].call(h.exports,function(e){var t=i[r][1][e];return s(t?t:e)},h,h.exports,e,i,t,n)}return t[r].exports}for(var u="function"==typeof require&&require,r=0;r<n.length;r++)s(n[r]);return s}({1:[function(e,i,t){"use strict";angular.module("core").service("Menus",[function(){this.defaultRoles=["*"],this.menus={};var e=function(e){if(!e)return this.isPublic;if(~this.roles.indexOf("*"))return!0;for(var i in e.roles)for(var t in this.roles)if(this.roles[t]===e.roles[i])return!0;return!1};this.validateMenuExistance=function(e){if(e&&e.length){if(this.menus[e])return!0;throw new Error("Menu does not exists")}throw new Error("MenuId was not provided")},this.getMenu=function(e){return this.validateMenuExistance(e),this.menus[e]},this.addMenu=function(i,t,n){return this.menus[i]={isPublic:t||!1,roles:n||this.defaultRoles,items:[],shouldRender:e},this.menus[i]},this.removeMenu=function(e){this.validateMenuExistance(e),delete this.menus[e]},this.addMenuItem=function(i,t,n,s,u,r,o,m){return this.validateMenuExistance(i),this.menus[i].items.push({title:t,link:n,menuItemType:s||"item",menuItemClass:s,uiRoute:u||"/"+n,isPublic:null===r||"undefined"==typeof r?this.menus[i].isPublic:r,roles:null===o||"undefined"==typeof o?this.menus[i].roles:o,position:m||0,items:[],shouldRender:e}),this.menus[i]},this.addSubMenuItem=function(i,t,n,s,u,r,o,m){this.validateMenuExistance(i);for(var h in this.menus[i].items)this.menus[i].items[h].link===t&&this.menus[i].items[h].items.push({title:n,link:s,uiRoute:u||"/"+s,isPublic:null===r||"undefined"==typeof r?this.menus[i].items[h].isPublic:r,roles:null===o||"undefined"==typeof o?this.menus[i].items[h].roles:o,position:m||0,shouldRender:e});return this.menus[i]},this.removeMenuItem=function(e,i){this.validateMenuExistance(e);for(var t in this.menus[e].items)this.menus[e].items[t].link===i&&this.menus[e].items.splice(t,1);return this.menus[e]},this.removeSubMenuItem=function(e,i){this.validateMenuExistance(e);for(var t in this.menus[e].items)for(var n in this.menus[e].items[t].items)this.menus[e].items[t].items[n].link===i&&this.menus[e].items[t].items.splice(n,1);return this.menus[e]},this.addMenu("topbar")}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+//Menu service used for managing  menus
+angular.module('core').service('Menus', [
+
+	function() {
+		// Define a set of default roles
+		this.defaultRoles = ['*'];
+
+		// Define the menus object
+		this.menus = {};
+
+		// A private function for rendering decision 
+		var shouldRender = function(user) {
+			if (user) {
+				if (!!~this.roles.indexOf('*')) {
+					return true;
+				} else {
+					for (var userRoleIndex in user.roles) {
+						for (var roleIndex in this.roles) {
+							if (this.roles[roleIndex] === user.roles[userRoleIndex]) {
+								return true;
+							}
+						}
+					}
+				}
+			} else {
+				return this.isPublic;
+			}
+
+			return false;
+		};
+
+		// Validate menu existance
+		this.validateMenuExistance = function(menuId) {
+			if (menuId && menuId.length) {
+				if (this.menus[menuId]) {
+					return true;
+				} else {
+					throw new Error('Menu does not exists');
+				}
+			} else {
+				throw new Error('MenuId was not provided');
+			}
+
+			return false;
+		};
+
+		// Get the menu object by menu id
+		this.getMenu = function(menuId) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		// Add new menu object by menu id
+		this.addMenu = function(menuId, isPublic, roles) {
+			// Create the new menu
+			this.menus[menuId] = {
+				isPublic: isPublic || false,
+				roles: roles || this.defaultRoles,
+				items: [],
+				shouldRender: shouldRender
+			};
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		// Remove existing menu object by menu id
+		this.removeMenu = function(menuId) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Return the menu object
+			delete this.menus[menuId];
+		};
+
+		// Add menu item object
+		this.addMenuItem = function(menuId, menuItemTitle, menuItemURL, menuItemType, menuItemUIRoute, isPublic, roles, position) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Push new menu item
+			this.menus[menuId].items.push({
+				title: menuItemTitle,
+				link: menuItemURL,
+				menuItemType: menuItemType || 'item',
+				menuItemClass: menuItemType,
+				uiRoute: menuItemUIRoute || ('/' + menuItemURL),
+				isPublic: ((isPublic === null || typeof isPublic === 'undefined') ? this.menus[menuId].isPublic : isPublic),
+				roles: ((roles === null || typeof roles === 'undefined') ? this.menus[menuId].roles : roles),
+				position: position || 0,
+				items: [],
+				shouldRender: shouldRender
+			});
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		// Add submenu item object
+		this.addSubMenuItem = function(menuId, rootMenuItemURL, menuItemTitle, menuItemURL, menuItemUIRoute, isPublic, roles, position) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Search for menu item
+			for (var itemIndex in this.menus[menuId].items) {
+				if (this.menus[menuId].items[itemIndex].link === rootMenuItemURL) {
+					// Push new submenu item
+					this.menus[menuId].items[itemIndex].items.push({
+						title: menuItemTitle,
+						link: menuItemURL,
+						uiRoute: menuItemUIRoute || ('/' + menuItemURL),
+						isPublic: ((isPublic === null || typeof isPublic === 'undefined') ? this.menus[menuId].items[itemIndex].isPublic : isPublic),
+						roles: ((roles === null || typeof roles === 'undefined') ? this.menus[menuId].items[itemIndex].roles : roles),
+						position: position || 0,
+						shouldRender: shouldRender
+					});
+				}
+			}
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		// Remove existing menu object by menu id
+		this.removeMenuItem = function(menuId, menuItemURL) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Search for menu item to remove
+			for (var itemIndex in this.menus[menuId].items) {
+				if (this.menus[menuId].items[itemIndex].link === menuItemURL) {
+					this.menus[menuId].items.splice(itemIndex, 1);
+				}
+			}
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		// Remove existing menu object by menu id
+		this.removeSubMenuItem = function(menuId, submenuItemURL) {
+			// Validate that the menu exists
+			this.validateMenuExistance(menuId);
+
+			// Search for menu item to remove
+			for (var itemIndex in this.menus[menuId].items) {
+				for (var subitemIndex in this.menus[menuId].items[itemIndex].items) {
+					if (this.menus[menuId].items[itemIndex].items[subitemIndex].link === submenuItemURL) {
+						this.menus[menuId].items[itemIndex].items.splice(subitemIndex, 1);
+					}
+				}
+			}
+
+			// Return the menu object
+			return this.menus[menuId];
+		};
+
+		//Adding the topbar menu
+		this.addMenu('topbar');
+	}
+]);
+},{}]},{},[1])

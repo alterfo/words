@@ -1,1 +1,36 @@
-!function t(n,r,e){function i(u,c){if(!r[u]){if(!n[u]){var s="function"==typeof require&&require;if(!c&&s)return s(u,!0);if(o)return o(u,!0);throw new Error("Cannot find module '"+u+"'")}var a=r[u]={exports:{}};n[u][0].call(a.exports,function(t){var r=n[u][1][t];return i(r?r:t)},a,a.exports,t,n,r,e)}return r[u].exports}for(var o="function"==typeof require&&require,u=0;u<e.length;u++)i(e[u]);return i}({1:[function(t,n,r){"use strict";angular.module("users").controller("AuthenticationController",["$scope","$http","$location","Authentication",function(t,n,r,e){t.authentication=e,t.authentication.user&&r.path("/"),t.signup=function(){n.post("/auth/signup",t.credentials).success(function(n){t.authentication.user=n,r.path("/")}).error(function(n){t.error=n.message})},t.signin=function(){n.post("/auth/signin",t.credentials).success(function(n){t.authentication.user=n,r.path("/")}).error(function(n){t.error=n.message})}}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication',
+	function($scope, $http, $location, Authentication) {
+		$scope.authentication = Authentication;
+
+		// If user is signed in then redirect back home
+		if ($scope.authentication.user) $location.path('/');
+
+		$scope.signup = function() {
+			$http.post('/auth/signup', $scope.credentials).success(function(response) {
+				// If successful we assign the response to the global user model
+				$scope.authentication.user = response;
+
+				// And redirect to the index page
+				$location.path('/');
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
+		};
+
+		$scope.signin = function() {
+			$http.post('/auth/signin', $scope.credentials).success(function(response) {
+				// If successful we assign the response to the global user model
+				$scope.authentication.user = response;
+
+				// And redirect to the index page
+				$location.path('/');
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
+		};
+	}
+]);
+},{}]},{},[1])

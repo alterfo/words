@@ -1,1 +1,14 @@
-!function r(e,t,n){function u(i,f){if(!t[i]){if(!e[i]){var s="function"==typeof require&&require;if(!f&&s)return s(i,!0);if(o)return o(i,!0);throw new Error("Cannot find module '"+i+"'")}var c=t[i]={exports:{}};e[i][0].call(c.exports,function(r){var t=e[i][1][r];return u(t?t:r)},c,c.exports,r,e,t,n)}return t[i].exports}for(var o="function"==typeof require&&require,i=0;i<n.length;i++)u(n[i]);return u}({1:[function(r,e,t){"use strict";angular.module("users").factory("Users",["$resource",function(r){return r("users",{},{update:{method:"PUT"}})}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+// Users service used for communicating with the users REST endpoint
+angular.module('users').factory('Users', ['$resource',
+	function($resource) {
+		return $resource('users', {}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+},{}]},{},[1])

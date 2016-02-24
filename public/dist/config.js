@@ -1,1 +1,26 @@
-!function e(r,n,u){function t(o,a){if(!n[o]){if(!r[o]){var f="function"==typeof require&&require;if(!a&&f)return f(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var c=n[o]={exports:{}};r[o][0].call(c.exports,function(e){var n=r[o][1][e];return t(n?n:e)},c,c.exports,e,r,n,u)}return n[o].exports}for(var i="function"==typeof require&&require,o=0;o<u.length;o++)t(u[o]);return t}({1:[function(e,r,n){"use strict";(function(){var e="mean",r=["ngResource","ngCookies","ngAnimate","ngSanitize","ui.router","ui.bootstrap","ui.utils"],n=function(r,n){angular.module(r,n||[]),angular.module(e).requires.push(r)};return{applicationModuleName:e,applicationModuleVendorDependencies:r,registerModule:n}})()},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+// Init the application configuration module for AngularJS application
+var ApplicationConfiguration = (function() {
+	// Init module configuration options
+	var applicationModuleName = 'mean';
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',   'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils'];
+
+	// Add a new vertical module
+	var registerModule = function(moduleName, dependencies) {
+		// Create angular module
+		angular.module(moduleName, dependencies || []);
+
+		// Add the module to the AngularJS configuration file
+		angular.module(applicationModuleName).requires.push(moduleName);
+	};
+
+	return {
+		applicationModuleName: applicationModuleName,
+		applicationModuleVendorDependencies: applicationModuleVendorDependencies,
+		registerModule: registerModule
+	};
+})();
+
+},{}]},{},[1])

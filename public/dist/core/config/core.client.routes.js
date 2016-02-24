@@ -1,1 +1,24 @@
-!function e(r,t,o){function u(i,l){if(!t[i]){if(!r[i]){var a="function"==typeof require&&require;if(!l&&a)return a(i,!0);if(n)return n(i,!0);throw new Error("Cannot find module '"+i+"'")}var f=t[i]={exports:{}};r[i][0].call(f.exports,function(e){var t=r[i][1][e];return u(t?t:e)},f,f.exports,e,r,t,o)}return t[i].exports}for(var n="function"==typeof require&&require,i=0;i<o.length;i++)u(o[i]);return u}({1:[function(e,r,t){"use strict";angular.module("core").config(["$stateProvider","$urlRouterProvider",function(e,r){r.otherwise("/"),e.state("home",{url:"/?date",templateUrl:"modules/core/views/home.client.view.html"}).state("about",{url:"/about",templateUrl:"modules/core/views/about.client.view.html"})}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+// Setting up route
+angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+		// Redirect to home view when route not found
+		$urlRouterProvider.otherwise('/');
+
+		// Home state routing
+		$stateProvider
+            .state('home', {
+                url: '/?date',
+                templateUrl: 'modules/core/views/home.client.view.html'
+            })
+            .state('about', {
+                url: '/about',
+                templateUrl: 'modules/core/views/about.client.view.html'
+            });
+
+	}
+]);
+
+},{}]},{},[1])

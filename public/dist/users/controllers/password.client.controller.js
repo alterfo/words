@@ -1,1 +1,46 @@
-!function r(e,s,t){function n(u,a){if(!s[u]){if(!e[u]){var c="function"==typeof require&&require;if(!a&&c)return c(u,!0);if(o)return o(u,!0);throw new Error("Cannot find module '"+u+"'")}var i=s[u]={exports:{}};e[u][0].call(i.exports,function(r){var s=e[u][1][r];return n(s?s:r)},i,i.exports,r,e,s,t)}return s[u].exports}for(var o="function"==typeof require&&require,u=0;u<t.length;u++)n(t[u]);return n}({1:[function(r,e,s){"use strict";angular.module("users").controller("PasswordController",["$scope","$stateParams","$http","$location","Authentication",function(r,e,s,t,n){r.authentication=n,r.authentication.user&&t.path("/"),r.askForPasswordReset=function(){r.success=r.error=null,s.post("/auth/forgot",r.credentials).success(function(e){r.credentials=null,r.success=e.message}).error(function(e){r.credentials=null,r.error=e.message})},r.resetUserPassword=function(){r.success=r.error=null,s.post("/auth/reset/"+e.token,r.passwordDetails).success(function(e){r.passwordDetails=null,n.user=e,t.path("/password/reset/success")}).error(function(e){r.error=e.message})}}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
+	function($scope, $stateParams, $http, $location, Authentication) {
+		$scope.authentication = Authentication;
+
+		//If user is signed in then redirect back home
+		if ($scope.authentication.user) $location.path('/');
+
+		// Submit forgotten password account id
+		$scope.askForPasswordReset = function() {
+			$scope.success = $scope.error = null;
+
+			$http.post('/auth/forgot', $scope.credentials).success(function(response) {
+				// Show user success message and clear form
+				$scope.credentials = null;
+				$scope.success = response.message;
+
+			}).error(function(response) {
+				// Show user error message and clear form
+				$scope.credentials = null;
+				$scope.error = response.message;
+			});
+		};
+
+		// Change user password
+		$scope.resetUserPassword = function() {
+			$scope.success = $scope.error = null;
+
+			$http.post('/auth/reset/' + $stateParams.token, $scope.passwordDetails).success(function(response) {
+				// If successful show success message and clear form
+				$scope.passwordDetails = null;
+
+				// Attach user profile
+				Authentication.user = response;
+
+				// And redirect to the index page
+				$location.path('/password/reset/success');
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
+		};
+	}
+]);
+},{}]},{},[1])

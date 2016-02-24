@@ -1,6 +1,6 @@
 angular
   .module('core')
-  .factory "WebApiService", ['$http',  ($http) ->
+  .factory "WebApiService", ['$http', '$q',  ($http, $q) ->
     new class WebApiService
       constructor: ->
         return
@@ -28,9 +28,10 @@ angular
             return
         days
 
-      postText: (textString)->
+      postText: (textString) ->
         $http.post '/texts',
             text: textString
             date: Date.now()
             counter: textString.trim().split(/\s+/).length
+
 ]

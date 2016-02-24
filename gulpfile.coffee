@@ -29,8 +29,8 @@ gulp.task 'client-js', ->
   gulp.src applicationJavaScriptFiles
     .pipe g.browserify transform: ["ngify"]
     .on('error', onError)
-    .pipe g.uglify()
-    .on 'error', onError
+#    .pipe g.uglify()
+#    .on 'error', onError
     .pipe gulp.dest 'public/dist/'
     .pipe(browserSync.stream());
 

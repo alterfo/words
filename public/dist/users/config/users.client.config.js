@@ -1,1 +1,32 @@
-!function r(n,t,e){function u(i,c){if(!t[i]){if(!n[i]){var s="function"==typeof require&&require;if(!c&&s)return s(i,!0);if(o)return o(i,!0);throw new Error("Cannot find module '"+i+"'")}var f=t[i]={exports:{}};n[i][0].call(f.exports,function(r){var t=n[i][1][r];return u(t?t:r)},f,f.exports,r,n,t,e)}return t[i].exports}for(var o="function"==typeof require&&require,i=0;i<e.length;i++)u(e[i]);return u}({1:[function(r,n,t){"use strict";angular.module("users").config(["$httpProvider",function(r){r.interceptors.push(["$q","$location","Authentication",function(r,n,t){return{responseError:function(e){switch(e.status){case 401:t.user=null,n.path("signin");break;case 403:}return r.reject(e)}}}])}])},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+// Config HTTP Error Handling
+angular.module('users').config(['$httpProvider',
+	function($httpProvider) {
+		// Set the httpProvider "not authorized" interceptor
+		$httpProvider.interceptors.push(['$q', '$location', 'Authentication',
+			function($q, $location, Authentication) {
+				return {
+					responseError: function(rejection) {
+						switch (rejection.status) {
+							case 401:
+								// Deauthenticate the global user
+								Authentication.user = null;
+
+								// Redirect to signin page
+								$location.path('signin');
+								break;
+							case 403:
+								// Add unauthorized behaviour 
+								break;
+						}
+
+						return $q.reject(rejection);
+					}
+				};
+			}
+		]);
+	}
+]);
+},{}]},{},[1])
