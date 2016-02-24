@@ -54,6 +54,7 @@ gulp.task 'nodemon', ->
 gulp.task 'browser-sync', ->
   browserSync.init
     proxy: "localhost:8000"
+    notify: false
 
 
 gulp.task 'serve', ['nodemon', 'browser-sync']

@@ -14,7 +14,6 @@ angular.module('core').controller 'TextController', [
     ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) ->
       $scope.authentication = Authentication
 
-      #todo: вынести все подобное дерьмо в сервис работы с датами
       $scope.text = ''
 
       $scope.getWordCounter = ->
