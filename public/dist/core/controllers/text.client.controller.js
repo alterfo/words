@@ -8,7 +8,7 @@
       $scope.text = '';
       $scope.getWordCounter = function() {
         if ($scope.text.trim()) {
-          return $scope.text.trim().split(/\s+/).length;
+          return $scope.text.trim().split(/[\s,.;]+/).length;
         } else {
           return 0;
         }

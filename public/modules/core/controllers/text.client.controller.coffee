@@ -18,7 +18,7 @@ angular.module('core').controller 'TextController', [
 
       $scope.getWordCounter = ->
         if $scope.text.trim()
-          $scope.text.trim().split(/\s+/).length
+          $scope.text.trim().split(/[\s,.;]+/).length
         else
           0
 
