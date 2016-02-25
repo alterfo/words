@@ -9,8 +9,9 @@ angular
         @workingMonth = DateService.getTodayMonthString()
         @monthLocaleString = $locale.DATETIME_FORMATS.STANDALONEMONTH[+@workingMonth[5..6]-1] + @workingMonth[0..3]
       fetchTimeline: (dateString) ->
-        angular.copy(WebApiService.fetchTimeline(dateString), @timeline) # <- Yac, wierd
-        return @timeline
+        WebApiService.fetchTimeline dateString, (days) =>
+          angular.copy(days, @timeline)
+
       setCounterValue: (date, value) ->
         if date.yyyymm() is @workingMonth
           @timeline[date.getDate()-1] = value

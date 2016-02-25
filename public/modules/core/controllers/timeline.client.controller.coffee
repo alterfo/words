@@ -11,9 +11,8 @@ angular
 
       $scope.languageMonth = TimelineService.monthLocaleString
 
-      TimelineService.fetchTimeline(TimelineService.workingMonth)
-
-      $scope.days = TimelineService.timeline
+      TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
+        $scope.days = TimelineService.timeline
 
       $scope.timeline_button_class = (counter) ->
         if counter is '--' then return 'btn-default'
