@@ -1,22 +1,12 @@
 describe '500 words', ->
 
-  beforeEach ->
+  it 'should have a title, welcome message, register and login link and should not have username', ->
     browser.get 'http://localhost:3000'
-
-  it 'should have a title', ->
     expect(browser.getTitle()).toEqual '500 слов'
-
-  it 'should show welcome', ->
     expect($('.jumbotron h1').getText())
       .toBe '500 слов'
-
-  it 'should have register link', ->
     expect($('[href="/#!/signup"]').getText()).toBe 'Зарегистрироваться'
-
-  it 'should have login link', ->
     expect($('[href="/#!/signin"]').getText()).toBe 'Войти'
-
-  it 'should not have username', ->
     browser.driver.executeScript () ->
       window.user
     .then (result) ->
@@ -24,7 +14,10 @@ describe '500 words', ->
 
   describe '500 words', ->
 
+    browser.get 'http://localhost:3000'
+
     it 'should be able to login', ->
+
       el = $('.nav [href="/#!/signin"]')
       if el.length
         el.click()
@@ -37,12 +30,21 @@ describe '500 words', ->
         browser.driver.executeScript () ->
           window.user
         .then (result) ->
-          #todo: make more checks
           expect(result).toBeTruthy()
           expect(result.displayName).toBe('Demo Demo')
 
-    it 'should be able to scroll monthes', ->
-      #todo: scroll monthes
+    it 'has properly working timeline', ->
+      expect($('.timeline')).toBeDefined()
+      $$('li.item .timeline__date').then (items) ->
+        expect(items.length).toBeGreaterThan(20)
+      element
+
+
+    it 'has text input', ->
+      expect($('textarea#text')).toBeDefined()
+      expect(By.model('text')).toBeDefined()
+
+
 
     it 'should be able to logout', ->
       el = $('.nav [href="/#!/signout"]')
@@ -53,3 +55,7 @@ describe '500 words', ->
         .then (result) ->
           expect(result).toBeFalsy()
           expect(result.displayName).toBe(undefined)
+
+
+#todo: просмотр истории
+#todo: сохранение введенного текста и обновление каунтера.
