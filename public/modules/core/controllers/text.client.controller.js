@@ -6,6 +6,7 @@
       $scope.authentication = Authentication;
       $scope.text = '';
       $scope.history = {};
+      $scope.todayDateString = DateService.getTodayString();
       $scope.getWordCounter = function() {
         if ($scope.text.trim()) {
           return $scope.text.trim().split(/[\s,.;]+/).length;
@@ -14,19 +15,12 @@
         }
       };
       $scope.changed = false;
-      $scope.insertText = function(todayString) {
-        if (todayString === 'today' || DateService.getTodayString() === todayString) {
-          return WebApiService.getToday().then(function(response) {
-            $scope.text = response.data.text;
-            $scope.state = 'saved';
-            return setInterval($scope.save, 10000);
-          }, function(err) {});
-        } else {
-          return WebApiService.getText(todayString).then(function(response) {
-            $scope.history.text = response.data.text;
-            return $scope.history.date = todayString;
-          }, function(err) {});
-        }
+      $scope.insertText = function() {
+        return WebApiService.getToday().then(function(response) {
+          $scope.text = response.data.text;
+          $scope.state = 'saved';
+          return setInterval($scope.save, 10000);
+        }, function(err) {});
       };
       $scope.$watch("text", function(newVal, oldVal) {
         $scope.changed = newVal !== oldVal;
@@ -91,6 +85,18 @@
           return;
         }
       };
+      $scope.$watch(function() {
+        return TimelineService.workingDate;
+      }, function(value, oldval) {
+        if (value !== $scope.todayDateString) {
+          return WebApiService.getText(value).then(function(response) {
+            $scope.history.text = response.data.text;
+            return $scope.history.date = value;
+          }, function(err) {});
+        } else {
+          return $scope.history = {};
+        }
+      });
     }
   ]);
 

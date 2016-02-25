@@ -16,6 +16,7 @@ angular.module('core').controller 'TextController', [
 
       $scope.text = ''
       $scope.history = {}
+      $scope.todayDateString = DateService.getTodayString()
 
       $scope.getWordCounter = ->
         if $scope.text.trim()
@@ -27,20 +28,12 @@ angular.module('core').controller 'TextController', [
 
 
       # Order is important. 1st
-      $scope.insertText = (todayString)->
-        if todayString is 'today' or DateService.getTodayString() is todayString
+      $scope.insertText = ()->
           WebApiService.getToday()
             .then (response) ->
               $scope.text = response.data.text
               $scope.state = 'saved'
               setInterval $scope.save, 10000
-            , (err) ->
-              return
-        else
-          WebApiService.getText(todayString)
-            .then (response) ->
-              $scope.history.text = response.data.text
-              $scope.history.date = todayString
             , (err) ->
               return
 
@@ -113,5 +106,20 @@ angular.module('core').controller 'TextController', [
               AlertService.send "info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000
               return
           return
+
+      $scope.$watch ->
+        TimelineService.workingDate
+      , (value, oldval) ->
+        if value isnt $scope.todayDateString
+          WebApiService.getText(value)
+            .then (response) ->
+              $scope.history.text = response.data.text
+              $scope.history.date = value
+            , (err) ->
+              return
+        else
+          $scope.history = {}
+
+
       return
 ]

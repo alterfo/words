@@ -6,10 +6,11 @@ angular
     '$stateParams'
     ($scope, TimelineService, $stateParams) ->
 
-      $scope.languageMonth = TimelineService.monthLocaleString
+      $scope.timeline = {}
 
-      TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
-        $scope.days = TimelineService.timeline
+      TimelineService.fetchTimeline().then ->
+        $scope.timeline.days = TimelineService.timeline
+        $scope.timeline.languageMonth = TimelineService.monthLocaleString
 
       $scope.timeline_button_class = (counter, day) ->
         result = ''
@@ -17,7 +18,7 @@ angular
         if counter is 0 then result = 'btn-info'
         if counter >= 500 then result =  'btn-danger'
         if counter > 0 and counter < 500 then result = 'btn-success'
-        if TimelineService.getWorkingDate is $scope.get_date_string(day) then result += ' active'
+        if TimelineService.getWorkingDate() is $scope.get_date_string(day) then result += ' active'
         result
 
       $scope.show_next_month = () ->
@@ -31,11 +32,13 @@ angular
         switch direction
           when 'prev' then TimelineService.prevmonth()
           when 'next' then TimelineService.nextmonth()
-        TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
-          $scope.days = TimelineService.timeline
-          $scope.languageMonth = TimelineService.monthLocaleString
+        TimelineService.fetchTimeline().then ->
+          $scope.timeline.days = TimelineService.timeline
+          $scope.timeline.languageMonth = TimelineService.monthLocaleString
 
       $scope.goToHistory = (dateString) ->
+        TimelineService.setWorkingDate(dateString)
+
 
 
 ]

@@ -8,10 +8,10 @@ angular
       monthLocaleString: ''
       constructor: ->
         @workingMonth = DateService.getTodayMonthString()
-        @workingDate = DateService.getTodayDayString()
+        @workingDate = DateService.getTodayString()
         @monthLocaleString = @getMonthLocaleString()
-      fetchTimeline: (dateString) ->
-        WebApiService.fetchTimeline dateString, (days) =>
+      fetchTimeline: () ->
+        WebApiService.fetchTimeline @workingMonth, (days) =>
           angular.copy(days, @timeline)
       setCounterValue: (date, value) ->
         if date.yyyymm() is @workingMonth
@@ -34,5 +34,5 @@ angular
       workingMonthIsLessThenCurrentMonth: () ->
         Date.parse(new Date @workingMonth) < Date.parse(DateService.getTodayMonthString())
       getMonthLocaleString: ->
-        $locale.DATETIME_FORMATS.STANDALONEMONTH[+@workingMonth[5..6]-1] + @workingMonth[0..3]
+        $locale.DATETIME_FORMATS.STANDALONEMONTH[+@workingMonth[5..6]-1] + ' ' + @workingMonth[0..3]
   ]

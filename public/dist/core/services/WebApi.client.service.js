@@ -34,9 +34,7 @@
             var i, ref, results;
             results = [];
             for (i = 1, ref = daysN - 1; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-              results.push({
-                counter: '--'
-              });
+              results.push('--');
             }
             return results;
           })();
@@ -54,15 +52,13 @@
                   var i, ref1, results;
                   results = [];
                   for (i = 1, ref1 = limit; 1 <= ref1 ? i <= ref1 : i >= ref1; 1 <= ref1 ? i++ : i--) {
-                    results.push({
-                      counter: 0
-                    });
+                    results.push(0);
                   }
                   return results;
                 })())), ref;
               }
               response.data.forEach(function(e) {
-                days[(new Date(e.date)).getDate() - 1].counter = e.counter;
+                days[(new Date(e.date)).getDate() - 1] = e.counter;
               });
               _this.timelineCache[dateString] = days;
               callback && callback(days);

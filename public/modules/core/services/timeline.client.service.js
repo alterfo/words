@@ -14,12 +14,12 @@
 
         function TimelineService() {
           this.workingMonth = DateService.getTodayMonthString();
-          this.workingDate = DateService.getTodayDayString();
+          this.workingDate = DateService.getTodayString();
           this.monthLocaleString = this.getMonthLocaleString();
         }
 
-        TimelineService.prototype.fetchTimeline = function(dateString) {
-          return WebApiService.fetchTimeline(dateString, (function(_this) {
+        TimelineService.prototype.fetchTimeline = function() {
+          return WebApiService.fetchTimeline(this.workingMonth, (function(_this) {
             return function(days) {
               return angular.copy(days, _this.timeline);
             };
@@ -64,7 +64,7 @@
         };
 
         TimelineService.prototype.getMonthLocaleString = function() {
-          return $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + this.workingMonth.slice(0, 4);
+          return $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + ' ' + this.workingMonth.slice(0, 4);
         };
 
         return TimelineService;

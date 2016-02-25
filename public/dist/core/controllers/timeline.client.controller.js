@@ -3,9 +3,10 @@
 (function() {
   angular.module('core').controller('TimelineController', [
     '$scope', 'TimelineService', '$stateParams', function($scope, TimelineService, $stateParams) {
-      $scope.languageMonth = TimelineService.monthLocaleString;
-      TimelineService.fetchTimeline(TimelineService.workingMonth).then(function() {
-        return $scope.days = TimelineService.timeline;
+      $scope.timeline = {};
+      TimelineService.fetchTimeline().then(function() {
+        $scope.timeline.days = TimelineService.timeline;
+        return $scope.timeline.languageMonth = TimelineService.monthLocaleString;
       });
       $scope.timeline_button_class = function(counter, day) {
         var result;
@@ -22,7 +23,7 @@
         if (counter > 0 && counter < 500) {
           result = 'btn-success';
         }
-        if (TimelineService.getWorkingDate === $scope.get_date_string(day)) {
+        if (TimelineService.getWorkingDate() === $scope.get_date_string(day)) {
           result += ' active';
         }
         return result;
@@ -42,12 +43,14 @@
           case 'next':
             TimelineService.nextmonth();
         }
-        return TimelineService.fetchTimeline(TimelineService.workingMonth).then(function() {
-          $scope.days = TimelineService.timeline;
-          return $scope.languageMonth = TimelineService.monthLocaleString;
+        return TimelineService.fetchTimeline().then(function() {
+          $scope.timeline.days = TimelineService.timeline;
+          return $scope.timeline.languageMonth = TimelineService.monthLocaleString;
         });
       };
-      return $scope.goToHistory = function(dateString) {};
+      return $scope.goToHistory = function(dateString) {
+        return TimelineService.setWorkingDate(dateString);
+      };
     }
   ]);
 
