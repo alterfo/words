@@ -6,13 +6,16 @@
       return new (TimelineService = (function() {
         TimelineService.prototype.workingMonth = '';
 
+        TimelineService.prototype.workingDate = '';
+
         TimelineService.prototype.timeline = [];
 
         TimelineService.prototype.monthLocaleString = '';
 
         function TimelineService() {
           this.workingMonth = DateService.getTodayMonthString();
-          this.monthLocaleString = $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + this.workingMonth.slice(0, 4);
+          this.workingDate = DateService.getTodayDayString();
+          this.updateMonthLocaleString();
         }
 
         TimelineService.prototype.fetchTimeline = function(dateString) {
@@ -30,22 +33,35 @@
         };
 
         TimelineService.prototype.setWorkingMonth = function(monthString) {
-          return this.workingMonth = monthString;
+          this.workingMonth = monthString;
+          return this.updateMonthLocaleString();
         };
 
-        TimelineService.prototype.nextMonthString = function() {
-          return DateService.nextMonthString(new Date(this.workingMonth));
+        TimelineService.prototype.getWorkingMonth = function() {
+          return this.workingMonth;
         };
 
-        TimelineService.prototype.prevMonthString = function() {
-          return DateService.prevMonthString(new Date(this.workingMonth));
+        TimelineService.prototype.setWorkingDate = function(dateString) {
+          return this.workingDate = dateString;
+        };
+
+        TimelineService.prototype.getWorkingDate = function() {
+          return this.workingDate;
+        };
+
+        TimelineService.prototype.prevmonth = function() {
+          return this.workingMonth = DateService.prevMonthString(new Date(this.workingMonth));
+        };
+
+        TimelineService.prototype.nextmonth = function() {
+          return this.workingMonth = DateService.nextMonthString(new Date(this.workingMonth));
         };
 
         TimelineService.prototype.workingMonthIsLessThenCurrentMonth = function() {
           return Date.parse(new Date(this.workingMonth)) < Date.parse(DateService.getTodayMonthString());
         };
 
-        TimelineService.prototype.setMonthLocaleString = function() {
+        TimelineService.prototype.updateMonthLocaleString = function() {
           return this.monthLocaleString = $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + this.workingMonth.slice(0, 4);
         };
 

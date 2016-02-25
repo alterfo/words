@@ -4,6 +4,8 @@
     '$http', '$q', function($http, $q) {
       var WebApiService;
       return new (WebApiService = (function() {
+        WebApiService.prototype.timelineCache = [];
+
         function WebApiService() {
           return;
         }
@@ -13,7 +15,13 @@
         };
 
         WebApiService.prototype.fetchTimeline = function(dateString, callback) {
-          var days, daysN, today, working_date;
+          var days, daysN, def, today, working_date;
+          def = $q.defer();
+          if (this.timelineCache[dateString]) {
+            callback && callback(this.timelineCache[dateString]);
+            def.resolve();
+            return def.promise;
+          }
           working_date = dateString.yyyymmToDate();
           today = new Date();
           daysN = working_date.daysInMonth();
@@ -25,29 +33,34 @@
             }
             return results;
           })();
-          return $http.get('/texts/' + dateString).then(function(response) {
-            var limit, ref;
-            if (working_date.isCurrentMonth()) {
-              limit = today.getDate();
-            }
-            if (working_date.isLessThenCurrentMonth()) {
-              limit = daysN;
-            }
-            if (limit) {
-              [].splice.apply(days, [0, (limit - 2) - 0 + 1].concat(ref = (function() {
-                var i, ref1, results;
-                results = [];
-                for (i = 1, ref1 = limit; 1 <= ref1 ? i <= ref1 : i >= ref1; 1 <= ref1 ? i++ : i--) {
-                  results.push(0);
-                }
-                return results;
-              })())), ref;
-            }
-            response.data.forEach(function(e) {
-              days[(new Date(e.date)).getDate() - 1] = e.counter;
-            });
-            return callback && callback(days);
-          });
+          $http.get('/texts/' + dateString).then((function(_this) {
+            return function(response) {
+              var limit, ref;
+              if (working_date.isCurrentMonth()) {
+                limit = today.getDate();
+              }
+              if (working_date.isLessThenCurrentMonth()) {
+                limit = daysN;
+              }
+              if (limit) {
+                [].splice.apply(days, [0, (limit - 2) - 0 + 1].concat(ref = (function() {
+                  var i, ref1, results;
+                  results = [];
+                  for (i = 1, ref1 = limit; 1 <= ref1 ? i <= ref1 : i >= ref1; 1 <= ref1 ? i++ : i--) {
+                    results.push(0);
+                  }
+                  return results;
+                })())), ref;
+              }
+              response.data.forEach(function(e) {
+                days[(new Date(e.date)).getDate() - 1] = e.counter;
+              });
+              _this.timelineCache[dateString] = days;
+              callback && callback(days);
+              return def.resolve();
+            };
+          })(this));
+          return def.promise;
         };
 
         WebApiService.prototype.postText = function(textString) {

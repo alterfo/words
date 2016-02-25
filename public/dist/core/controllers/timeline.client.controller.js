@@ -3,31 +3,47 @@
 (function() {
   angular.module('core').controller('TimelineController', [
     '$scope', 'TimelineService', '$stateParams', function($scope, TimelineService, $stateParams) {
-      if ($stateParams.date) {
-        TimelineService.setWorkingMonth($stateParams.date);
-      }
       $scope.languageMonth = TimelineService.monthLocaleString;
       TimelineService.fetchTimeline(TimelineService.workingMonth).then(function() {
         return $scope.days = TimelineService.timeline;
       });
-      $scope.timeline_button_class = function(counter) {
+      $scope.timeline_button_class = function(counter, day) {
+        var result;
+        result = '';
         if (counter === '--') {
-          return 'btn-default';
+          result = 'btn-default';
         }
         if (counter === 0) {
-          return 'btn-info';
+          result = 'btn-info';
         }
-        if (counter > 500) {
-          return 'btn-danger';
+        if (counter >= 500) {
+          result = 'btn-danger';
         }
-        if (counter > 0) {
-          return 'btn-success';
+        if (counter > 0 && counter < 500) {
+          result = 'btn-success';
         }
+        if (TimelineService.getWorkingDate === $scope.get_date_string(day)) {
+          result += ' active';
+        }
+        return result;
       };
-      $scope.prevmonth = TimelineService.prevMonthString();
-      if (TimelineService.workingMonthIsLessThenCurrentMonth()) {
-        return $scope.nextmonth = TimelineService.nextMonthString();
-      }
+      $scope.get_date_string = function(day) {
+        day = day.toString();
+        return TimelineService.getWorkingMonth() + '-' + (day.length === 2 ? day : "0" + day);
+      };
+      return $scope.changeMonth = function(direction) {
+        switch (direction) {
+          case 'prev':
+            TimelineService.prevmonth();
+            break;
+          case 'next':
+            TimelineService.nextmonth();
+        }
+        return TimelineService.fetchTimeline(TimelineService.workingMonth).then(function() {
+          $scope.days = TimelineService.timeline;
+          return $scope.show_next_month = TimelineService.workingMonthIsLessThenCurrentMonth();
+        });
+      };
     }
   ]);
 

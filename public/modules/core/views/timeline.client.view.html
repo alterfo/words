@@ -5,15 +5,14 @@
         </header>
         <ul class="timeline">
             <li class="item">
-                <button class="btn btn-xs btn-primary" ui-sref="home({date: prevmonth})">
-                    << </button>
+                <button class="btn btn-xs btn-primary" ng-click="changeMonth('prev')"> << </button>
             </li>
             <li class="item" ng-repeat="(day, counter) in days track by $index">
                 <span class="timeline__date">{{day+1}}</span>
-                <a type="button" class="btn btn-xs" ng-class="timeline_button_class(counter)">{{counter}}</a>
+                <a type="button" class="btn btn-xs" ng-class="timeline_button_class(counter, day)" href="#!/?date={{get_date_string(day)}}">{{counter}}</a>
             </li>
             <li class="item">
-                <button class="btn  btn-xs btn-primary" ui-sref="home({date: nextmonth})" ng-if="nextmonth"> >> </button>
+                <button class="btn  btn-xs btn-primary" ng-click="changeMonth('next')" ng-show="show_next_month"> >> </button>
             </li>
         </ul>
     </div>

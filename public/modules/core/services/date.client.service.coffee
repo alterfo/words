@@ -13,6 +13,9 @@ angular
         @today.yyyymmdd() # "2015-02-28"
       getTodayDayNumber: () ->
         @today.getDate()
+      getTodayDayString: () ->
+        day = @today.getDate().toString()
+        if day.length is 2 then day else "0" + day
       getTodayMonthString: () ->
         @today.yyyymm()
       daysInMonth: (m, y) ->

@@ -6,21 +6,30 @@ angular
     '$stateParams'
     ($scope, TimelineService, $stateParams) ->
 
-      if $stateParams.date
-        TimelineService.setWorkingMonth $stateParams.date
-
       $scope.languageMonth = TimelineService.monthLocaleString
 
       TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
         $scope.days = TimelineService.timeline
 
-      $scope.timeline_button_class = (counter) ->
-        if counter is '--' then return 'btn-default'
-        if counter is 0 then return 'btn-info'
-        if counter > 500 then return 'btn-danger'
-        if counter > 0 then return 'btn-success'
+      $scope.timeline_button_class = (counter, day) ->
+        result = ''
+        if counter is '--' then result = 'btn-default'
+        if counter is 0 then result = 'btn-info'
+        if counter >= 500 then result =  'btn-danger'
+        if counter > 0 and counter < 500 then result = 'btn-success'
+        if TimelineService.getWorkingDate is $scope.get_date_string(day) then result += ' active'
+        result
 
+      $scope.get_date_string = (day) ->
+        day = day.toString()
+        TimelineService.getWorkingMonth() + '-' + if day.length is 2 then day else "0" + day
 
-      $scope.prevmonth = TimelineService.prevMonthString()
-      $scope.nextmonth = TimelineService.nextMonthString() if TimelineService.workingMonthIsLessThenCurrentMonth()
+      $scope.changeMonth = (direction) ->
+        switch direction
+          when 'prev' then TimelineService.prevmonth()
+          when 'next' then TimelineService.nextmonth()
+        TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
+          $scope.days = TimelineService.timeline
+          $scope.show_next_month = TimelineService.workingMonthIsLessThenCurrentMonth()
+
 ]
