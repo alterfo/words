@@ -9,11 +9,10 @@ angular
       constructor: ->
         @workingMonth = DateService.getTodayMonthString()
         @workingDate = DateService.getTodayDayString()
-        @updateMonthLocaleString()
+        @monthLocaleString = @getMonthLocaleString()
       fetchTimeline: (dateString) ->
         WebApiService.fetchTimeline dateString, (days) =>
           angular.copy(days, @timeline)
-
       setCounterValue: (date, value) ->
         if date.yyyymm() is @workingMonth
           @timeline[date.getDate()-1] = value
@@ -28,11 +27,12 @@ angular
         @workingDate
       prevmonth: () ->
         @workingMonth = DateService.prevMonthString(new Date(@workingMonth))
+        @monthLocaleString = @getMonthLocaleString()
       nextmonth: () ->
         @workingMonth = DateService.nextMonthString(new Date(@workingMonth))
-
+        @monthLocaleString = @getMonthLocaleString()
       workingMonthIsLessThenCurrentMonth: () ->
         Date.parse(new Date @workingMonth) < Date.parse(DateService.getTodayMonthString())
-      updateMonthLocaleString: ->
-        @monthLocaleString = $locale.DATETIME_FORMATS.STANDALONEMONTH[+@workingMonth[5..6]-1] + @workingMonth[0..3]
+      getMonthLocaleString: ->
+        $locale.DATETIME_FORMATS.STANDALONEMONTH[+@workingMonth[5..6]-1] + @workingMonth[0..3]
   ]

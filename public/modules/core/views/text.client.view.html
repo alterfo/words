@@ -1,23 +1,24 @@
-<div class="col-md-12" ng-show="historyText">
+<div ng-show="history.date">
+    <h1>{{::history.date}}</h1>
     <pre>
-        {{historyText}}
+        {{history.text}}
     </pre>
 </div>
-<div ng-show="authentication.user && !hideToday">
+<div ng-show="authentication.user && !history.date">
     <div class="page-header">
         <h1>Автор, жги!</h1>
         <div style="text-align:right">
-            <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-if="state === 'saving'" width="20px" height="20px" />
-            <div class="saved" ng-if="state === 'saved'">
+            <img id="saving" src="/modules/core/img/loaders/loader.gif" ng-show="state === 'saving'" width="20px" height="20px" />
+            <div class="saved" ng-show="state === 'saved'">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Сохранено
             </div>
-            <div class="notsaved" ng-if="state === 'notsaved'">
+            <div class="notsaved" ng-show="state === 'notsaved'">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Изменено, но пока не сохранено
             </div>
         </div>
     </div>
 
     <div class="col-md-12">
-        <textarea name="text" data-ng-model="text" id="text" class="form-control textarea-input" cols="30" rows="30" ui-keydown="{'ctrl-83 alt-115 ctrl-87':'saveByKeys($event)'}" ></textarea>
+        <textarea name="text" ng-model="text" id="text" class="form-control textarea-input" cols="30" rows="30" ui-keydown="{'ctrl-83 alt-115 ctrl-87':'saveByKeys($event)'}" ></textarea>
     </div>
 </div>

@@ -6,6 +6,7 @@
     '$scope', '$http', '$stateParams', '$location', 'Authentication', '$document', "AlertService", 'WebApiService', 'TimelineService', 'DateService', function($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) {
       $scope.authentication = Authentication;
       $scope.text = '';
+      $scope.history = {};
       $scope.getWordCounter = function() {
         if ($scope.text.trim()) {
           return $scope.text.trim().split(/[\s,.;]+/).length;
@@ -15,11 +16,16 @@
       };
       $scope.changed = false;
       $scope.insertText = function(todayString) {
-        if (todayString === DateService.getTodayString()) {
+        if (todayString === 'today' || DateService.getTodayString() === todayString) {
           return WebApiService.getToday().then(function(response) {
             $scope.text = response.data.text;
             $scope.state = 'saved';
-            setInterval($scope.save, 10000);
+            return setInterval($scope.save, 10000);
+          }, function(err) {});
+        } else {
+          return WebApiService.getText(todayString).then(function(response) {
+            $scope.history.text = response.data.text;
+            return $scope.history.date = todayString;
           }, function(err) {});
         }
       };

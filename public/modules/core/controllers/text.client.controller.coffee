@@ -15,6 +15,7 @@ angular.module('core').controller 'TextController', [
       $scope.authentication = Authentication
 
       $scope.text = ''
+      $scope.history = {}
 
       $scope.getWordCounter = ->
         if $scope.text.trim()
@@ -27,15 +28,22 @@ angular.module('core').controller 'TextController', [
 
       # Order is important. 1st
       $scope.insertText = (todayString)->
-        if todayString is DateService.getTodayString()
+        if todayString is 'today' or DateService.getTodayString() is todayString
           WebApiService.getToday()
-          .then (response) ->
-            $scope.text = response.data.text
-            $scope.state = 'saved'
-            setInterval $scope.save, 10000
-            return
-          , (err) ->
-            return
+            .then (response) ->
+              $scope.text = response.data.text
+              $scope.state = 'saved'
+              setInterval $scope.save, 10000
+            , (err) ->
+              return
+        else
+          WebApiService.getText(todayString)
+            .then (response) ->
+              $scope.history.text = response.data.text
+              $scope.history.date = todayString
+            , (err) ->
+              return
+
 
       # second
       $scope.$watch "text", (newVal, oldVal) ->

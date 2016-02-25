@@ -27,11 +27,14 @@
         }
         return result;
       };
+      $scope.show_next_month = function() {
+        return TimelineService.workingMonthIsLessThenCurrentMonth();
+      };
       $scope.get_date_string = function(day) {
         day = day.toString();
         return TimelineService.getWorkingMonth() + '-' + (day.length === 2 ? day : "0" + day);
       };
-      return $scope.changeMonth = function(direction) {
+      $scope.changeMonth = function(direction) {
         switch (direction) {
           case 'prev':
             TimelineService.prevmonth();
@@ -41,9 +44,10 @@
         }
         return TimelineService.fetchTimeline(TimelineService.workingMonth).then(function() {
           $scope.days = TimelineService.timeline;
-          return $scope.show_next_month = TimelineService.workingMonthIsLessThenCurrentMonth();
+          return $scope.languageMonth = TimelineService.monthLocaleString;
         });
       };
+      return $scope.goToHistory = function(dateString) {};
     }
   ]);
 

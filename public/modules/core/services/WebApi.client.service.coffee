@@ -10,6 +10,9 @@ angular
       getToday: ->
         $http.get '/today'
 
+      getText: (dateString) ->
+        $http.get '/text/' + dateString
+
       fetchTimeline: (dateString, callback) ->
         def = $q.defer()
 
@@ -23,15 +26,15 @@ angular
 
         # /2015-01 январь
         daysN = working_date.daysInMonth()
-        days = ('--' for [1..daysN-1])
+        days = ({counter: '--'} for [1..daysN-1])
 
         $http.get('/texts/' + dateString)
           .then (response) =>
             if working_date.isCurrentMonth() then limit = today.getDate()
             if working_date.isLessThenCurrentMonth() then limit = daysN
-            days[0..limit-2] = (0 for [1..limit]) if limit
+            days[0..limit-2] = ({counter: 0} for [1..limit]) if limit
             response.data.forEach (e) ->
-              days[(new Date(e.date)).getDate() - 1] = e.counter
+              days[(new Date(e.date)).getDate() - 1].counter = e.counter
               return
             @timelineCache[dateString] = days
             callback && callback(days)

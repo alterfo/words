@@ -16,7 +16,7 @@
         function TimelineService() {
           this.workingMonth = DateService.getTodayMonthString();
           this.workingDate = DateService.getTodayDayString();
-          this.updateMonthLocaleString();
+          this.monthLocaleString = this.getMonthLocaleString();
         }
 
         TimelineService.prototype.fetchTimeline = function(dateString) {
@@ -51,19 +51,21 @@
         };
 
         TimelineService.prototype.prevmonth = function() {
-          return this.workingMonth = DateService.prevMonthString(new Date(this.workingMonth));
+          this.workingMonth = DateService.prevMonthString(new Date(this.workingMonth));
+          return this.monthLocaleString = this.getMonthLocaleString();
         };
 
         TimelineService.prototype.nextmonth = function() {
-          return this.workingMonth = DateService.nextMonthString(new Date(this.workingMonth));
+          this.workingMonth = DateService.nextMonthString(new Date(this.workingMonth));
+          return this.monthLocaleString = this.getMonthLocaleString();
         };
 
         TimelineService.prototype.workingMonthIsLessThenCurrentMonth = function() {
           return Date.parse(new Date(this.workingMonth)) < Date.parse(DateService.getTodayMonthString());
         };
 
-        TimelineService.prototype.updateMonthLocaleString = function() {
-          return this.monthLocaleString = $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + this.workingMonth.slice(0, 4);
+        TimelineService.prototype.getMonthLocaleString = function() {
+          return $locale.DATETIME_FORMATS.STANDALONEMONTH[+this.workingMonth.slice(5, 7) - 1] + this.workingMonth.slice(0, 4);
         };
 
         return TimelineService;

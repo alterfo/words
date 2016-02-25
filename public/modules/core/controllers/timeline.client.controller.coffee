@@ -20,6 +20,9 @@ angular
         if TimelineService.getWorkingDate is $scope.get_date_string(day) then result += ' active'
         result
 
+      $scope.show_next_month = () ->
+        TimelineService.workingMonthIsLessThenCurrentMonth()
+
       $scope.get_date_string = (day) ->
         day = day.toString()
         TimelineService.getWorkingMonth() + '-' + if day.length is 2 then day else "0" + day
@@ -30,6 +33,9 @@ angular
           when 'next' then TimelineService.nextmonth()
         TimelineService.fetchTimeline(TimelineService.workingMonth).then ->
           $scope.days = TimelineService.timeline
-          $scope.show_next_month = TimelineService.workingMonthIsLessThenCurrentMonth()
+          $scope.languageMonth = TimelineService.monthLocaleString
+
+      $scope.goToHistory = (dateString) ->
+
 
 ]

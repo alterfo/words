@@ -14,6 +14,10 @@
           return $http.get('/today');
         };
 
+        WebApiService.prototype.getText = function(dateString) {
+          return $http.get('/text/' + dateString);
+        };
+
         WebApiService.prototype.fetchTimeline = function(dateString, callback) {
           var days, daysN, def, today, working_date;
           def = $q.defer();
@@ -29,7 +33,9 @@
             var i, ref, results;
             results = [];
             for (i = 1, ref = daysN - 1; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-              results.push('--');
+              results.push({
+                counter: '--'
+              });
             }
             return results;
           })();
@@ -47,13 +53,15 @@
                   var i, ref1, results;
                   results = [];
                   for (i = 1, ref1 = limit; 1 <= ref1 ? i <= ref1 : i >= ref1; 1 <= ref1 ? i++ : i--) {
-                    results.push(0);
+                    results.push({
+                      counter: 0
+                    });
                   }
                   return results;
                 })())), ref;
               }
               response.data.forEach(function(e) {
-                days[(new Date(e.date)).getDate() - 1] = e.counter;
+                days[(new Date(e.date)).getDate() - 1].counter = e.counter;
               });
               _this.timelineCache[dateString] = days;
               callback && callback(days);
