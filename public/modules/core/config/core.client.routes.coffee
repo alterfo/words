@@ -2,7 +2,7 @@
 angular
   .module('core')
   .config ['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider) ->
-    $urlRouterProvider.otherwise '/today'
+    $urlRouterProvider.otherwise '/about'
 
     $stateProvider
       .state 'today',
@@ -14,4 +14,7 @@ angular
       .state 'about',
         url: '/about',
         templateUrl: 'modules/core/views/about.client.view.html'
+      .state 'welcome',
+        url: '/welcome'
+        templateUrl: 'modules/core/views/welcome.client.view.html'
 ]

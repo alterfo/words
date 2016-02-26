@@ -1,3 +1,18 @@
+
+Pages = require './pages'
+Mocks = require './mocks'
+
+describe 'Aughentication', ->
+  ptor = protractor.getInstance()
+  ptor.addMockModule 'httpBackendMock', Mocks.httpBackendMock
+  login_page = new Pages.LoginPage()
+
+
+
+
+
+
+
 describe '500 words', ->
 
   it 'should have a title, welcome message, register and login link and should not have username', ->
@@ -44,8 +59,8 @@ describe '500 words', ->
       timeline = element(By.css('.timeline'))
 
       expect(textinput).toBeDefined()
-
-#      textinput.sendKeys('Тестовый текст ')
+      browser.pause()
+      textinput.sendKeys('Тестовый текст ')
 
       timeline.evaluate('days').then (value) ->
         console.log value
