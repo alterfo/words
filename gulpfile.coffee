@@ -2,6 +2,7 @@ gulp = require 'gulp'
 browserSync = require('browser-sync').create()
 g = require('gulp-load-plugins')()
 reload = browserSync.reload
+exec = require('child_process').exec
 
 g.env.set
   NODE_ENV: "development"
@@ -12,7 +13,12 @@ onError = (err) ->
   console.log(err)
   this.emit('end')
 
-
+runCommand = (command) ->
+  (cb) ->
+    exec command, (err, stdout, stderr) ->
+      console.log(stdout)
+      console.log(stderr)
+      cb(err)
 
 applicationJavaScriptFiles = config.assets.js
 applicationCSSFiles = config.assets.css
@@ -45,6 +51,10 @@ gulp.task 'client-css', ->
 gulp.task 'watch-js', ['client-js']
 gulp.task 'watch-css', ['client-css']
 
+#gulp.task 'start-mongo', runCommand 'mongod --dbpath ./data'
+#gulp.task 'stop-mongo', runCommand 'mongo --eval "use admin; db.shutdownServer();"'
+
+
 gulp.task 'nodemon', ->
   g.nodemon
     script: 'server.js'
@@ -57,9 +67,10 @@ gulp.task 'browser-sync', ->
     notify: false
 
 
-gulp.task 'serve', ['nodemon', 'browser-sync']
+gulp.task 'serve', [ 'nodemon', 'browser-sync']
 
 gulp.task 'default', ['serve'], ->
+
   gulp.watch(watchFiles.clientViews).on("change", browserSync.stream)
   gulp.watch watchFiles.clientJS, ['watch-js']
   gulp.watch watchFiles.clientCSS, ['watch-css']
