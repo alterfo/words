@@ -9,7 +9,7 @@
             </li>
             <li class="item" ng-repeat="(day, counter) in timeline.days track by $index">
                 <span class="timeline__date">{{day+1}}</span>
-                <a type="button" class="btn btn-xs" ng-class="timeline_button_class(counter, day)" ng-click="goToHistory(get_date_string(day+1))">{{counter}}</a>
+                <a type="button" class="btn btn-xs" ng-class="timeline_button_class(counter, day+1)" ng-click="goToHistory(get_date_string(day+1))">{{counter}}</a>
             </li>
             <li class="item">
                 <button class="btn  btn-xs btn-primary" ng-click="changeMonth('next')" ng-show="show_next_month()"> >> </button>

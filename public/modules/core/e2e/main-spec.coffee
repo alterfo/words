@@ -17,7 +17,6 @@ describe '500 words', ->
     browser.get 'http://localhost:3000'
 
     it 'should be able to login', ->
-
       el = $('.nav [href="/#!/signin"]')
       if el.length
         el.click()
@@ -37,12 +36,24 @@ describe '500 words', ->
       expect($('.timeline')).toBeDefined()
       $$('li.item .timeline__date').then (items) ->
         expect(items.length).toBeGreaterThan(20)
-      element
 
 
-    it 'has text input', ->
-      expect($('textarea#text')).toBeDefined()
-      expect(By.model('text')).toBeDefined()
+
+    it 'has properly working text input', ->
+      textinput = element(By.model('text'))
+      timeline = element(By.css('.timeline'))
+
+      expect(textinput).toBeDefined()
+
+#      textinput.sendKeys('Тестовый текст ')
+
+      timeline.evaluate('days').then (value) ->
+        console.log value
+
+
+
+
+
 
 
 
