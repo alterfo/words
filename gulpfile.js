@@ -52,15 +52,29 @@
     })).on('error', onError).pipe(gulp.dest('public/dist/')).pipe(browserSync.stream());
   });
 
+  gulp.task('client-js:prod', function() {
+    return gulp.src(applicationJavaScriptFiles).pipe(g.browserify({
+      transform: ["ngify"]
+    })).on('error', onError).pipe(g.concat('application.min.js')).pipe(g.uglify()).on('error', onError).pipe(gulp.dest('public/dist/'));
+  });
+
   gulp.task('client-css', function() {
     return gulp.src(watchFiles.clientCSS).pipe(g.stylus({
       compress: true
     })).pipe(gulp.dest('public/dist/css')).pipe(browserSync.stream());
   });
 
+  gulp.task('client-css:prod', function() {
+    return gulp.src(watchFiles.clientCSS).pipe(g.stylus({
+      compress: true
+    })).pipe(g.concatCss('application.min.css')).pipe(gulp.dest('public/dist/')).pipe(browserSync.stream());
+  });
+
   gulp.task('watch-js', ['client-js']);
 
   gulp.task('watch-css', ['client-css']);
+
+  gulp.task('build', ['client-js:prod', 'client-css:prod']);
 
   gulp.task('nodemon', function() {
     return g.nodemon({
