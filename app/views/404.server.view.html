@@ -1,8 +1,12 @@
 {% extends 'layout.server.view.html' %}
 
 {% block content %}
-<h1>Page Not Found</h1>
+<h1>Страница не найдена</h1>
 <pre>
-	{{url}} is not a valid path.
+	Такой путь не существует: {{url}}
+
 </pre>
+<div>
+    Попробуйте вернуться на <a href="/#!/">Главную</a>
+</div>
 {% endblock %}
