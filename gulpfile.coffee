@@ -45,8 +45,8 @@ gulp.task 'client-js:prod', ->
     .pipe g.browserify transform: ["ngify"]
     .on('error', onError)
     .pipe g.concat('application.min.js')
-    .pipe g.uglify()
-    .on 'error', onError
+#    .pipe g.uglify()
+#    .on 'error', onError
     .pipe gulp.dest 'public/dist/'
 
 gulp.task 'client-css', ->
