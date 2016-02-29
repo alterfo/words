@@ -60,7 +60,9 @@
               response.data.forEach(function(e) {
                 days[(new Date(e.date)).getDate() - 1] = e.counter;
               });
-              _this.timelineCache[dateString] = days;
+              if (!working_date.isCurrentMonth()) {
+                _this.timelineCache[dateString] = days;
+              }
               callback && callback(days);
               return def.resolve();
             };
@@ -69,6 +71,12 @@
         };
 
         WebApiService.prototype.postText = function(textString) {
+          var def;
+          def = $q.defer();
+          if (textString === void 0) {
+            def.reject('Вы ничего не ввели');
+            return def.promise;
+          }
           return $http.post('/texts', {
             text: textString,
             date: Date.now(),

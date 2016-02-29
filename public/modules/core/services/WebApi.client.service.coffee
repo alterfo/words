@@ -36,12 +36,17 @@ angular
             response.data.forEach (e) ->
               days[(new Date(e.date)).getDate() - 1] = e.counter
               return
-            @timelineCache[dateString] = days
+            @timelineCache[dateString] = days if !working_date.isCurrentMonth()
             callback && callback(days)
             def.resolve()
         def.promise
 
       postText: (textString) ->
+        def = $q.defer()
+        if textString is undefined
+          def.reject('Вы ничего не ввели')
+          return def.promise
+
         $http.post '/texts',
             text: textString
             date: Date.now()

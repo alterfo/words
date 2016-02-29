@@ -3,8 +3,8 @@ angular
   .controller 'TimelineController', [
     '$scope'
     'TimelineService'
-    '$stateParams'
-    ($scope, TimelineService, $stateParams) ->
+    'Authentication'
+    ($scope, TimelineService, Authentication) ->
 
       $scope.timeline = {}
 

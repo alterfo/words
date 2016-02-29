@@ -14,12 +14,12 @@ angular.module('core').controller 'TextController', [
     ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) ->
       $scope.authentication = Authentication
 
-      $scope.text = ''
       $scope.history = {}
       $scope.todayDateString = DateService.getTodayString()
 
       $scope.getWordCounter = ->
-        if $scope.text.trim()
+
+        if $scope.text && $scope.text.trim()
           $scope.text.trim().split(/[\s,.;]+/).length
         else
           0
@@ -27,24 +27,24 @@ angular.module('core').controller 'TextController', [
       $scope.changed = false
 
 
-      # Order is important. 1st
-      $scope.insertText = ()->
-          WebApiService.getToday()
-            .then (response) ->
-              $scope.text = response.data.text
-              $scope.state = 'saved'
-              setInterval $scope.save, 10000
-            , (err) ->
-              return
 
 
-      # second
+
       $scope.$watch "text", (newVal, oldVal) ->
-        $scope.changed = newVal isnt oldVal
+        $scope.changed = newVal isnt oldVal and oldVal isnt undefined
         if $scope.changed
           $scope.state = 'notsaved'
           TimelineService.setCounterValue DateService.getToday(), $scope.getWordCounter()
         return
+
+      $scope.insertText = ()->
+        WebApiService.getToday()
+        .then (response) ->
+          $scope.text = response.data.text
+          $scope.state = 'saved'
+          setInterval $scope.save, 10000
+        , (err) ->
+          return
 
       $scope.historyText = ''
 
@@ -53,12 +53,13 @@ angular.module('core').controller 'TextController', [
       $scope.saveByKeys = (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if $scope.changed and $scope.text isnt ''
+        if $scope.changed and $scope.text isnt undefined
           $scope.state = 'saving'
           WebApiService.postText $scope.text
           .then (data) ->
             if (data.data.message)
               AlertService.send "danger", data.data.message, 3000
+              $scope.state = 'notsaved'
               return
             else
               AlertService.send "success", "Продолжайте!", "Сохранение прошло успешно!", 2000
@@ -66,6 +67,7 @@ angular.module('core').controller 'TextController', [
               $scope.changed = false
           , (err) ->
             AlertService.send "danger", "Упс!", err, 4000
+            $scope.state = 'notsaved'
 
         else
           AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000
