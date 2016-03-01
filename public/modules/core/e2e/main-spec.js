@@ -10,74 +10,8 @@
     var login_page, ptor;
     ptor = protractor.getInstance();
     ptor.addMockModule('httpBackendMock', Mocks.httpBackendMock);
-    return login_page = new Pages.LoginPage();
-  });
-
-  describe('500 words', function() {
-    it('should have a title, welcome message, register and login link and should not have username', function() {
-      browser.get('http://localhost:3000');
-      expect(browser.getTitle()).toEqual('500 слов');
-      expect($('.jumbotron h1').getText()).toBe('500 слов');
-      expect($('[href="/#!/signup"]').getText()).toBe('Зарегистрироваться');
-      expect($('[href="/#!/signin"]').getText()).toBe('Войти');
-      return browser.driver.executeScript(function() {
-        return window.user;
-      }).then(function(result) {
-        return expect(result).toBeFalsy();
-      });
-    });
-    return describe('500 words', function() {
-      browser.get('http://localhost:3000');
-      it('should be able to login', function() {
-        var el, form, password, username;
-        el = $('.nav [href="/#!/signin"]');
-        if (el.length) {
-          el.click();
-          form = $('form.signin');
-          username = form.element(By.model('credentials.username'));
-          password = form.element(By.model('credentials.password'));
-          username.sendKeys('demo');
-          password.sendKeys('demodemo');
-          form.submit();
-          return browser.driver.executeScript(function() {
-            return window.user;
-          }).then(function(result) {
-            expect(result).toBeTruthy();
-            return expect(result.displayName).toBe('Demo Demo');
-          });
-        }
-      });
-      it('has properly working timeline', function() {
-        expect($('.timeline')).toBeDefined();
-        return $$('li.item .timeline__date').then(function(items) {
-          return expect(items.length).toBeGreaterThan(20);
-        });
-      });
-      it('has properly working text input', function() {
-        var textinput, timeline;
-        textinput = element(By.model('text'));
-        timeline = element(By.css('.timeline'));
-        expect(textinput).toBeDefined();
-        browser.pause();
-        textinput.sendKeys('Тестовый текст ');
-        return timeline.evaluate('days').then(function(value) {
-          return console.log(value);
-        });
-      });
-      return it('should be able to logout', function() {
-        var el;
-        el = $('.nav [href="/#!/signout"]');
-        if (el.length) {
-          el.click();
-          return browser.driver.executeScript(function() {
-            return window.user;
-          }).then(function(result) {
-            expect(result).toBeFalsy();
-            return expect(result.displayName).toBe(void 0);
-          });
-        }
-      });
-    });
+    login_page = new Pages.LoginPage();
+    return it;
   });
 
 }).call(this);

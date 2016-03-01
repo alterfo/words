@@ -32,5 +32,3 @@ module.exports = httpBackendMock = ->
     $httpBackend.whenGET(/.*/).passThrough()
     return
   return
-
-exports

@@ -3,7 +3,7 @@
   'use strict';
   angular.module('core').config([
     '$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-      $urlRouterProvider.otherwise('/about');
+      $urlRouterProvider.otherwise('/today');
       return $stateProvider.state('today', {
         url: '/today',
         templateUrl: 'modules/core/views/home.client.view.html'

@@ -2,7 +2,7 @@
 angular
   .module('core')
   .config ['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider) ->
-    $urlRouterProvider.otherwise '/about'
+    $urlRouterProvider.otherwise '/today'
 
     $stateProvider
       .state 'today',
