@@ -5,7 +5,7 @@
   "scripts": {
     "restart": "NODE_ENV=production forever restart server.js",
     "start": "NODE_ENV=production forever start server.js",
-    "startbs": "NODE_ENV=production forever start deploy.js"
+    "startbs": "forever start deploy.js"
   },
   "dependencies": {
     "async": "^0.9.2",
