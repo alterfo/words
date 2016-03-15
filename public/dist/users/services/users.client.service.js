@@ -11,4 +11,4 @@ angular.module('users').factory('Users', ['$resource',
 		});
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);

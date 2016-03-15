@@ -165,4 +165,4 @@ angular.module('core').service('Menus', [
 		this.addMenu('topbar');
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);

@@ -23,4 +23,4 @@ var ApplicationConfiguration = (function() {
 	};
 })();
 
-},{}]},{},[1])
+},{}]},{},[1]);

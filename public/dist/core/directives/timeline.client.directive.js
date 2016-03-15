@@ -17,4 +17,4 @@
 
 //# sourceMappingURL=timeline.client.directive.js.map
 
-},{}]},{},[1])
+},{}]},{},[1]);

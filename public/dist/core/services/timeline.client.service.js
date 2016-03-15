@@ -78,4 +78,4 @@
 
 //# sourceMappingURL=timeline.client.service.js.map
 
-},{}]},{},[1])
+},{}]},{},[1]);

@@ -43,4 +43,4 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 		};
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);

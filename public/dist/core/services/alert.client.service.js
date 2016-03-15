@@ -8,7 +8,7 @@
       return new (AlertService = (function() {
         function AlertService() {
           $rootScope.alerts = [];
-          return;
+
         }
 
         AlertService.prototype.send = function(type, title, msg, timeout) {
@@ -52,4 +52,4 @@
 
 //# sourceMappingURL=alert.client.service.js.map
 
-},{}]},{},[1])
+},{}]},{},[1]);

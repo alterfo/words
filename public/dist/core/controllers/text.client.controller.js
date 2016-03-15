@@ -84,7 +84,7 @@
           $scope.curDate = $scope.current_date;
         } else {
           AlertService.send("info", "Машину времени пока изобретаем", "Давайте жить сегодняшним днем!", 3000);
-          return;
+
         }
       };
       $scope.$watch(function() {
@@ -104,4 +104,4 @@
 
 }).call(this);
 
-},{}]},{},[1])
+},{}]},{},[1]);

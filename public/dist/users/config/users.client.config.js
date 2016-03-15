@@ -29,4 +29,4 @@ angular.module('users').config(['$httpProvider',
 		]);
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);

@@ -70,4 +70,4 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		};
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);

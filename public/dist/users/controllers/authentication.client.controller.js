@@ -34,4 +34,4 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 	}
 ]);
 
-},{}]},{},[1])
+},{}]},{},[1]);

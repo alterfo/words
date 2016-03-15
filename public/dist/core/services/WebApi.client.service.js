@@ -8,7 +8,7 @@
         WebApiService.prototype.timelineCache = [];
 
         function WebApiService() {
-          return;
+
         }
 
         WebApiService.prototype.getToday = function() {
@@ -92,4 +92,4 @@
 
 }).call(this);
 
-},{}]},{},[1])
+},{}]},{},[1]);

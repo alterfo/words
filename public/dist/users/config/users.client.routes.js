@@ -44,4 +44,4 @@ angular.module('users').config(['$stateProvider',
 		});
 	}
 ]);
-},{}]},{},[1])
+},{}]},{},[1]);
