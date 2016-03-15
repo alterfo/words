@@ -2,11 +2,16 @@
 
 cd /sites/words
 
-GIT_CHANGES=`/usr/bin/git pull | wc -l`
+PULL=`/usr/bin/git pull`
+
+GIT_CHANGES=`echo $PULL | wc -l`
+PACKAGE_CHANGED=`echo $PULL | grep package | wc -l `
 
 if [ $GIT_CHANGES -gt 1 ]; then
-    npm install
+    if [ $PACKAGE_CHANGED -eq 1 ]; then
+        npm install
+    fi
     gulp build
 
-    NODE_ENV=production forever restart server.js
+    npm run restart
 fi
