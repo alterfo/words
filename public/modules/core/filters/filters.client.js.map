@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "filters.client.js",
+  "sourceRoot": "",
+  "sources": [
+    "filters.client.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;;AAAA"
+}

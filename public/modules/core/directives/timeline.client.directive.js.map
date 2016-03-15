@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "timeline.client.directive.js",
+  "sourceRoot": "",
+  "sources": [
+    "timeline.client.directive.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA;EACA,OAAO,CAAC,MAAR,CAAe,MAAf,CAAsB,CAAC,SAAvB,CAAiC,UAAjC,EAA6C;IAAE,SAAA;aAC3C;QAAA,WAAA,EAAa,8CAAb;QACA,QAAA,EAAU,GADV;QAEA,KAAA,EAAO,EAFP;QAGA,UAAA,EAAY,oBAHZ;;IAD2C,CAAF;GAA7C;AADA"
+}
