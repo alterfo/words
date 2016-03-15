@@ -1,8 +1,6 @@
 http = require('http')
 querystring = require('querystring')
 exec = require('child_process').exec
-
-
 last_payload = {}
 
 http.createServer((request, response) ->
