@@ -133,4 +133,5 @@ li.item {
     box-shadow: 0 2px 14px #000;
     border-top: 1px solid #FFF;
     border-bottom: 1px solid #FFF;
+    background-attachment: local;
 }
