@@ -3,11 +3,6 @@ querystring = require('querystring')
 exec = require('child_process').exec
 
 
-#process.on 'uncaughtException', (error) ->
-#  console.error 'Uncaught exception: ' + error.message
-#  console.trace()
-
-
 last_payload = {}
 
 http.createServer((request, response) ->
