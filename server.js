@@ -19,15 +19,11 @@ var db = mongoose.connect(config.db, function(err) {
 		console.log(chalk.red(err));
 	}
 });
-
 var app = require('./config/express')(db);
 require('./config/passport')();
 
-// Start the app by listening on <port>
 app.listen(config.port);
 
-// Expose app
 exports = module.exports = app;
 
-// Logging initialization
 console.log('Приложение работает на порту ' + config.port);
