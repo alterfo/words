@@ -9,7 +9,7 @@ var init = require('./config/init')(),
 
 /**
  * Main application entry file.
- * Please note that the order of loading is important.
+ * Please note that the order of loading is important .
  */
 
 // Bootstrap db connection
