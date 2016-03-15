@@ -18,6 +18,8 @@ http.createServer((request, response) ->
     request.on 'end', ->
       last_payload = JSON.parse(body)
       exec './deploy.sh', (error, stdout, stderr) ->
+        if error then console.log(error) else console.log(stdout);
+
         response.writeHead 200, 'Content-Type': 'text/plain'
         response.end if error then stderr else stdout
         return

@@ -28,6 +28,11 @@
       request.on('end', function() {
         last_payload = JSON.parse(body);
         return exec('./deploy.sh', function(error, stdout, stderr) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(stdout);
+          }
           response.writeHead(200, {
             'Content-Type': 'text/plain'
           });
