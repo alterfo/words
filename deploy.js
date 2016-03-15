@@ -26,9 +26,7 @@
         body += chunk.toString();
       });
       request.on('end', function() {
-        console.log('request end', body);
-        last_payload = JSON.parse(querystring.parse(body).payload) || {};
-        console.log(new Date, request.method, request.url, last_payload);
+        last_payload = JSON.parse(body);
         return exec('./deploy.sh', function(error, stdout, stderr) {
           response.writeHead(200, {
             'Content-Type': 'text/plain'

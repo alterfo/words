@@ -23,9 +23,7 @@ http.createServer((request, response) ->
       body += chunk.toString()
       return
     request.on 'end', ->
-      console.log 'request end', body
-      last_payload = JSON.parse(querystring.parse(body).payload) || {}
-      console.log new Date, request.method, request.url, last_payload
+      last_payload = JSON.parse(body)
       exec './deploy.sh', (error, stdout, stderr) ->
         response.writeHead 200, 'Content-Type': 'text/plain'
         response.end if error then stderr else stdout
