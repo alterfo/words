@@ -87,11 +87,11 @@ module.exports = function(db) {
 
 	// Express MongoDB session storage
 	app.use(session({
-		saveUninitialized: false,
-		resave: false,
 		secret: config.sessionSecret,
+        maxAge: new Date(Date.now() + 3600000),
 		store: new mongoStore({
 			db: db.connection.db,
+            mongooseConnection: db.connection,
 			collection: config.sessionCollection
 		})
 	}));
