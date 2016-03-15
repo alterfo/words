@@ -2,7 +2,7 @@
 
 cd /sites/words
 
-GIT_CHANGES=git pull | wc -l
+GIT_CHANGES=`/usr/bin/git pull | wc -l`
 
 if [ $GIT_CHANGES -gt 1 ]; then
     npm install
