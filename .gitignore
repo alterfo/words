@@ -9,3 +9,4 @@ app/tests/coverage/
 .bower-*/
 .idea/
 words.iml
+config/secret.js

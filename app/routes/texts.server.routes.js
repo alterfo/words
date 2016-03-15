@@ -7,20 +7,26 @@ var users = require('../../app/controllers/users.server.controller'),
 	texts = require('../../app/controllers/texts.server.controller');
 
 module.exports = function(app) {
-	app.route('/texts/:month')
+	app
+		.route('/texts/:month')
 		.get(texts.list);
 
-	app.route('/text/:textDate')
+	app
+		.route('/text/:textDate')
 		.get(texts.readOne);
 
-	app.route('/texts')
+	app
+		.route('/texts')
         .post(texts.upsert);
     
-    app.route('/today')
+    app
+		.route('/today')
         .get(texts.today);
 
-	app.param('textDate', texts.textByDate);
-    app.param('month', texts.textsByMonth);
+	app
+		.param('textDate', texts.textByDate);
+    app
+		.param('month', texts.textsByMonth);
 };
 
 
