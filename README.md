@@ -3,5 +3,4 @@
 Демо: [Демо](http://oleg-sidorkin.ru:8000)
 
 Логин: demo
-
 Пароль: demodemo
