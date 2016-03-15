@@ -2,6 +2,11 @@
   "name": "mean",
   "description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
   "version": "0.0.1",
+  "scripts": {
+    "restart": "NODE_ENV=production forever restart server.js",
+    "start": "NODE_ENV=production forever start server.js",
+    "startbs": "NODE_ENV=production forever start deploy.js"
+  },
   "dependencies": {
     "async": "^0.9.2",
     "body-parser": "^1.15.0",
