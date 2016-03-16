@@ -33,17 +33,30 @@
 				<a href="/#!/signin">Войти</a>
 			</li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" auth-show>
+		<ul class="nav navbar-nav pull-right" auth-show>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" toggle="dropdown">
-					Написать разработчикам <strong class="caret"></strong>
+					Написать разработчикам </strong>
 				</a>
-				<div class="dropdown-menu">
-					<callbackform></callbackform>
+				<div class="dropdown-menu" style="padding: 17px">
+					<form class="form dropdown-form" role="form" ng-submit="send_callback()" ng-controller="CallbackController">
+						<h3>Письмо разработчикам</h3>
+						<div class="form-group">
+							<label for="inputText3" class="control-label">Напишите нам свои пожелания о том, как сделать лучше</label>
+							<div class="col-sm-12">
+								<textarea class="form-control" id="inputText3" ng-model="callback_text" ng-click="preventClose($event)"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12">
+								<button type="submit" class="btn btn-success control-label">Отправить</button>
+							</div>
+						</div>
+					</form>
 				</div>
 			</li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" auth-show>
+		<ul class="nav navbar-nav pull-right" auth-show>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" toggle="dropdown">
 					<span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
