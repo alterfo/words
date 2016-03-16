@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "callback.client.controller.js",
+  "sourceRoot": "",
+  "sources": [
+    "callback.client.controller.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA;EACA,OACE,CAAC,MADH,CACU,MADV,CAEE,CAAC,UAFH,CAEc,oBAFd,EAGE;IAAC,QAAD,EAAW,gBAAX,EAA6B,OAA7B,EAEE,SAAC,MAAD,EAAS,cAAT,EAAyB,KAAzB;MACE,MAAM,CAAC,cAAP,GAAwB;MAExB,MAAM,CAAC,YAAP,GAAsB,SAAC,CAAD;eAClB,CAAC,CAAC,eAAF,CAAA;MADkB;MAGtB,MAAM,CAAC,aAAP,GAAuB,SAAA;eACpB,KAAK,CAAC,IAAN,CAAW,WAAX,EAAwB,MAAM,CAAC,aAA/B;MADoB;IANzB,CAFF;GAHF;AADA"
+}

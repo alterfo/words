@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "callback.server.controller.js",
+  "sourceRoot": "",
+  "sources": [
+    "callback.server.controller.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA;EACA,OAAO,CAAC,IAAR,GAAe,SAAC,GAAD,EAAM,GAAN;WACb,OAAO,CAAC,GAAR,CAAY,GAAG,CAAC,IAAhB;EADa;AADf"
+}
