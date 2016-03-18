@@ -11,7 +11,8 @@ angular
           e.stopPropagation();
 
       $scope.send_callback = ->
-         $http.post '/callback', $scope.callback_text
+         $http.post '/callback',
+           callback_text: $scope.callback_text
 
       return
 

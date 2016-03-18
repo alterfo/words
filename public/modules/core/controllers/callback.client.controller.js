@@ -8,7 +8,9 @@
         return e.stopPropagation();
       };
       $scope.send_callback = function() {
-        return $http.post('/callback', $scope.callback_text);
+        return $http.post('/callback', {
+          callback_text: $scope.callback_text
+        });
       };
     }
   ]);
