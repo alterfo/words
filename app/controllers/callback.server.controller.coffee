@@ -12,5 +12,5 @@ exports.send = (req, res) ->
     text: req.body.callback_text
   , (err, info) ->
       if err then console.error err
-      console.log('Message sent: ' + JSON.stringify info)
+      res.end('Сообщение успешно отправлено!')
   #todo: save to database

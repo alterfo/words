@@ -10,3 +10,4 @@ app/tests/coverage/
 .idea/
 words.iml
 config/secret.js
+/data

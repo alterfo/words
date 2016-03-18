@@ -20,7 +20,7 @@
       if (err) {
         console.error(err);
       }
-      return console.log('Message sent: ' + JSON.stringify(info));
+      return res.end('Сообщение успешно отправлено!');
     });
   };
 
