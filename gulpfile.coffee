@@ -62,9 +62,15 @@ gulp.task 'client-css:prod', ->
   .pipe gulp.dest 'public/dist/'
   .pipe(browserSync.stream());
 
+gulp.task 'client-html', ->
+  gulp.src watchFiles.clientViews
+  .pipe browserSync.stream();
+
+
 
 gulp.task 'watch-js', ['client-js']
 gulp.task 'watch-css', ['client-css']
+gulp.task 'watch-html', ['client-html']
 
 #gulp.task 'start-mongo', runCommand 'mongod --dbpath ./data'
 #gulp.task 'stop-mongo', runCommand 'mongo --eval "use admin; db.shutdownServer();"'
@@ -88,9 +94,9 @@ gulp.task 'browser-sync', ->
 gulp.task 'serve', [ 'nodemon', 'browser-sync']
 
 gulp.task 'default', ['serve'], ->
-
-  gulp.watch(watchFiles.clientViews).on("change", browserSync.stream)
+#  gulp.watch(watchFiles.clientViews).on("change", browserSync.stream)
   gulp.watch watchFiles.clientJS, ['watch-js']
   gulp.watch watchFiles.clientCSS, ['watch-css']
+  gulp.watch watchFiles.clientViews, ['watch-html']
 
 

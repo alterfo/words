@@ -40,11 +40,9 @@
 				</a>
 				<div class="dropdown-menu" style="padding: 17px">
 					<form class="form dropdown-form" role="form" ng-submit="send_callback()" ng-controller="CallbackController">
-						<h3>Письмо разработчикам</h3>
 						<div class="form-group">
-							<label for="inputText3" class="control-label">Напишите нам свои пожелания о том, как сделать лучше</label>
 							<div class="col-sm-12">
-								<textarea class="form-control" id="inputText3" ng-model="callback_text" ng-click="preventClose($event)"></textarea>
+								<textarea class="form-control" placeholder="Напишите нам свои пожелания о том, как сделать лучше" ng-model="callback_text" ng-click="preventClose($event)"></textarea>
 							</div>
 						</div>
 						<div class="form-group">

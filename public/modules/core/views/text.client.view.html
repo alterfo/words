@@ -1,7 +1,9 @@
 <div ng-show="history.date">
     <h1>{{history.date}}</h1>
     <div class="history-text">
-        {{history.text}}
+        <pre>
+            {{history.text}}
+        </pre>
     </div>
 </div>
 <div ng-show="authentication.user && !history.date">
