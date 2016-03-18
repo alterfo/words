@@ -21,6 +21,7 @@ runCommand = (command) ->
       cb(err)
 
 applicationJavaScriptFiles = config.assets.js
+vendorJavaScriptFiles = config.assets.lib.js
 applicationCSSFiles = config.assets.css
 
 watchFiles =
@@ -39,6 +40,13 @@ gulp.task 'client-js', ->
 #    .on 'error', onError
     .pipe gulp.dest 'public/dist/'
     .pipe(browserSync.stream());
+
+gulp.task 'vendor-js:prod', ->
+  gulp.src vendorJavaScriptFiles
+    .pipe g.concat('vendor.min.js')
+    .pipe g.uglify()
+    .on 'error', onError
+    .pipe gulp.dest 'public/dist/'
 
 gulp.task 'client-js:prod', ->
   gulp.src applicationJavaScriptFiles
