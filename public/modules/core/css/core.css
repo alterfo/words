@@ -135,3 +135,8 @@ li.item {
     border-bottom: 1px solid #FFF;
     background-attachment: local;
 }
+
+.history-text pre {
+    white-space: pre-wrap; /* CSS 3 */
+    word-wrap: break-word;
+}
