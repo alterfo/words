@@ -21,7 +21,6 @@ runCommand = (command) ->
       cb(err)
 
 applicationJavaScriptFiles = config.assets.js
-vendorJavaScriptFiles = config.assets.lib.js
 applicationCSSFiles = config.assets.css
 
 watchFiles =
@@ -74,6 +73,10 @@ gulp.task 'client-html', ->
   gulp.src watchFiles.clientViews
   .pipe browserSync.stream();
 
+gulp.task 'images', ->
+  gulp.src './public/modules/*/img/**/*.{jpg,gif,png}'
+  .pipe gulp.dest 'public/dist
+
 
 
 gulp.task 'watch-js', ['client-js']
@@ -83,7 +86,7 @@ gulp.task 'watch-html', ['client-html']
 #gulp.task 'start-mongo', runCommand 'mongod --dbpath ./data'
 #gulp.task 'stop-mongo', runCommand 'mongo --eval "use admin; db.shutdownServer();"'
 
-gulp.task 'build', ['client-js:prod', 'client-css:prod']
+gulp.task 'build', ['client-js:prod', 'client-css:prod', 'images']
 
 
 
