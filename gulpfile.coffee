@@ -75,7 +75,7 @@ gulp.task 'client-html', ->
 
 gulp.task 'images', ->
   gulp.src './public/modules/*/img/**/*.{jpg,gif,png}'
-  .pipe gulp.dest 'public/dist
+  .pipe gulp.dest 'public/dist'
 
 
 

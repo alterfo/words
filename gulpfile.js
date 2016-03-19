@@ -76,13 +76,17 @@
     return gulp.src(watchFiles.clientViews).pipe(browserSync.stream());
   });
 
+  gulp.task('images', function() {
+    return gulp.src('./public/modules/*/img/**/*.{jpg,gif,png}').pipe(gulp.dest('public/dist'));
+  });
+
   gulp.task('watch-js', ['client-js']);
 
   gulp.task('watch-css', ['client-css']);
 
   gulp.task('watch-html', ['client-html']);
 
-  gulp.task('build', ['client-js:prod', 'client-css:prod']);
+  gulp.task('build', ['client-js:prod', 'client-css:prod', 'images']);
 
   gulp.task('nodemon', function() {
     return g.nodemon({
