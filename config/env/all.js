@@ -20,13 +20,14 @@ module.exports = {
 				'public/modules/core/js/common.js',
 				'public/lib/angular/angular.js',
                 'public/lib/angular-i18n/angular-locale_ru-ru.js',
-				'public/lib/angular-resource/angular-resource.js',
-				'public/lib/angular-cookies/angular-cookies.js', 
-				'public/lib/angular-animate/angular-animate.js', 
-				'public/lib/angular-sanitize/angular-sanitize.js',
+				//'public/lib/angular-resource/angular-resource.js',
+				//'public/lib/angular-cookies/angular-cookies.js',
+				//'public/lib/angular-animate/angular-animate.js',
+				//'public/lib/angular-sanitize/angular-sanitize.js',
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
-				'public/lib/angular-ui-utils/ui-utils.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js'
+				//'public/lib/angular-ui-utils/ui-utils.js',
+				//'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+				'public/lib/angular-elastic/elastic.js'
 			]
 		},
 		css: [
