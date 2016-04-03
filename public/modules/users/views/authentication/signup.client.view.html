@@ -1,4 +1,4 @@
-<section class="row" data-ng-controller="AuthenticationController">
+<section class="row" ng-controller="AuthenticationController">
 	<h3 class="col-md-12 text-center">Зарегистрируйтесь с помощью социальных сетей</h3>
 	<div class="col-md-12 text-center">
 <!-- 		<a href="/auth/facebook" class="undecorated-link">
@@ -21,8 +21,11 @@
 		</a> -->
 	</div>
 	<h3 class="col-md-12 text-center">Или с помощью электронной почты</h3>
+	<div data-ng-show="error" class="text-center text-danger">
+		<strong data-ng-bind="error"></strong>
+	</div>
 	<div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-		<form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+		<form name="userForm" ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
 			<fieldset>
 				<div class="form-group">
 					<label for="firstName">Имя</label>
@@ -48,9 +51,7 @@
 					<button type="submit" class="btn btn-large btn-primary">Зарегистрироваться</button>&nbsp; или&nbsp;
 					<a href="/#!/signin" class="show-signup">Войти</a>
 				</div>
-				<div data-ng-show="error" class="text-center text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
+
 			</fieldset>
 		</form>
 	</div>

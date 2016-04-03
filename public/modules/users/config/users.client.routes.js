@@ -59,9 +59,11 @@
         }
       });
     }
-  ]).run(function($rootScope, $location, $route, Auth) {
-    return $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if (next.access.restricted && Auth.isLoggedIn() === false) {
+  ]).run(function($rootScope, $location, AuthService) {
+    return $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+      if (toState.access.restricted && AuthService.isLoggedIn() === false) {
+        $rootScope.returnToState = toState.url;
+        $rootScope.returnToStateParams = toParams.Id;
         return $location.path('/login');
       }
     });

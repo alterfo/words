@@ -1,21 +1,21 @@
 angular
   .module 'core'
-  .directive 'authHide', ['Authentication', (Authentication) ->
+  .directive 'authHide', ['AuthService', (AuthService) ->
     restrict: 'A'
     link: (scope, element, attrs) ->
-      scope.authentication = Authentication
-      scope.$watch scope.authentication, (value, oldValue) ->
-          if (scope.authentication.user)
+      scope.user = AuthService.getUser()
+      scope.$watch scope.user, (value, oldValue) ->
+          if (scope.user)
            element.addClass('ng-hide')
           else
             element.removeClass('ng-hide')
 ]
-  .directive 'authShow', ['Authentication', (Authentication) ->
+  .directive 'authShow', ['AuthService', (AuthService) ->
     restrict: 'A'
     link: (scope, element, attrs) ->
-      scope.authentication = Authentication
-      scope.$watch scope.authentication, (value, oldValue) ->
-        if (scope.authentication.user)
+      scope.user = AuthService.getUser()
+      scope.$watch scope.user, (value, oldValue) ->
+        if (scope.user)
           element.removeClass('ng-hide')
         else
           element.addClass('ng-hide')

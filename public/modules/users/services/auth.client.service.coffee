@@ -1,28 +1,60 @@
 
 angular
   .module('users')
-  .factory 'AuthService', ['$q', '$timeout', '$http', ($q, $timeout, $http) ->
-    user = null
+  .factory 'AuthService', ['$q', '$timeout', '$http', '$window', ($q, $timeout, $http, $window) ->
+
+    $window.user = null
+
+    getPayload = (token) ->
+      JSON.parse $window.atob token.split('.')[1]
+
+    saveToken = (token) ->
+      $window.localStorage['token'] = token
+
+    getToken = () ->
+      $window.localStorage['token']
+
+    removeToken = ->
+      delete $window.localStorage['token']
 
     isLoggedIn = ->
-      !!user
+      token = @getToken()
+      if token
+        payload = getPayload(token)
+        new Date(payload.loginExpires) > Date.now()
+      else
+        false
 
-    getUserStatus = ->
-      user
+    getUserFromToken = ->
+      if @isLoggedIn()
+        token = @getToken()
+        payload = getPayload(token)
+        return payload.username
+
+    getUser = ->
+      if @isLoggedIn()
+        $window.user
+
+    setUser = (user) ->
+      $window.user = user
+
 
     login = (credentials) ->
       deferred = $q.defer()
       $http.post '/auth/signin', credentials
-      .success (data, status) ->
-        if status == 200 and data.status
-          user = true
+      .success (data, status) =>
+        if status == 200 and data.loginToken #todo: проверка времени и роли
+          $window.user = data
+          @saveToken data.loginToken
           deferred.resolve()
         else
-          user = false
+          $window.user = false
+          @removeToken()
           deferred.reject(data)
         return
-      .error (data) ->
-          user = false
+      .error (data) =>
+          $window.user = false
+          @removeToken()
           deferred.reject(data)
           return
       deferred.promise
@@ -30,19 +62,22 @@ angular
     logout = ->
       deferred = $q.defer()
       $http.get '/auth/signout'
-      .success (data) ->
-        user = false
+      .success (data) =>
+        $window.user = false
+        @removeToken()
         deferred.resolve()
       .error (data) ->
-        user = false
+        $window.user = false
+        @removeToken()
         deferred.reject()
       deferred.promise
 
     register = (credentials) ->
       deferred = $q.defer()
       $http.post '/auth/signup', credentials
-      .success (data, status) ->
-        if status == 200 and data.status
+      .success (data, status) =>
+        if status == 200 and data.loginToken
+          @saveToken data.loginToken
           deferred.resolve()
         else
           deferred.reject()
@@ -54,10 +89,14 @@ angular
 
     return {
       isLoggedIn: isLoggedIn
-      getUserStatus: getUserStatus
+      getUser: getUser
       login: login
       logout: logout
       register: register
+      saveToken: saveToken
+      getToken: getToken
+      getUserFromToken: getUserFromToken
+      removeToken: removeToken
     }
 
 ]

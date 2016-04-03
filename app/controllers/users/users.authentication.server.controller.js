@@ -21,7 +21,7 @@
     var user;
     delete req.body.roles;
     user = new User(req.body);
-    user.provider = 'local';
+    user.provider = 'local-token';
     user.displayName = user.firstName + ' ' + user.lastName;
     user.save(function(err) {
       if (err) {
@@ -31,12 +31,8 @@
       } else {
         user.password = void 0;
         user.salt = void 0;
-        req.login(user, function(err) {
-          if (err) {
-            res.status(400).send(err);
-          } else {
-            res.json(user);
-          }
+        passport.authenticate('local-token')(req, res, function() {
+          return res.redirect('/today');
         });
       }
     });

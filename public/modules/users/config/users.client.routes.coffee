@@ -12,7 +12,7 @@ angular.module('users')
 				url: '/settings/password'
 				templateUrl: 'modules/users/views/settings/change-password.client.view.html'
 				access: {restricted: true}
-		.state 'accounts',
+			.state 'accounts',
 				url: '/settings/accounts'
 				templateUrl: 'modules/users/views/settings/social-accounts.client.view.html'
 				access: {restricted: true}
@@ -42,6 +42,9 @@ angular.module('users')
 				access: {restricted: false}
 		return
 ]
-	.run ($rootScope, $location, $route, Auth) ->
-		$rootScope.$on '$routeChangeStart', (event, next, current) ->
-			if next.access.restricted and Auth.isLoggedIn() is false then $location.path '/login'
+	.run ($rootScope, $location, AuthService) ->
+		$rootScope.$on '$stateChangeStart', (event, toState, toParams) ->
+			if toState.access.restricted and AuthService.isLoggedIn() is false
+				$rootScope.returnToState = toState.url
+				$rootScope.returnToStateParams = toParams.Id
+				$location.path '/login'

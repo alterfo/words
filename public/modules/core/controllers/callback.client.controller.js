@@ -2,8 +2,8 @@
 (function() {
   "use strict";
   angular.module("core").controller("CallbackController", [
-    '$scope', "Authentication", '$http', function($scope, Authentication, $http) {
-      $scope.authentication = Authentication;
+    '$scope', "AuthService", '$http', function($scope, AuthService, $http) {
+      $scope.user = AuthService.getUser();
       $scope.preventClose = function(e) {
         return e.stopPropagation();
       };

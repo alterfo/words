@@ -10,14 +10,14 @@
 		<a href="/#!/" class="navbar-brand"></a>
 	</div>
 	<nav class="collapse navbar-collapse navbar-inverse" collapse="!isCollapsed" role="navigation">
-		<ul class="nav navbar-nav" ng-if="menu.shouldRender(authentication.user);">
-			<li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+		<ul class="nav navbar-nav" ng-if="menu.shouldRender(user);">
+			<li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
 				<a ng-switch-when="dropdown" class="dropdown-toggle">
 					<span ng-bind="item.title"></span>
 					<b class="caret"></b>
 				</a>
 				<ul ng-switch-when="dropdown" class="dropdown-menu">
-					<li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+					<li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
 						<a href="/#!/{{subitem.link}}" ng-bind="subitem.title"></a>
 					</li>
 				</ul>
@@ -57,7 +57,7 @@
 		<ul class="nav navbar-nav pull-right" auth-show>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" toggle="dropdown">
-					<span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+					<span ng-bind="user.displayName"></span> <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
 					<li>
@@ -66,7 +66,7 @@
 					<li>
 						<a href="/#!/settings/accounts">Управление социальными аккаунтамиs</a>
 					</li>
-					<li ng-show="authentication.user.provider === 'local'">
+					<li ng-show="user.provider === 'local'">
 						<a href="/#!/settings/password">Изменить пароль</a>
 					</li>
 					<li class="divider"></li>

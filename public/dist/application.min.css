@@ -1,5 +1,5 @@
 body {
-  background: #333 url("http://static.tumblr.com/maopbtg/a5emgtoju/inflicted.png") repeat;
+  background: #333 url("core/img/body-bg.png") repeat;
   font-family: 'PT Sans Caption', sans-serif;
   color: #fff;
 }
@@ -159,6 +159,12 @@ li.item {
   border-top: 1px solid #FFF;
   border-bottom: 1px solid #FFF;
   background-attachment: local;
+}
+
+.history-text pre {
+  white-space: pre-wrap;
+  /* CSS 3 */
+  word-wrap: break-word;
 }
 @media (min-width: 992px) {
   .nav-users {

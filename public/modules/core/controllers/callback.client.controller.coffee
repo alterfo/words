@@ -2,10 +2,10 @@
 angular
   .module("core")
   .controller "CallbackController",
-  ['$scope', "Authentication", '$http',
+  ['$scope', "AuthService", '$http',
 
-    ($scope, Authentication, $http) ->
-      $scope.authentication = Authentication
+    ($scope, AuthService, $http) ->
+      $scope.user = AuthService.getUser()
 
       $scope.preventClose = (e) ->
           e.stopPropagation();

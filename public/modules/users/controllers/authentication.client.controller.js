@@ -2,22 +2,22 @@
 (function() {
   'use strict';
   angular.module('users').controller('AuthenticationController', [
-    '$scope', '$http', '$location', 'Authentication', '$rootScope', 'Auth', function($scope, $http, $location, Authentication, $rootScope, Auth) {
-      $scope.authentication = Authentication;
-      if ($scope.authentication.user) {
+    '$scope', '$http', '$location', '$rootScope', 'AuthService', function($scope, $http, $location, $rootScope, AuthService) {
+      $scope.user = AuthService.getUser();
+      if ($scope.user) {
         $location.path('/');
       }
       $scope.signup = function() {
-        return Auth.register($scope.credentials).then(function() {
+        console.log('signup');
+        return AuthService.register($scope.credentials).then(function() {
           $location.path('/today');
           return $scope.credentials = {};
         }, function(err) {
           return $scope.error = err.message;
         });
       };
-      $scope.signup = function() {};
       $scope.signin = function() {
-        return Auth.login($scope.credentials).then(function() {
+        return AuthService.login($scope.credentials).then(function() {
           $location.path('/today');
           return $scope.credentials = {};
         }, function(err) {
@@ -25,7 +25,7 @@
         });
       };
       $scope.logout = function() {
-        return Auth.logout().then(function() {
+        return AuthService.logout().then(function() {
           return $location.path('/welcome');
         });
       };

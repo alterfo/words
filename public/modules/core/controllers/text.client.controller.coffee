@@ -5,14 +5,14 @@ angular.module('core').controller 'TextController', [
     '$http'
     '$stateParams'
     '$location'
-    'Authentication'
+    'AuthService'
     '$document'
     "AlertService"
     'WebApiService'
     'TimelineService'
     'DateService'
-    ($scope, $http, $stateParams, $location, Authentication, $document, AlertService, WebApiService, TimelineService, DateService) ->
-      $scope.authentication = Authentication
+    ($scope, $http, $stateParams, $location, AuthService, $document, AlertService, WebApiService, TimelineService, DateService) ->
+      $scope.user = AuthService.getUser()
 
       $scope.history = {}
       $scope.todayDateString = DateService.getTodayString()

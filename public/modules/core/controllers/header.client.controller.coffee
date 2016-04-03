@@ -2,10 +2,10 @@
 angular
   .module("core")
   .controller "HeaderController", ['$scope'
-  "Authentication"
+  "AuthService"
   "Menus"
-  ($scope, Authentication, Menus) ->
-    $scope.authentication = Authentication
+  ($scope, AuthService, Menus) ->
+    $scope.user = AuthService.getUser()
     $scope.isCollapsed = false
     $scope.menu = Menus.getMenu("topbar")
     $scope.toggleCollapsibleMenu = ->

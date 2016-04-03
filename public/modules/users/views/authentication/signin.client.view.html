@@ -21,6 +21,9 @@
 		</a> -->
 	</div>
 	<h3 class="col-md-12 text-center">Или с помощью логина и пароля</h3>
+	<div data-ng-show="error" class="text-center text-danger">
+		<strong data-ng-bind="error"></strong>
+	</div>
 	<div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
 		<form data-ng-submit="signin()" class="signin form-horizontal" autocomplete="off">
 			<fieldset>
@@ -39,9 +42,7 @@
 				<div class="forgot-password">
 					<a href="/#!/password/forgot">Забыли пароль?</a>
 				</div>
-				<div data-ng-show="error" class="text-center text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
+
 			</fieldset>
 		</form>
 	</div>

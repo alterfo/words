@@ -11,21 +11,22 @@ secret = require('../../../config/secret').localtokensecret
 exports.signup = (req, res) ->
 	delete req.body.roles
 	user = new User(req.body)
-	user.provider = 'local'
+	user.provider = 'local-token'
 	user.displayName = user.firstName + ' ' + user.lastName
-	# Then save the user
 	user.save (err) ->
 		if err
 			return res.status(400).send(message: errorHandler.getErrorMessage(err))
 		else
 			user.password = undefined
 			user.salt = undefined
-			req.login user, (err) ->
-				if err
-					res.status(400).send err
-				else
-					res.json user
-				return
+			passport.authenticate('local-token')(req, res, -> res.redirect('/today'))
+
+#			req.login user, (err) ->
+#				if err
+#					res.status(400).send err
+#				else
+#					res.json user
+#				return
 		return
 	return
 
