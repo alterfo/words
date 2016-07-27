@@ -71,9 +71,15 @@ angular.module('core').controller 'TextController', [
 
         else
           AlertService.send "success", "Продолжайте!", "Ничего не изменилось с прошлого сохранения!", 2000
-
-
         return false
+
+      $scope.putTab = (e) ->
+          e.preventDefault()
+          start = e.target.selectionStart
+          end = e.target.selectionEnd
+          $scope.text = $scope.text.substring(0, start) + '\t' + $scope.text.substring(end)
+          angular.element(e.target).val($scope.text)
+          e.target.selectionStart = e.target.selectionEnd = start + 1
 
       $scope.save = () ->
         if $scope.changed and $scope.text isnt ''

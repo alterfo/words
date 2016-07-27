@@ -53,6 +53,15 @@
         }
         return false;
       };
+      $scope.putTab = function(e) {
+        var end, start;
+        e.preventDefault();
+        start = e.target.selectionStart;
+        end = e.target.selectionEnd;
+        $scope.text = $scope.text.substring(0, start) + '\t' + $scope.text.substring(end);
+        angular.element(e.target).val($scope.text);
+        return e.target.selectionStart = e.target.selectionEnd = start + 1;
+      };
       $scope.save = function() {
         if ($scope.changed && $scope.text !== '') {
           $scope.state = 'saving';
@@ -102,5 +111,3 @@
   ]);
 
 }).call(this);
-
-//# sourceMappingURL=text.client.controller.js.map
