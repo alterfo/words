@@ -1,5 +1,5 @@
 body {
-  background: #333 url("core/img/body-bg.png") repeat;
+  background: #333 url("texts/img/body-bg.png") repeat;
   font-family: 'PT Sans Caption', sans-serif;
   color: #fff;
 }
@@ -144,7 +144,7 @@ li.item {
 .textarea-input {
   width: 100%;
   /*    overflow: hidden;*/
-  background: url("core/img/lines.png") repeat-y, url("core/img/paper.png") repeat;
+  background: url("texts/img/lines.png") repeat-y, url("texts/img/paper.png") repeat;
   color: #222;
   background-color: #62add6;
   /*font-family: Courier, monospace;*/

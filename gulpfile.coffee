@@ -3,6 +3,7 @@ browserSync = require('browser-sync').create()
 g = require('gulp-load-plugins')()
 reload = browserSync.reload
 exec = require('child_process').exec
+ngAnnotate = require('gulp-ng-annotate')
 
 g.env.set
   NODE_ENV: "development"
@@ -32,11 +33,10 @@ watchFiles =
   mochaTests: ['app/tests/**/*.js']
 
 gulp.task 'client-js', ->
+  console.log applicationJavaScriptFiles
   gulp.src applicationJavaScriptFiles
     .pipe g.browserify transform: ["ngify"]
     .on('error', onError)
-#    .pipe g.uglify()
-#    .on 'error', onError
     .pipe gulp.dest 'public/dist/'
     .pipe(browserSync.stream());
 
@@ -49,9 +49,8 @@ gulp.task 'vendor-js:prod', ->
 
 gulp.task 'client-js:prod', ->
   gulp.src applicationJavaScriptFiles
-#    .pipe g.browserify transform: ["ngify"]
-#    .on('error', onError)
     .pipe g.concat('application.min.js')
+    .pipe ngAnnotate()
     .pipe g.uglify()
     .on 'error', onError
     .pipe gulp.dest 'public/dist/'
