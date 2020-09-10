@@ -23,7 +23,7 @@
     "cookie-parser": "^1.4.1",
     "cors": "^2.7.1",
     "express": "^4.13.4",
-    "express-jwt": "^3.3.0",
+    "express-jwt": "^6.0.0",
     "express-session": "^1.13.0",
     "extend": "^3.0.0",
     "forever": "^0.11.1",
