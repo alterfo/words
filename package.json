@@ -36,7 +36,7 @@
     "lodash": "^4.5.1",
     "method-override": "^2.3.5",
     "moment": "^2.11.2",
-    "mongoose": "^4.4.7",
+    "mongoose": "^5.10.4",
     "morgan": "^1.7.0",
     "ngify": "^1.4.1",
     "nodemailer": "^2.3.0",
